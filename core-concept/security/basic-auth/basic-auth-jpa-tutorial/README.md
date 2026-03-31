@@ -14,6 +14,11 @@ Ce module montre comment securiser la reserve de nourriture et de biere d'une ta
 
 Les mots de passe sont en **bcrypt** (par defaut avec security-jpa).
 
+## Swagger UI (sans authentification)
+
+- `http://localhost:8080/q/swagger-ui`
+- `http://localhost:8080/q/openapi`
+
 ## Comment l'executer
 
 ```bash
@@ -29,3 +34,5 @@ curl -u keeper:keeper123 http://localhost:8080/api/tavern/pantry
 ```bash
 curl -u supplier:supplier123 http://localhost:8080/api/tavern/cellar
 ```
+
+Swagger UI est accessible sans authentification, mais l'execution des endpoints demandera une authentification Basic Auth.

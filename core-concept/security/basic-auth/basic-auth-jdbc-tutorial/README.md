@@ -27,3 +27,5 @@ curl -u keeper:keeper123 http://localhost:8080/api/tavern/pantry
 ```bash
 curl -u supplier:supplier123 http://localhost:8080/api/tavern/cellar
 ```
+
+Swagger UI est accessible sans authentification, mais l'execution des endpoints demandera une authentification Basic Auth.
