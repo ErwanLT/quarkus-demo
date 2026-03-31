@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>banner-tutorial</module>
+        <module>core-concept</module>
     </modules>
 
     <properties>
