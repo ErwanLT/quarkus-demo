@@ -1,62 +1,109 @@
 # banner-tutorial
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Il y a de cela quelque temps, nous avions pu voir [[Comment personnaliser la bannière d'un projet Spring Boot|comment personnaliser la bannière]] d'un projet [[Il était une fois... Spring Boot|Spring Boot]].  
+Ici, nous verrons comment arriver au même résultat, mais dans un projet [[Quarkus - définition|Quarkus]].
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## La bannière Quarkus par défaut
 
-## Running the application in dev mode
+[![](https://www.sfeir.dev/content/images/2025/03/image-16.png)](https://www.sfeir.dev/content/images/2025/03/image-16.png)
 
-You can run your application in dev mode that enables live coding using:
+bannière quarkus
 
-```shell script
-./mvnw quarkus:dev
+Au démarrage de votre application Quarkus, vous devriez voir apparaitre dans les logs de votre application cette bannière, il s'agit de la bannière par défaut des applications Quarkus.
+
+Tout comme la bannière d'un projet Spring Boot, cette dernière peut être désactivé ou personnalisable.
+
+## Désactiver la bannière
+
+Pour désactiver la bannière au démarrage d'un projet quarkus, plusieurs options s'offrent à vous :
+
+- Les propriétés de votre projet
+- Paramètre au démarrage de l'application
+
+### Depuis le fichier de properties
+
+Pour désactiver la bannière depuis votre fichier `application.properties`, vous n'avez qu'à rajouter la ligne suivante à l'intérieur :
+
+```properties
+quarkus.banner.enabled=false
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+vous n'aurez à ce moment plus la bannière qui s'affichera au démarrage de votre application.
 
-## Packaging and running the application
+### En paramètre de l'application
 
-The application can be packaged using:
+Si vous ne souhaitez pas rajouter de properties dans votre projet pour désactiver la bannière, vous pouvez également la désactiver en passant un paramètre lors du lancement de votre application.
 
-```shell script
-./mvnw package
+Si vous utilisez maven pour lancer votre application :
+
+```bash
+quarkus:dev -Dquarkus.banner.enabled=false
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+run via maven
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+Si vous utilisez Quarkus CLI pour lancer votre application :
 
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```bash
+quarkus dev -Dquarkus.banner.enabled=false
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+Là aussi, la bannière par défaut ne s'affichera plus au démarrage.
 
-## Creating a native executable
+## Personnaliser la bannière
 
-You can create a native executable using:
+Si au contraire, vous ne souhaitez pas désactiver la bannière, mais au contraire la personnaliser, rien de plus simple, il vous suffit de 2 étapes :
 
-```shell script
-./mvnw package -Dnative
+- Créer un fichier texte dans les ressources de votre projet
+- Ajouter la propriété suivante qui indique le nom de votre fichier
+
+```properties
+quarkus.banner.path=banner.txt
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+Et ainsi au démarrage de votre application, le contenu de votre fichier texte s'affichera en guise de bannière.
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+```txt
+Oh no not again !
+     (")
+     \)/
+    _____
+    \___/
+
+                      Hello ground !!
+        .-------------'```'----....,,__                        _,
+       |                               `'`'`'`'-.,.__        .'(
+       |                                             `'--._.'   )
+       |                                                   `'-.<
+       \               .-'`'-.                            -.    `\
+        \               -.o_.     _                     _,-'`\    |
+         ``````''--.._.-=-._    .'  \            _,,--'`      `-._(
+           (^^^^^^^^`___    '-. |    \  __,,..--'                 `
+            `````````   `'--..___\    |`
+                                  `-.,'
 ```
 
-You can then execute your native executable with: `./target/banner-tutorial-1.0.0-SNAPSHOT-runner`
+exemple de bannière en ASCII art
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+Si j'ai le contenu ci-dessus dans mon fichier `banner.txt`, au démarrage de mon application j'aurai le rendu suivant dans les logs :
 
-## Provided Code
+[![](https://www.sfeir.dev/content/images/2025/03/image-24.png)](https://www.sfeir.dev/content/images/2025/03/image-24.png)
 
-### REST
+rendu dans les logs
 
-Easily start your REST Web Services
+### Limitation de la personnalisation
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+Contrairement à la bannière Spring Boot qui supporte des styles de texte AINSI :
+
+- ${AnsiStyle.STYLE_NAME} : BOLD / ITALIC / NORMAL ...
+- ${AnsiColor.COLOR_NAME} : BLUE / RED / YELLOW ...
+- ${AnsiBackground.COLOR_NAME}
+
+Ces derniers ne sont pas supportés par la bannière Quarkus, vous n'aurez donc pas pour l'heure un rendu similaire à ceci
+
+[![](https://www.sfeir.dev/content/images/2025/03/image-25.png)](https://www.sfeir.dev/content/images/2025/03/image-25.png)
+
+## Conclusion
+
+Vous savez désormais comment personnaliser ou désactiver la bannière d'un projet Quarkus.  
+Internet regorge d'images en tout genre en ASCII art, ou de générateur de bannière, il vous suffit juste de trouver celle qui vous plaît, et le tour est joué.
