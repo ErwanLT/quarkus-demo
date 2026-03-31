@@ -27,3 +27,5 @@ replay_pid*
 /mvnw.cmd
 /.mvn/
 /.quarkus/
+/target/
+/**/target/
