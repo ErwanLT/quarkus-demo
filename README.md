@@ -12,3 +12,8 @@ Tutoriel sur la désactivation et la personnalisation de la bannière de démarr
 
 ### [Documentation d'API REST (OpenAPI)](core-concept/doc-tutorial)
 Tutoriel OpenAPI et Swagger UI avec une API de taverne médiévale.
+
+### [Security](core-concept/security)
+Tutoriels de securite pour proteger les ressources sensibles de la taverne.
+#### [Basic Auth](core-concept/security/basic-auth)
+Exemples Basic Auth pour proteger la reserve de nourriture et de biere.
