@@ -6,22 +6,15 @@
 
     <parent>
         <groupId>fr.eletutour</groupId>
-        <artifactId>core-concept</artifactId>
+        <artifactId>security</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>security</artifactId>
+    <artifactId>jwt</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>basic-auth</module>
-        <module>jwt</module>
+        <module>jwt-tutorial</module>
+        <module>jwt-jpa-tutorial</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-security</artifactId>
-        </dependency>
-    </dependencies>
 </project>

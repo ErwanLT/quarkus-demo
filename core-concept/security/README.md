@@ -10,3 +10,10 @@ Utilisateurs embarques (in-memory).
 Utilisateurs stockes en base via Elytron JDBC.
 #### [JPA](basic-auth/basic-auth-jpa-tutorial)
 Utilisateurs stockes en base via security-jpa.
+
+### [JWT](jwt)
+Exemple JWT pour proteger le livre de comptes et le coffre fort.
+#### [JWT - Livre de comptes et coffre fort](jwt/jwt-tutorial)
+Protection des ressources sensibles via un token JWT.
+#### [JWT + JPA - Login + Token](jwt/jwt-jpa-tutorial)
+Utilisateurs en base (JPA) et generation de JWT lors du login.

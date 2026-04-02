@@ -17,3 +17,5 @@ Tutoriel OpenAPI et Swagger UI avec une API de taverne médiévale.
 Tutoriels de securite pour proteger les ressources sensibles de la taverne.
 #### [Basic Auth](core-concept/security/basic-auth)
 Exemples Basic Auth pour proteger la reserve de nourriture et de biere.
+#### [JWT](core-concept/security/jwt)
+Exemple JWT pour proteger le livre de comptes et le coffre fort.

@@ -1,0 +1,48 @@
+# JWT - Taverne
+
+Ce module montre comment proteger le **livre de comptes** et le **coffre fort** d'une taverne via **JWT** dans Quarkus.
+
+## Endpoints securises
+
+- `GET /api/tavern/ledger` (role `accountant`)
+- `GET /api/tavern/vault` (role `treasurer`)
+
+## Configuration JWT
+
+- Issuer attendu: `tavern-issuer`
+- Cle publique de verification: `publicKey.pem`
+- Cle privee (demo uniquement): `privateKey.pem`
+
+## Tokens de demo
+
+Tokens signes avec la cle privee fournie et valides jusqu'au `2030-01-01`.
+
+- `LEDGER_TOKEN` (role `accountant`)
+
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRhdmVybi1rZXkifQ.eyJpc3MiOiJ0YXZlcm4taXNzdWVyIiwiaWF0IjoxNzc1MDg4MDAwLCJleHAiOjE4OTM0NTYwMDAsInN1YiI6ImVsb3JhIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZWxvcmEiLCJncm91cHMiOlsiYWNjb3VudGFudCJdfQ.JwKFZD-c0fKaoGPpElS-BZ2IhKLOH6A8Tx3dBt1QhdECOClf2WtAtpi7epQRxQaPnxRL0RZ7Aq-tAd_bWFZ-uuq5l1IBKdcCOMSEOkoKRmHS_tGlKYq2ci6-RXjCOJpkXLr6JJ0tqsyR_G8qiF40TJeIsAnARKSHT8o4CS0ACblPahnyQ8ms35SGBwOkkgKgV0JmcQqdnohKXYb2UnT-EpJ7S1Fq5RKv_aX_q7WKDq0M9OvLesC21Irb3tvUdOivgLz0IwG2Re43xnyT5vCoJm0sXLC8czuyfteY71c1SldTEtkwWvvcVo1nPabaztewnWEbCYDUPQYDDIYR5zGm4w
+```
+
+- `VAULT_TOKEN` (role `treasurer`)
+
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRhdmVybi1rZXkifQ.eyJpc3MiOiJ0YXZlcm4taXNzdWVyIiwiaWF0IjoxNzc1MDg4MDAwLCJleHAiOjE4OTM0NTYwMDAsInN1YiI6ImJvcmluIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYm9yaW4iLCJncm91cHMiOlsidHJlYXN1cmVyIl19.GUZJ3bsjD21LXlPBzrs0kxfJzkp822UfgEjN-MnTcrZnf4GpSW1HJrWNn153aeeZobRss2EGc_m3kCEmn0xA2uEwb7NsGytPv-tz2EFf4sDEJWo3SPu88L8yzTdLhyzMouZXkdMnoQ766COcXkhufuRa06WqCGfG6RyNs5W9IoIitS9usTmRcWli9uM9gxiRdS3Cpp3z_RrxtX3ZY5px6zjwGXDNCo_gbXH6GzEitoOmE5-5jF8nfpQvepaO4yxXwjW3M149eFwUygGtsM4BH7cWuDmnG1G7qE-eD0qCl-g824CgMzTik6xab6uS47RsZDWYIitwBl1mNCyNHGZbsg
+```
+
+## Comment l'executer
+
+```bash
+mvn quarkus:dev
+```
+
+## Tests rapides
+
+```bash
+LEDGER_TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRhdmVybi1rZXkifQ.eyJpc3MiOiJ0YXZlcm4taXNzdWVyIiwiaWF0IjoxNzc1MDg4MDAwLCJleHAiOjE4OTM0NTYwMDAsInN1YiI6ImVsb3JhIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZWxvcmEiLCJncm91cHMiOlsiYWNjb3VudGFudCJdfQ.JwKFZD-c0fKaoGPpElS-BZ2IhKLOH6A8Tx3dBt1QhdECOClf2WtAtpi7epQRxQaPnxRL0RZ7Aq-tAd_bWFZ-uuq5l1IBKdcCOMSEOkoKRmHS_tGlKYq2ci6-RXjCOJpkXLr6JJ0tqsyR_G8qiF40TJeIsAnARKSHT8o4CS0ACblPahnyQ8ms35SGBwOkkgKgV0JmcQqdnohKXYb2UnT-EpJ7S1Fq5RKv_aX_q7WKDq0M9OvLesC21Irb3tvUdOivgLz0IwG2Re43xnyT5vCoJm0sXLC8czuyfteY71c1SldTEtkwWvvcVo1nPabaztewnWEbCYDUPQYDDIYR5zGm4w"
+VAULT_TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRhdmVybi1rZXkifQ.eyJpc3MiOiJ0YXZlcm4taXNzdWVyIiwiaWF0IjoxNzc1MDg4MDAwLCJleHAiOjE4OTM0NTYwMDAsInN1YiI6ImJvcmluIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYm9yaW4iLCJncm91cHMiOlsidHJlYXN1cmVyIl19.GUZJ3bsjD21LXlPBzrs0kxfJzkp822UfgEjN-MnTcrZnf4GpSW1HJrWNn153aeeZobRss2EGc_m3kCEmn0xA2uEwb7NsGytPv-tz2EFf4sDEJWo3SPu88L8yzTdLhyzMouZXkdMnoQ766COcXkhufuRa06WqCGfG6RyNs5W9IoIitS9usTmRcWli9uM9gxiRdS3Cpp3z_RrxtX3ZY5px6zjwGXDNCo_gbXH6GzEitoOmE5-5jF8nfpQvepaO4yxXwjW3M149eFwUygGtsM4BH7cWuDmnG1G7qE-eD0qCl-g824CgMzTik6xab6uS47RsZDWYIitwBl1mNCyNHGZbsg"
+
+curl -H "Authorization: Bearer $LEDGER_TOKEN" http://localhost:8080/api/tavern/ledger
+curl -H "Authorization: Bearer $VAULT_TOKEN" http://localhost:8080/api/tavern/vault
+```
+
+Swagger UI est accessible sans authentification, mais l'execution des endpoints demandera un JWT valide.
