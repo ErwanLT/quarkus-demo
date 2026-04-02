@@ -1,0 +1,15 @@
+{#main title=title}
+    <div style="text-align: center; padding: 2rem;">
+        <h2 style="font-family: 'MedievalSharp'; color: #5d3a1a;">Félicitations, {booking.adventurerName} !</h2>
+        <p style="font-size: 1.2rem;">
+            Votre réservation pour la <strong>{booking.roomType}</strong> a été enregistrée.
+        </p>
+        <p>
+            Nous vous attendons le {booking.arrivalDate} pour un séjour de {booking.nights} nuits.
+        </p>
+        <p style="margin-top: 2rem; font-weight: bold;">
+            N'oubliez pas votre serviette !
+        </p>
+        <a href="/tavern-web" style="display: inline-block; margin-top: 2rem; color: #5d3a1a; font-weight: bold;">Retour à l'accueil</a>
+    </div>
+{/main}

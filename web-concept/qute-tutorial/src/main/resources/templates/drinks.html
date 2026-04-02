@@ -1,0 +1,13 @@
+{#main title=title}
+    <div class="menu-list">
+        {#for drink in drinks}
+        <div style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; font-family: 'MedievalSharp'; font-size: 1.4rem;">
+                <span>{drink.name}</span>
+                <span>{drink.price} PO</span>
+            </div>
+            <p style="font-style: italic; margin-top: 5px;">{drink.description}</p>
+        </div>
+        {/for}
+    </div>
+{/main}

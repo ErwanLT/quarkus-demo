@@ -19,3 +19,9 @@ Tutoriels de securite pour proteger les ressources sensibles de la taverne.
 Exemples Basic Auth pour proteger la reserve de nourriture et de biere.
 #### [JWT](core-concept/security/jwt)
 Exemple JWT pour proteger le livre de comptes et le coffre fort.
+
+## Web Concept (`web-concept`)
+
+### [Qute Tutorial](web-concept/qute-tutorial)
+Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée de Quarkus à Thymeleaf, intégrant la gestion des chambres et du registre de la taverne **The Falling Whale**.
+

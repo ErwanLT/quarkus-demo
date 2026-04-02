@@ -1,0 +1,32 @@
+{#main title=title}
+    <p>Voici la liste des voyageurs actuellement enregistrés dans le registre de <strong>The Falling Whale</strong>.</p>
+    
+    <table style="width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 1.1rem;">
+        <thead>
+            <tr style="border-bottom: 2px solid #8b4513; text-align: left; font-family: 'MedievalSharp';">
+                <th style="padding: 10px;">Aventurier</th>
+                <th style="padding: 10px;">Arrivée</th>
+                <th style="padding: 10px;">Nuits</th>
+                <th style="padding: 10px;">Chambre</th>
+            </tr>
+        </thead>
+        <tbody>
+            {#for b in bookings}
+            <tr style="border-bottom: 1px dotted rgba(139, 69, 19, 0.4);">
+                <td style="padding: 10px;">{b.adventurerName}</td>
+                <td style="padding: 10px;">{b.arrivalDate}</td>
+                <td style="padding: 10px;">{b.nights}</td>
+                <td style="padding: 10px;">{b.roomType}</td>
+            </tr>
+            {#else}
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 2rem; font-style: italic;">Le registre est vide pour l'instant.</td>
+            </tr>
+            {/for}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 2rem; text-align: center;">
+        <a href="/tavern-web/booking" style="color: #5d3a1a; font-weight: bold;">Ajouter une réservation</a>
+    </div>
+{/main}

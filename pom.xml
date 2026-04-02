@@ -11,6 +11,7 @@
 
     <modules>
         <module>core-concept</module>
+        <module>web-concept</module>
     </modules>
 
     <properties>

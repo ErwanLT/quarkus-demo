@@ -1,0 +1,22 @@
+{#main title=title}
+    <form action="/tavern-web/booking" method="POST">
+        <label>Nom de l'aventurier / Voyageur :</label>
+        <input type="text" name="adventurerName" placeholder="Zaphod Beeblebrox" required>
+
+        <label>Date d'arrivée :</label>
+        <input type="date" name="arrivalDate" required>
+
+        <label>Nombre de nuits :</label>
+        <input type="number" name="nights" min="1" value="1" required>
+
+        <label>Type de suite :</label>
+        <select name="roomType">
+            <option value="Suite Galactique">Suite Galactique (Lit double)</option>
+            <option value="Dortoir de l'Aventurier">Dortoir de l'Aventurier (Hamac)</option>
+            <option value="Le Placard de Marvin">Le Placard de Marvin (Idéal pour déprimer)</option>
+            <option value="Suite 42">La Suite 42 (Vue sur le vide)</option>
+        </select>
+
+        <button type="submit">Réserver ma chambre</button>
+    </form>
+{/main}
