@@ -13,6 +13,9 @@ Tutoriel sur la désactivation et la personnalisation de la bannière de démarr
 ### [Documentation d'API REST (OpenAPI)](core-concept/doc-tutorial)
 Tutoriel OpenAPI et Swagger UI avec une API de taverne médiévale.
 
+### [Gestion d'exceptions](core-concept/exception-handling-tutorial)
+Approche industrialisée de la gestion des erreurs avec Quarkus via des `ExceptionMapper` et le modèle `Problem`.
+
 ### [Security](core-concept/security)
 Tutoriels de securite pour proteger les ressources sensibles de la taverne.
 #### [Basic Auth](core-concept/security/basic-auth)
