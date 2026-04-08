@@ -1,21 +1,43 @@
 {#main title=title}
+    {#if errors and !errors.isEmpty}
+    <div class="error-box">
+        <strong>Oups, il y a quelques problèmes :</strong>
+        <ul style="margin: 0.5rem 0 0 1.2rem;">
+            {#for e in errors.values}
+            <li>{e}</li>
+            {/for}
+        </ul>
+    </div>
+    {/if}
     <form action="/tavern-web/booking" method="POST">
         <label>Nom de l'aventurier / Voyageur :</label>
-        <input type="text" name="adventurerName" placeholder="Zaphod Beeblebrox" required>
+        <input type="text" name="adventurerName" placeholder="Zaphod Beeblebrox" value="{form.adventurerName}" required>
+        {#if errors.get('adventurerName')}
+        <div class="error-text">{errors.get('adventurerName')}</div>
+        {/if}
 
         <label>Date d'arrivée :</label>
-        <input type="date" name="arrivalDate" required>
+        <input type="date" name="arrivalDate" value="{form.arrivalDate}" required>
+        {#if errors.get('arrivalDate')}
+        <div class="error-text">{errors.get('arrivalDate')}</div>
+        {/if}
 
         <label>Nombre de nuits :</label>
-        <input type="number" name="nights" min="1" value="1" required>
+        <input type="number" name="nights" min="1" value="{form.nights}" required>
+        {#if errors.get('nights')}
+        <div class="error-text">{errors.get('nights')}</div>
+        {/if}
 
         <label>Type de suite :</label>
         <select name="roomType">
-            <option value="Suite Galactique">Suite Galactique (Lit double)</option>
-            <option value="Dortoir de l'Aventurier">Dortoir de l'Aventurier (Hamac)</option>
-            <option value="Le Placard de Marvin">Le Placard de Marvin (Idéal pour déprimer)</option>
-            <option value="Suite 42">La Suite 42 (Vue sur le vide)</option>
+            <option value="Suite Galactique" {#if form.roomType == 'Suite Galactique'}selected{/if}>Suite Galactique (Lit double)</option>
+            <option value="Dortoir de l'Aventurier" {#if form.roomType == "Dortoir de l'Aventurier"}selected{/if}>Dortoir de l'Aventurier (Hamac)</option>
+            <option value="Le Placard de Marvin" {#if form.roomType == 'Le Placard de Marvin'}selected{/if}>Le Placard de Marvin (Idéal pour déprimer)</option>
+            <option value="Suite 42" {#if form.roomType == 'Suite 42'}selected{/if}>La Suite 42 (Vue sur le vide)</option>
         </select>
+        {#if errors.get('roomType')}
+        <div class="error-text">{errors.get('roomType')}</div>
+        {/if}
 
         <button type="submit">Réserver ma chambre</button>
     </form>

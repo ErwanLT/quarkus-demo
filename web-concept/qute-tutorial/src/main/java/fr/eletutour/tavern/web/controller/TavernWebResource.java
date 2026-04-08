@@ -6,12 +6,17 @@ import fr.eletutour.tavern.web.model.Booking;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.reactive.RestForm;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Path("/tavern-web")
 public class TavernWebResource {
@@ -21,9 +26,15 @@ public class TavernWebResource {
         public static native TemplateInstance index(String title);
         public static native TemplateInstance drinks(String title, List<Drink> drinks);
         public static native TemplateInstance food(String title, List<Food> food);
-        public static native TemplateInstance booking(String title);
+        public static native TemplateInstance booking(String title, BookingForm form, Map<String, String> errors);
         public static native TemplateInstance bookingSuccess(String title, Booking booking);
         public static native TemplateInstance admin(String title, List<Booking> bookings);
+    }
+
+    private final Validator validator;
+
+    public TavernWebResource(Validator validator) {
+        this.validator = validator;
     }
 
     @GET
@@ -86,7 +97,9 @@ public class TavernWebResource {
     @Path("/booking")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance booking() {
-        return Templates.booking("Réserver une Chambre");
+        BookingForm form = new BookingForm();
+        form.roomType = "Suite Galactique";
+        return Templates.booking("Réserver une Chambre", form, Map.of());
     }
 
     @POST
@@ -99,12 +112,32 @@ public class TavernWebResource {
             @RestForm String arrivalDate,
             @RestForm int nights,
             @RestForm String roomType) {
-        
+
+        BookingForm form = new BookingForm();
+        form.adventurerName = adventurerName;
+        form.arrivalDate = arrivalDate;
+        form.nights = nights;
+        form.roomType = roomType;
+
+        Map<String, String> errors = validateForm(form);
+        LocalDate parsedDate = null;
+        if (errors.isEmpty()) {
+            try {
+                parsedDate = LocalDate.parse(form.arrivalDate);
+            } catch (DateTimeParseException ex) {
+                errors.put("arrivalDate", "La date est invalide (format attendu AAAA-MM-JJ).");
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            return Templates.booking("Réserver une Chambre", form, errors);
+        }
+
         Booking booking = new Booking();
-        booking.adventurerName = adventurerName;
-        booking.arrivalDate = LocalDate.parse(arrivalDate);
-        booking.nights = nights;
-        booking.roomType = roomType;
+        booking.adventurerName = form.adventurerName;
+        booking.arrivalDate = parsedDate;
+        booking.nights = form.nights;
+        booking.roomType = form.roomType;
         
         booking.persist(); // SAUVEGARDE EN BASE (Panache magic)
         
@@ -117,5 +150,16 @@ public class TavernWebResource {
     public TemplateInstance admin() {
         List<Booking> allBookings = Booking.listAll(); // RÉCUPÉRATION DE TOUTES LES RÉSERVATIONS
         return Templates.admin("Registre de l'Auberge", allBookings);
+    }
+
+    private Map<String, String> validateForm(BookingForm form) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        for (ConstraintViolation<BookingForm> violation : validator.validate(form)) {
+            String field = violation.getPropertyPath().toString();
+            if (!errors.containsKey(field)) {
+                errors.put(field, violation.getMessage());
+            }
+        }
+        return errors;
     }
 }

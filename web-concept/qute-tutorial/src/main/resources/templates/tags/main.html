@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=EB+Garamond:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root { --ink: #2c1810; --paper: #f4e4bc; }
-        body { margin: 0; padding: 0; font-family: 'EB Garamond', serif; background: #1a0f0a url('https://www.transparenttextures.com/patterns/wood-pattern.png'); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        body { margin: 0; padding: 0; font-family: 'EB Garamond', serif; background: radial-gradient(1200px 600px at 50% -200px, #6b533f 0%, #3f2b1f 55%, #2a1a12 100%); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
         nav { width: 100%; max-width: 800px; margin-top: 2rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
         nav a { font-family: 'MedievalSharp', cursive; color: #f4e4bc; text-decoration: none; font-size: 1.2rem; border-bottom: 2px solid transparent; padding: 5px 10px; transition: all 0.3s; }
         nav a:hover { color: #ffd700; border-bottom: 2px solid #ffd700; }
@@ -19,6 +19,8 @@
         input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #8b4513; background: rgba(255,255,255,0.5); font-family: 'EB Garamond', serif; font-size: 1.1rem; box-sizing: border-box; }
         button { background: #5d3a1a; color: white; cursor: pointer; font-family: 'MedievalSharp', cursive; border: none; font-size: 1.3rem; }
         button:hover { background: #8b4513; }
+        .error-box { background: rgba(255, 235, 235, 0.9); border: 1px solid #b22222; color: #5d0000; padding: 0.8rem 1rem; margin-bottom: 1.2rem; border-radius: 4px; }
+        .error-text { color: #b22222; font-size: 0.95rem; margin-top: -6px; margin-bottom: 8px; }
     </style>
 </head>
 <body>
