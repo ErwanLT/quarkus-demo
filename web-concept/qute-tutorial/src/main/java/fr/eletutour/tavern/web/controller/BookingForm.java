@@ -1,5 +1,6 @@
 package fr.eletutour.tavern.web.controller;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,7 @@ public class BookingForm {
 
     @RestForm
     @Min(value = 1, message = "Le nombre de nuits doit être au moins 1.")
+    @Max(value = 10, message = "La durée du sejour ne doit pas dépasser 10 nuits.")
     public int nights = 1;
 
     @RestForm
