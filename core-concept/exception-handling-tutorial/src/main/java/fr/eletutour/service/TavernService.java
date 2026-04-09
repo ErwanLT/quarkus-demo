@@ -1,8 +1,6 @@
 package fr.eletutour.service;
 
-import fr.eletutour.exception.business.TavernAlreadyExistsException;
-import fr.eletutour.exception.business.TavernCapacityReachedException;
-import fr.eletutour.exception.business.TavernNotFoundException;
+import fr.eletutour.exception.business.TavernException;
 import fr.eletutour.model.Tavern;
 import fr.eletutour.model.TavernCreateRequest;
 import fr.eletutour.repository.TavernRepository;
@@ -17,12 +15,12 @@ public class TavernService {
 
     public Tavern getTavern(String name) {
         return repository.findByName(name)
-                .orElseThrow(() -> new TavernNotFoundException(name));
+                .orElseThrow(() -> TavernException.notFound(name));
     }
 
     public void createTavern(TavernCreateRequest request) {
         if (repository.exists(request.name())) {
-            throw new TavernAlreadyExistsException(request.name());
+            throw TavernException.alreadyExists(request.name());
         }
         repository.save(new Tavern(request.name(), request.city(), request.maxCapacity()));
     }
@@ -30,7 +28,7 @@ public class TavernService {
     public void enterTavern(String name, int visitors) {
         Tavern tavern = getTavern(name);
         if (tavern.getCurrentCapacity() + visitors > tavern.getMaxCapacity()) {
-            throw new TavernCapacityReachedException(name, tavern.getCurrentCapacity(), tavern.getMaxCapacity());
+            throw TavernException.capacityReached(name, tavern.getCurrentCapacity(), tavern.getMaxCapacity());
         }
         tavern.enter(visitors);
     }

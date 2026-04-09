@@ -7,6 +7,8 @@ public class Problem {
     private String title;
     private int status;
     private String detail;
+    private String instance;
+    private String timestamp;
     private Map<String, Object> additional;
 
     private Problem() {}
@@ -28,6 +30,16 @@ public class Problem {
         return this;
     }
 
+    public Problem instance(String instance) {
+        this.instance = instance;
+        return this;
+    }
+
+    public Problem timestamp(String timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
     public Problem additional(Map<String, Object> additional) {
         this.additional = additional;
         return this;
@@ -37,5 +49,7 @@ public class Problem {
     public String getTitle() { return title; }
     public int getStatus() { return status; }
     public String getDetail() { return detail; }
+    public String getInstance() { return instance; }
+    public String getTimestamp() { return timestamp; }
     public Map<String, Object> getAdditional() { return additional; }
 }
