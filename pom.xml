@@ -13,6 +13,7 @@
         <module>core-concept</module>
         <module>web-concept</module>
         <module>core-concept/exception-handling-tutorial</module>
+        <module>operations</module>
     </modules>
 
     <properties>

@@ -16,6 +16,9 @@
 ## Web Concept (`web-concept`)
 - Qute (templates, layout, formulaires, Panache)
 
+## Operations (`operations`)
+- Observabilite (metrics, tracing, log correlation)
+
 # Sujets non encore traites (Roadmap)
 
 ## Core Concept
@@ -40,7 +43,6 @@
 - IA (RAG, tools)
 
 ## Operations
-- Observabilite (metrics, tracing)
 - Logs structures
 - Tests de charge
 - CI/CD
