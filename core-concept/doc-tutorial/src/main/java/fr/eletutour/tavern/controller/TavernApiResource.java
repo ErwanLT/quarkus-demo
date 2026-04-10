@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 @Path("/api/tavern")
@@ -37,7 +38,13 @@ public class TavernApiResource {
             description = "Message d'accueil",
             content = @Content(schema = @Schema(implementation = TavernGreetingResponse.class))
     )
-    public TavernGreetingResponse greeting(@QueryParam("name") String name) {
+    public TavernGreetingResponse greeting(
+            @Parameter(
+                    description = "Nom de l'aventurier à saluer",
+                    example = "Arthas"
+            )
+            @QueryParam("name") String name
+    ) {
         return tavernService.greeting(name);
     }
 
