@@ -22,14 +22,15 @@ public class AdvancedTavernService {
     @WithSpan("advanced-brew-drink")
     OrderResponse brewDrink(String drink) {
         Span.current().setAttribute("tavern.advanced.drink", drink);
-        simulateBrew();
+        simulateBrew(drink);
         LOG.infof("Order served drink=%s", drink);
         return new OrderResponse(drink, "SERVED", Instant.now());
     }
 
-    private void simulateBrew() {
+    private void simulateBrew(String drink) {
+        long brewDelayMs = "dragonfire".equalsIgnoreCase(drink) ? 1200L : 75L;
         try {
-            Thread.sleep(75L);
+            Thread.sleep(brewDelayMs);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
