@@ -14,6 +14,7 @@
 
     <modules>
         <module>observabilite-tutoriel</module>
+        <module>observabilite-advanced-tutorial</module>
     </modules>
 
 </project>
