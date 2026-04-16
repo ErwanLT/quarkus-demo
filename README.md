@@ -28,3 +28,10 @@ Exemple JWT pour proteger le livre de comptes et le coffre fort.
 ### [Qute Tutorial](web-concept/qute-tutorial)
 Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée de Quarkus à Thymeleaf, intégrant la gestion des chambres et du registre de la taverne **The Falling Whale**.
 
+## Operations (`operations`)
+
+### [Observabilite - socle](operations/observabilite-tutoriel)
+Tutoriel de base pour exposer metriques, health checks, tracing OpenTelemetry et correlation des logs.
+
+### [Observabilite - avancee](operations/observabilite-advanced-tutorial)
+Extension orientee exploitation avec Prometheus, Grafana, Alertmanager et scenario d'alerting de bout en bout.
