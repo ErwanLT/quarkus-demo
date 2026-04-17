@@ -15,6 +15,7 @@
 
 ## Web Concept (`web-concept`)
 - Qute (templates, layout, formulaires, Panache)
+- Rate limiting (Taverne DnD - `@RateLimit`)
 
 ## Operations (`operations`)
 - Observabilite (metrics, tracing, log correlation)
@@ -50,6 +51,5 @@
 
 ## Web Layer
 - Versioning d'API
-- Rate limiting
 - Internationalisation
 - Upload / Download de fichiers

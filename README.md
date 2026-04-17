@@ -28,6 +28,9 @@ Exemple JWT pour proteger le livre de comptes et le coffre fort.
 ### [Qute Tutorial](web-concept/qute-tutorial)
 Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée de Quarkus à Thymeleaf, intégrant la gestion des chambres et du registre de la taverne **The Falling Whale**.
 
+### [Rate Limiting (Taverne DnD)](web-concept/rate-limiting-tutorial)
+Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter l'abus de commandes à la taverne.
+
 ## Operations (`operations`)
 
 ### [Observabilite - socle](operations/observabilite-tutoriel)
