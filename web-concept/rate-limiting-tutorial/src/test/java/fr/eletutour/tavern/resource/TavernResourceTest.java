@@ -2,16 +2,21 @@ package fr.eletutour.tavern.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 
+/**
+ * Tests d'intégration pour les routes REST de la Taverne, validant 
+ * l'implémentation de la tolérance aux pannes (Fault Tolerance).
+ */
 @QuarkusTest
 class TavernResourceTest {
 
     @Test
+    @DisplayName("Devrait accepter les 3 premières commandes et rejeter la 4ème (Rate Limiting)")
     void testRateLimiting() {
-        // Les 3 premières commandes doivent passer (HTTP 200)
         for (int i = 0; i < 3; i++) {
             RestAssured.given()
                     .when().post("/taverne/commande")
@@ -20,7 +25,6 @@ class TavernResourceTest {
                     .body(equalTo("Tiens, une bonne pinte bien fraîche !"));
         }
 
-        // La 4ème commande doit être rejetée (HTTP 429) car on dépasse la limite de 3/10s
         RestAssured.given()
                 .when().post("/taverne/commande")
                 .then()
@@ -29,13 +33,13 @@ class TavernResourceTest {
     }
 
     @Test
+    @DisplayName("Devrait réussir à remonter la bouteille de la cave au bout de 3 tentatives (Retry)")
     void testRetry() {
-        // On réinitialise notre compteur
-        RestAssured.given().queryParam("reset", true).when().get("/taverne/cave").then().statusCode(200);
+        RestAssured.given()
+                .queryParam("reset", true)
+                .when().get("/taverne/cave")
+                .then().statusCode(200);
 
-        // Cette requête va échouer 2 fois côté serveur en levant une exception.
-        // Mais grâce à @Retry, Quarkus va automatiquement relancer la méthode, et la 3ème tentative passera.
-        // Côté client (RestAssured), on ne s'en rend même pas compte, hormis le temps de réponse un peu plus long !
         RestAssured.given()
                 .when().get("/taverne/cave")
                 .then()
@@ -44,9 +48,10 @@ class TavernResourceTest {
     }
 
     @Test
+    @DisplayName("Devrait servir le plat du jour nominalement quand tout va bien")
     void testFallbackSuccess() {
         RestAssured.given()
-                .queryParam("empty", false) // Il y a du plat du jour
+                .queryParam("empty", false)
                 .when().get("/taverne/plat-du-jour")
                 .then()
                 .statusCode(200)
@@ -54,12 +59,13 @@ class TavernResourceTest {
     }
 
     @Test
+    @DisplayName("Devrait servir une solution de secours suite à une rupture de stock (Fallback)")
     void testFallbackFailure() {
         RestAssured.given()
-                .queryParam("empty", true) // La marmite est vide, déclenchement du @Fallback
+                .queryParam("empty", true)
                 .when().get("/taverne/plat-du-jour")
                 .then()
-                .statusCode(200) // Le Fallback réussit à nous donner autre chose ! HTTP 200 et non 500.
+                .statusCode(200)
                 .body(equalTo("Désolé l'ami, la marmite est vide... Tiens, un morceau de pain dur et du fromage sec en lot de consolation."));
     }
 }
