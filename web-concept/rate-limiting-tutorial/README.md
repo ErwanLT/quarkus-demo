@@ -11,9 +11,10 @@ Si l'aventurier essaie de forcer un peu trop sur la commande, le tavernier le gr
 
 ## Comment tester ?
 
-1. Démarrer le serveur HTTP de la taverne :
+1. Démarrer le serveur HTTP de la taverne (assure-toi d'être dans le bon dossier) :
 ```bash
-./mvnw quarkus:dev
+cd web-concept/rate-limiting-tutorial
+../../mvnw quarkus:dev
 ```
 
 2. Exécuter des appels HTTP (par exemple avec `curl`) :
