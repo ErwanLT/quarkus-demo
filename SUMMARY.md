@@ -19,6 +19,7 @@
 
 ## Operations (`operations`)
 - Observabilite (metrics, tracing, log correlation)
+- Tests de charge (Gatling Java DSL)
 
 # Sujets non encore traites (Roadmap)
 
@@ -45,7 +46,6 @@
 
 ## Operations
 - Logs structures
-- Tests de charge
 - CI/CD
 - Docker / Kubernetes
 

@@ -38,3 +38,7 @@ Tutoriel de base pour exposer metriques, health checks, tracing OpenTelemetry et
 
 ### [Observabilite - avancee](operations/observabilite-advanced-tutorial)
 Extension orientee exploitation avec Prometheus, Grafana, Alertmanager et scenario d'alerting de bout en bout.
+
+### [Tests de Charge (Gatling)](operations/load-testing-tutorial)
+Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour stresser le tavernier et vérifier la résilience de l'application.
+

@@ -59,14 +59,13 @@ public class TavernResource {
      * Ce point de contact expose la résilience (Retry) côté service.
      * </p>
      *
-     * @param reset permet de réinitialiser le nombre de voyages à la cave (utile pour les tests)
      * @return une {@link Response} avec HTTP 200 contenant la bouteille remontée
      */
     @GET
     @Path("/cave")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response fetchFromCellar(@QueryParam("reset") boolean reset) {
-        return Response.ok(tavernService.fetchFromCellar(reset)).build();
+    public Response fetchFromCellar() {
+        return Response.ok(tavernService.fetchFromCellar()).build();
     }
 
     /**

@@ -45,24 +45,18 @@ public class TavernService {
      * intentionnellement lors des 2 premières tentatives pour démontrer le mécanisme de {@link Retry}.
      * </p>
      *
-     * @param reset si {@code true}, réinitialise le compteur de tentatives (bouchon pour les tests)
      * @return la bouteille de vin elfique après les éventuelles chutes
      * @throws RuntimeException durant les deux premières tentatives simulées (rattrapé par le Retry)
      */
     @Retry(maxRetries = 3, delay = 200)
-    public String fetchFromCellar(boolean reset) {
-        if (reset) {
-            cellarTrips.set(0);
-            return "Cave réinitialisée";
-        }
-
-        int attempt = cellarTrips.incrementAndGet();
-        if (attempt <= 2) {
-            LOG.warn("Oups ! Le tavernier a glissé sur une marche vers la cave ! (Tentative " + attempt + ")");
+    public String fetchFromCellar() {
+        // 60% de chance de trébucher à chaque tentative, indépendant des autres requêtes
+        if (Math.random() < 0.60) {
+            LOG.warn("Oups ! Le tavernier a glissé sur une marche vers la cave !");
             throw new RuntimeException("Tavernier tombé dans les escaliers");
         }
-        
-        LOG.info("Victoire ! La bouteille est remontée (Tentative " + attempt + ")");
+
+        LOG.info("Victoire ! La bouteille est remontée.");
         return "Voilà votre prestigieux Vin Elfique millésimé !";
     }
 
