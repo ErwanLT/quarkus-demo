@@ -15,6 +15,7 @@
     <modules>
         <module>observabilite-tutoriel</module>
         <module>observabilite-advanced-tutorial</module>
+        <module>load-testing-tutorial</module>
     </modules>
 
 </project>

@@ -10,3 +10,6 @@ Etend le socle avec une stack de supervision complete :
 - Prometheus pour le scraping et les regles d'alerte
 - Grafana pour les dashboards
 - Alertmanager pour la gestion des alertes
+
+## [Tests de charge](load-testing-tutorial)
+Tutoriel d'introduction aux tests de charge avec l'API Java de Gatling, avec le thème d'une Taverne Médiévale.
