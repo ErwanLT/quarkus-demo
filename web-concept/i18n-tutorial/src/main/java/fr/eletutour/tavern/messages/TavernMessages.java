@@ -71,7 +71,7 @@ public interface TavernMessages {
      *
      * @param nom le prénom ou titre de l'aventurier
      */
-    @Message("Bienvenue dans la Taverne du Dragon Boiteux, {nom} !")
+    @Message("Bienvenue dans la Taverne de la Baleine qui tombe, {nom} !")
     String bienvenue(String nom);
 
     /**

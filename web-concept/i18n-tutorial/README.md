@@ -18,11 +18,11 @@ Le tutoriel combine :
 
 ## Endpoints principaux
 
-- `POST /taverne/commande` : commande une bière (limite 3 appels / 10s).
-- `GET /taverne/cave` : tentative de descente à la cave avec retry.
-- `GET /taverne/plat-du-jour` : fallback si la marmite est vide.
-- `GET /taverne/accueil?nom=...` : message d'accueil localisé.
-- `GET /taverne/prix?article=...&montant=...` : prix localisé.
+- `POST /taverne/commandes` : commande une bière (limite 3 appels / 10s).
+- `GET /taverne/approvisionnements-cave` : tentative de descente à la cave avec retry.
+- `GET /taverne/plats-du-jour` : fallback si la marmite est vide.
+- `GET /taverne/salutations?nom=...` : message d'accueil localisé.
+- `GET /taverne/tarifs?article=...&montant=...` : prix localisé.
 - `GET /taverne/affluence?nombre=...` : pluriel localisé.
 
 ## Lancer et tester
@@ -37,9 +37,9 @@ cd web-concept/i18n-tutorial
 2. Tester la langue via `Accept-Language` :
 
 ```bash
-curl -H "Accept-Language: en-US" "http://localhost:8080/taverne/accueil?nom=Thorin"
-curl -H "Accept-Language: de-DE" "http://localhost:8080/taverne/commande" -X POST
-curl -H "Accept-Language: la-LA" "http://localhost:8080/taverne/prix?article=potio&montant=3.5"
+curl -H "Accept-Language: en-US" "http://localhost:8080/taverne/salutations?nom=Thorin"
+curl -H "Accept-Language: de-DE" "http://localhost:8080/taverne/commandes" -X POST
+curl -H "Accept-Language: la-LA" "http://localhost:8080/taverne/tarifs?article=potio&montant=3.5"
 curl -H "Accept-Language: fr-FR" "http://localhost:8080/taverne/affluence?nombre=0"
 ```
 

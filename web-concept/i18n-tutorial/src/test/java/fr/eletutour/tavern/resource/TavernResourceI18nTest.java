@@ -40,7 +40,7 @@ class TavernResourceI18nTest {
                 .queryParam("article", "potio")
                 .queryParam("montant", 3.5)
                 .when()
-                .get("/taverne/prix")
+                .get("/taverne/tarifs")
                 .then()
                 .statusCode(200)
                 .body(containsString("3,50 dn."));
@@ -51,7 +51,7 @@ class TavernResourceI18nTest {
         given()
                 .header("Accept-Language", "de-DE")
                 .when()
-                .post("/taverne/commande")
+                .post("/taverne/commandes")
                 .then()
                 .statusCode(200)
                 .body(containsString("ein schönes frisches Bier"));
