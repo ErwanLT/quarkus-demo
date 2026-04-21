@@ -2,6 +2,8 @@ package fr.eletutour.tavern.service;
 
 import fr.eletutour.tavern.locale.LocaleHelper;
 import fr.eletutour.tavern.messages.TavernMessages;
+import io.quarkus.qute.i18n.Localized;
+import io.quarkus.qute.i18n.MessageBundles;
 import io.smallrye.faulttolerance.api.RateLimit;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -28,9 +30,6 @@ public class TavernService {
     private static final Logger LOG = Logger.getLogger(TavernService.class);
 
     @Inject
-    TavernMessages messages;
-
-    @Inject
     LocaleHelper localeHelper;
 
     private final AtomicInteger cellarTrips = new AtomicInteger(0);
@@ -50,7 +49,7 @@ public class TavernService {
     public String orderBeer(HttpHeaders headers) {
         Locale locale = localeHelper.resolveLocale(headers);
         LOG.infof("Commande de bière — locale : %s", locale);
-        return messages.biereFraiche();
+        return resolveMessages(locale).biereFraiche();
     }
 
     // ---------------------------------------------------------------
@@ -71,16 +70,18 @@ public class TavernService {
      */
     @Retry(maxRetries = 3, delay = 200)
     public String fetchFromCellar(HttpHeaders headers) {
+        Locale locale = localeHelper.resolveLocale(headers);
+        TavernMessages localizedMessages = resolveMessages(locale);
         int attempt = cellarTrips.incrementAndGet();
 
         if (Math.random() < 0.60) {
-            String warning = messages.caveTrebuche(attempt);
+            String warning = localizedMessages.caveTrebuche(attempt);
             LOG.warn(warning);
             throw new RuntimeException("Tavernier tombé dans les escaliers");
         }
 
         LOG.infof("Cave réussie — tentative %d", attempt);
-        return messages.caveSucces();
+        return localizedMessages.caveSucces();
     }
 
     /**
@@ -93,7 +94,7 @@ public class TavernService {
         Locale locale = localeHelper.resolveLocale(headers);
         cellarTrips.set(0);
         LOG.infof("Reset cave demandé — locale : %s", locale);
-        return messages.caveReset();
+        return resolveMessages(locale).caveReset();
     }
 
     // ---------------------------------------------------------------
@@ -110,11 +111,12 @@ public class TavernService {
     @Fallback(fallbackMethod = "serveLeftovers")
     public String orderPlatDuJour(boolean empty, HttpHeaders headers) {
         Locale locale = localeHelper.resolveLocale(headers);
+        TavernMessages localizedMessages = resolveMessages(locale);
         LOG.infof("Commande plat du jour — locale : %s, marmite vide: %s", locale, empty);
         if (empty) {
             throw new RuntimeException("Plus aucun ragoût de sanglier !");
         }
-        return messages.platDuJour();
+        return localizedMessages.platDuJour();
     }
 
     /**
@@ -127,7 +129,7 @@ public class TavernService {
     public String serveLeftovers(boolean empty, HttpHeaders headers) {
         Locale locale = localeHelper.resolveLocale(headers);
         LOG.infof("Fallback cuisine activé — locale : %s", locale);
-        return messages.platFallback();
+        return resolveMessages(locale).platFallback();
     }
 
     // ---------------------------------------------------------------
@@ -144,7 +146,7 @@ public class TavernService {
     public String accueillir(String nom, HttpHeaders headers) {
         Locale locale = localeHelper.resolveLocale(headers);
         LOG.infof("Accueil aventurier — locale : %s, nom : %s", locale, nom);
-        return messages.bienvenue(nom);
+        return resolveMessages(locale).bienvenue(nom);
     }
 
     /**
@@ -159,7 +161,7 @@ public class TavernService {
         Locale locale = localeHelper.resolveLocale(headers);
         String prixFormate = localeHelper.formatMonnaieAvecLatin(montant, locale);
         LOG.infof("Annonce prix — locale : %s, article : %s, montant : %.2f", locale, article, montant);
-        return messages.prix(article, prixFormate);
+        return resolveMessages(locale).prix(article, prixFormate);
     }
 
     /**
@@ -173,6 +175,18 @@ public class TavernService {
         Locale locale = localeHelper.resolveLocale(headers);
         String libelle = localeHelper.plurielAventurier(nombre, locale);
         LOG.infof("Annonce affluence — locale : %s, nombre : %d", locale, nombre);
-        return messages.affluence(nombre, libelle);
+        return resolveMessages(locale).affluence(nombre, libelle);
+    }
+
+    private TavernMessages resolveMessages(Locale locale) {
+        try {
+            return MessageBundles.get(TavernMessages.class, Localized.Literal.of(locale.toLanguageTag()));
+        } catch (IllegalStateException e) {
+            try {
+                return MessageBundles.get(TavernMessages.class, Localized.Literal.of(locale.getLanguage()));
+            } catch (IllegalStateException ignored) {
+                return MessageBundles.get(TavernMessages.class);
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ import io.quarkus.qute.i18n.MessageBundle;
  * <p><b>i18n</b> : structure du code indépendante de toute langue.</p>
  * <p><b>l10n</b> : traductions concrètes dans les fichiers .properties.</p>
  */
-@MessageBundle
+@MessageBundle("TavernMessages")
 public interface TavernMessages {
 
     // ---------------------------------------------------------------

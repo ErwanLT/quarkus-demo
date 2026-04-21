@@ -45,4 +45,15 @@ class TavernResourceI18nTest {
                 .statusCode(200)
                 .body(containsString("3,50 dn."));
     }
+
+    @Test
+    void shouldReturnGermanMessageForBeerOrder() {
+        given()
+                .header("Accept-Language", "de-DE")
+                .when()
+                .post("/taverne/commande")
+                .then()
+                .statusCode(200)
+                .body(containsString("ein schönes frisches Bier"));
+    }
 }

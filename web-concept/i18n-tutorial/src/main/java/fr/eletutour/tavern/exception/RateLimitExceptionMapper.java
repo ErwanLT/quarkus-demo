@@ -2,6 +2,8 @@ package fr.eletutour.tavern.exception;
 
 import fr.eletutour.tavern.locale.LocaleHelper;
 import fr.eletutour.tavern.messages.TavernMessages;
+import io.quarkus.qute.i18n.Localized;
+import io.quarkus.qute.i18n.MessageBundles;
 import io.smallrye.faulttolerance.api.RateLimitException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Context;
@@ -28,9 +30,6 @@ public class RateLimitExceptionMapper implements ExceptionMapper<RateLimitExcept
     private static final Logger LOG = Logger.getLogger(RateLimitExceptionMapper.class);
 
     @Inject
-    TavernMessages messages;
-
-    @Inject
     LocaleHelper localeHelper;
 
     @Context
@@ -38,10 +37,24 @@ public class RateLimitExceptionMapper implements ExceptionMapper<RateLimitExcept
 
     @Override
     public Response toResponse(RateLimitException exception) {
-        LOG.warnf("Rate limit atteint pour la locale : %s", localeHelper.resolveLocale(headers));
+        var locale = localeHelper.resolveLocale(headers);
+        LOG.warnf("Rate limit atteint pour la locale : %s", locale);
+        TavernMessages localizedMessages = resolveMessages(locale);
         return Response
                 .status(429)
-                .entity(messages.biereRateLimit())
+                .entity(localizedMessages.biereRateLimit())
                 .build();
+    }
+
+    private TavernMessages resolveMessages(java.util.Locale locale) {
+        try {
+            return MessageBundles.get(TavernMessages.class, Localized.Literal.of(locale.toLanguageTag()));
+        } catch (IllegalStateException e) {
+            try {
+                return MessageBundles.get(TavernMessages.class, Localized.Literal.of(locale.getLanguage()));
+            } catch (IllegalStateException ignored) {
+                return MessageBundles.get(TavernMessages.class);
+            }
+        }
     }
 }
