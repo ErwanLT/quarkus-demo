@@ -31,6 +31,9 @@ Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée
 ### [Rate Limiting (Taverne DnD)](web-concept/rate-limiting-tutorial)
 Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter l'abus de commandes à la taverne.
 
+### [i18n & l10n (Taverne DnD)](web-concept/i18n-tutorial)
+Tutoriel sur l'internationalisation avec Qute MessageBundle et `Accept-Language`, incluant la localisation des messages, des montants et des pluriels.
+
 ## Operations (`operations`)
 
 ### [Observabilite - socle](operations/observabilite-tutoriel)
@@ -41,4 +44,3 @@ Extension orientee exploitation avec Prometheus, Grafana, Alertmanager et scenar
 
 ### [Tests de Charge (Gatling)](operations/load-testing-tutorial)
 Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour stresser le tavernier et vérifier la résilience de l'application.
-

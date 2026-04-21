@@ -12,3 +12,7 @@ Démonstration avec l'interface de la taverne **The Falling Whale** incluant :
 ## [Rate Limiting](rate-limiting-tutorial)
 Tutoriel sur la gestion du débit des requêtes avec SmallRye Fault Tolerance.
 Démonstration dans la Taverne avec la mécanique du `@RateLimit` pour éviter que les nains ne dévalisent les tonneaux trop vite.
+
+## [i18n Tutorial](i18n-tutorial)
+Tutoriel sur l'internationalisation et la localisation d'une API REST Quarkus.
+Démonstration dans la Taverne avec la résolution de langue via `Accept-Language`, des traductions multi-langues (fr, en, de, es, la), et des cas l10n (monnaie, pluriels).

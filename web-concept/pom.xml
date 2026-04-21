@@ -15,6 +15,7 @@
     <modules>
         <module>qute-tutorial</module>
         <module>rate-limiting-tutorial</module>
+        <module>i18n-tutorial</module>
     </modules>
 
 </project>
