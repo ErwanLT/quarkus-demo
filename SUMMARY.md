@@ -3,7 +3,7 @@
 ## Core Concept (`core-concept`)
 - Customisation banniere (Quarkus)
 - Documentation d'API REST (OpenAPI)
-- Gestion d'exceptions (Problem + ExceptionMapper)
+- Gestion centralisée des exceptions (RFC 9457 / ProblemDetail)
 - Securite
   - Basic Auth
     - Utilisateurs embarques (embedded)
@@ -25,7 +25,6 @@
 
 ## Core Concept
 - Validation
-- Gestion centralisee des exceptions (RFC 9457 / ProblemDetail)
 - Configuration et profils
 - Quarkus Native (GraalVM)
 
