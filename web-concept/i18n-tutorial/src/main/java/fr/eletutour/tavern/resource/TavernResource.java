@@ -1,5 +1,6 @@
 package fr.eletutour.tavern.resource;
 
+import fr.eletutour.tavern.locale.LocaleHelper;
 import fr.eletutour.tavern.service.TavernService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -18,9 +19,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 /**
  * Contrôleur REST de la taverne.
  * <p>
- * Chaque endpoint injecte les {@link HttpHeaders} via {@code @Context}
- * et les transmet au service pour résoudre la locale du client depuis
- * l'en-tête {@code Accept-Language}.
+ * Chaque endpoint injecte les {@link HttpHeaders} via {@code @Context},
+ * résout la locale du client via {@link LocaleHelper} puis délègue
+ * exclusivement le cas d'usage métier au service.
  * </p>
  *
  * <p>Exemple d'appel :</p>
@@ -35,10 +36,12 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public class TavernResource {
 
     private final TavernService tavernService;
+    private final LocaleHelper localeHelper;
 
     @Inject
-    public TavernResource(TavernService tavernService) {
+    public TavernResource(TavernService tavernService, LocaleHelper localeHelper) {
         this.tavernService = tavernService;
+        this.localeHelper = localeHelper;
     }
 
     // ---------------------------------------------------------------
@@ -70,7 +73,7 @@ public class TavernResource {
             )
     })
     public Response orderBeer(@Context HttpHeaders headers) {
-        return Response.ok(tavernService.orderBeer(headers)).build();
+        return Response.ok(tavernService.orderBeer(localeHelper.resolveLocale(headers))).build();
     }
 
     // ---------------------------------------------------------------
@@ -99,11 +102,12 @@ public class TavernResource {
             @Parameter(description = "Réinitialise le compteur des tentatives cave", example = "false")
             @QueryParam("reset") @DefaultValue("false") boolean reset,
             @Context HttpHeaders headers) {
+        var locale = localeHelper.resolveLocale(headers);
 
         if (reset) {
-            return Response.ok(tavernService.resetCellar(headers)).build();
+            return Response.ok(tavernService.resetCellar(locale)).build();
         }
-        return Response.ok(tavernService.fetchFromCellar(headers)).build();
+        return Response.ok(tavernService.fetchFromCellar(locale)).build();
     }
 
     // ---------------------------------------------------------------
@@ -133,7 +137,7 @@ public class TavernResource {
             @QueryParam("empty") @DefaultValue("false") boolean empty,
             @Context HttpHeaders headers) {
 
-        return Response.ok(tavernService.orderPlatDuJour(empty, headers)).build();
+        return Response.ok(tavernService.orderPlatDuJour(empty, localeHelper.resolveLocale(headers))).build();
     }
 
     // ---------------------------------------------------------------
@@ -162,7 +166,7 @@ public class TavernResource {
             @QueryParam("nom") @DefaultValue("aventurier") String nom,
             @Context HttpHeaders headers) {
 
-        return Response.ok(tavernService.accueillir(nom, headers)).build();
+        return Response.ok(tavernService.accueillir(nom, localeHelper.resolveLocale(headers))).build();
     }
 
     /**
@@ -191,7 +195,7 @@ public class TavernResource {
             @QueryParam("montant") @DefaultValue("3.50") double montant,
             @Context HttpHeaders headers) {
 
-        return Response.ok(tavernService.annoncerPrix(article, montant, headers)).build();
+        return Response.ok(tavernService.annoncerPrix(article, montant, localeHelper.resolveLocale(headers))).build();
     }
 
     /**
@@ -217,6 +221,6 @@ public class TavernResource {
             @QueryParam("nombre") @DefaultValue("1") int nombre,
             @Context HttpHeaders headers) {
 
-        return Response.ok(tavernService.annoncerAffluence(nombre, headers)).build();
+        return Response.ok(tavernService.annoncerAffluence(nombre, localeHelper.resolveLocale(headers))).build();
     }
 }

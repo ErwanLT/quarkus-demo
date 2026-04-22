@@ -7,7 +7,6 @@ import io.quarkus.qute.i18n.MessageBundles;
 import io.smallrye.faulttolerance.api.RateLimit;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.HttpHeaders;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.jboss.logging.Logger;
@@ -19,9 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Service métier de la taverne, avec i18n et l10n intégrés.
  * <p>
- * Chaque méthode accepte les {@link HttpHeaders} pour résoudre la locale
- * du client et retourner des messages dans sa langue. Les mécanismes de
- * résilience (Rate Limiting, Retry, Fallback) sont inchangés.
+ * Chaque méthode représente un cas d'usage métier explicite et accepte une
+ * {@link Locale} déjà résolue par la couche API. Les mécanismes de résilience
+ * (Rate Limiting, Retry, Fallback) sont inchangés.
  * </p>
  */
 @ApplicationScoped
@@ -42,12 +41,11 @@ public class TavernService {
      * Commande une bière, limitée à 3 appels toutes les 10 secondes.
      * Le message de confirmation est retourné dans la langue du client.
      *
-     * @param headers en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return la confirmation du tavernier, localisée
      */
     @RateLimit(value = 3, window = 10, windowUnit = ChronoUnit.SECONDS)
-    public String orderBeer(HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String orderBeer(Locale locale) {
         LOG.infof("Commande de bière — locale : %s", locale);
         return resolveMessages(locale).biereFraiche();
     }
@@ -65,12 +63,11 @@ public class TavernService {
      * avec 200ms de délai entre chaque tentative.
      * </p>
      *
-     * @param headers en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return le message de succès localisé après les éventuelles tentatives
      */
     @Retry(maxRetries = 3, delay = 200)
-    public String fetchFromCellar(HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String fetchFromCellar(Locale locale) {
         TavernMessages localizedMessages = resolveMessages(locale);
         int attempt = cellarTrips.incrementAndGet();
 
@@ -87,11 +84,10 @@ public class TavernService {
     /**
      * Réinitialise le compteur de tentatives de la cave.
      *
-     * @param headers en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return le message de confirmation localisé
      */
-    public String resetCellar(HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String resetCellar(Locale locale) {
         cellarTrips.set(0);
         LOG.infof("Reset cave demandé — locale : %s", locale);
         return resolveMessages(locale).caveReset();
@@ -105,12 +101,11 @@ public class TavernService {
      * Commande le plat du jour. Si la marmite est vide, déclenche le fallback.
      *
      * @param empty   {@code true} pour simuler une rupture de stock
-     * @param headers en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return le plat du jour ou le plat de secours, localisé
      */
     @Fallback(fallbackMethod = "serveLeftovers")
-    public String orderPlatDuJour(boolean empty, HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String orderPlatDuJour(boolean empty, Locale locale) {
         TavernMessages localizedMessages = resolveMessages(locale);
         LOG.infof("Commande plat du jour — locale : %s, marmite vide: %s", locale, empty);
         if (empty) {
@@ -123,11 +118,10 @@ public class TavernService {
      * Méthode de fallback — même signature que {@link #orderPlatDuJour}.
      *
      * @param empty   ignoré (paramètre requis par le contrat Fallback)
-     * @param headers en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return le plat de secours localisé
      */
-    public String serveLeftovers(boolean empty, HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String serveLeftovers(boolean empty, Locale locale) {
         LOG.infof("Fallback cuisine activé — locale : %s", locale);
         return resolveMessages(locale).platFallback();
     }
@@ -140,11 +134,10 @@ public class TavernService {
      * Accueille un aventurier par son nom, dans sa langue.
      *
      * @param nom     le nom ou titre de l'aventurier
-     * @param headers en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return le message d'accueil localisé
      */
-    public String accueillir(String nom, HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String accueillir(String nom, Locale locale) {
         LOG.infof("Accueil aventurier — locale : %s, nom : %s", locale, nom);
         return resolveMessages(locale).bienvenue(nom);
     }
@@ -154,11 +147,10 @@ public class TavernService {
      *
      * @param article  le nom de l'article
      * @param montant  le montant en valeur numérique
-     * @param headers  en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return la chaîne de prix formatée selon la locale du client
      */
-    public String annoncerPrix(String article, double montant, HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String annoncerPrix(String article, double montant, Locale locale) {
         String prixFormate = localeHelper.formatMonnaieAvecLatin(montant, locale);
         LOG.infof("Annonce prix — locale : %s, article : %s, montant : %.2f", locale, article, montant);
         return resolveMessages(locale).prix(article, prixFormate);
@@ -168,11 +160,10 @@ public class TavernService {
      * Annonce l'affluence courante avec accord du pluriel localisé (l10n pluriels).
      *
      * @param nombre  le nombre d'aventuriers présents
-     * @param headers en-têtes HTTP contenant {@code Accept-Language}
+     * @param locale locale métier résolue par la couche API
      * @return la phrase d'affluence localisée avec pluriel correct
      */
-    public String annoncerAffluence(int nombre, HttpHeaders headers) {
-        Locale locale = localeHelper.resolveLocale(headers);
+    public String annoncerAffluence(int nombre, Locale locale) {
         String libelle = localeHelper.plurielAventurier(nombre, locale);
         LOG.infof("Annonce affluence — locale : %s, nombre : %d", locale, nombre);
         return resolveMessages(locale).affluence(nombre, libelle);
