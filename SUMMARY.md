@@ -20,6 +20,7 @@
 ## Operations (`operations`)
 - Observabilite (metrics, tracing, log correlation)
 - Tests de charge (Gatling Java DSL)
+- Batch processing (brassage nocturne multi-bieres)
 
 # Sujets non encore traites (Roadmap)
 

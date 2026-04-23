@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="nightly-brew-job" xmlns="https://jakarta.ee/xml/ns/jakartaee" version="2.0">
+    <step id="brew-consumed-beers-step">
+        <batchlet ref="nightlyBrewBatchlet"/>
+    </step>
+</job>

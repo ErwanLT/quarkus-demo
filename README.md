@@ -44,3 +44,6 @@ Extension orientee exploitation avec Prometheus, Grafana, Alertmanager et scenar
 
 ### [Tests de Charge (Gatling)](operations/load-testing-tutorial)
 Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour stresser le tavernier et vérifier la résilience de l'application.
+
+### [Batch Processing (Brassage de nuit)](operations/batch-processing-tutorial)
+Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.
