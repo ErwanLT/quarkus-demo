@@ -10,11 +10,13 @@ import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import java.util.stream.Collectors;
+import org.jboss.logging.Logger;
 
 @Provider
 @Priority(Priorities.USER)
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 
+    private static final Logger LOG = Logger.getLogger(ConstraintViolationExceptionMapper.class);
     private static final String APPLICATION_PROBLEM_JSON = "application/problem+json";
 
     @Context
@@ -25,6 +27,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
         String detail = exception.getConstraintViolations().stream()
             .map(ConstraintViolation::getMessage)
             .collect(Collectors.joining("; "));
+        LOG.warnv("Constraint violation mapped to problem response: {0}", detail);
 
         ApiProblem problem = new ApiProblem(
             "https://tavern.eletutour.fr/problems/invalid-request",

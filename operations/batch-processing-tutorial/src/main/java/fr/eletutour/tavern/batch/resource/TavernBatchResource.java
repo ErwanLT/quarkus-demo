@@ -27,12 +27,14 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.jboss.logging.Logger;
 
 @Path("/tavern/brewery")
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(name = "Tavern Brewery", description = "Gestion du stock et lancement du batch nocturne de brassage")
 public class TavernBatchResource {
 
+    private static final Logger LOG = Logger.getLogger(TavernBatchResource.class);
     private static final String NIGHTLY_JOB_NAME = "nightly-brew-job";
 
     @Inject
@@ -50,7 +52,9 @@ public class TavernBatchResource {
         content = @Content(schema = @Schema(implementation = StockSnapshot.class))
     )
     public StockSnapshot stocks() {
-        return tavernBreweryService.currentStock();
+        StockSnapshot snapshot = tavernBreweryService.currentStock();
+        LOG.debugv("Stock snapshot requested: totalStock={0}, totalConsumedToday={1}", snapshot.totalStock(), snapshot.totalConsumedToday());
+        return snapshot;
     }
 
     @POST
@@ -73,6 +77,7 @@ public class TavernBatchResource {
         )
     })
     public DayReport registerDayConsumption(@Valid @NotNull DayConsumptionRequestDto request) {
+        LOG.infov("Day consumption endpoint called with beers={0}", request.orders().size());
         return tavernBreweryService.consumeDuringDay(request.orders());
     }
 
@@ -93,6 +98,7 @@ public class TavernBatchResource {
     })
     public Response runNightlyBatch() {
         long executionId = jobOperator.start(NIGHTLY_JOB_NAME, new Properties());
+        LOG.infov("Nightly batch started: jobName={0}, executionId={1}", NIGHTLY_JOB_NAME, executionId);
         JobExecution execution = waitForCompletion(executionId);
 
         int totalBrewed = tavernBreweryService.getLastBrewedByStyle().values().stream()
@@ -107,6 +113,7 @@ public class TavernBatchResource {
             tavernBreweryService.getLastBrewedByStyle()
         );
 
+        LOG.infov("Nightly batch finished: executionId={0}, status={1}, totalBrewed={2}", executionId, result.batchStatus(), result.totalBrewed());
         return Response.status(Response.Status.CREATED).entity(result).build();
     }
 
@@ -119,6 +126,7 @@ public class TavernBatchResource {
         content = @Content(schema = @Schema(implementation = StockSnapshot.class))
     )
     public StockSnapshot resetStocks() {
+        LOG.info("Stock reset requested");
         tavernBreweryService.resetSimulation();
         return tavernBreweryService.currentStock();
     }

@@ -9,10 +9,12 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class TavernBreweryService {
 
+    private static final Logger LOG = Logger.getLogger(TavernBreweryService.class);
     private static final int INITIAL_STOCK_PER_BEER = 120;
 
     private final EnumMap<BeerStyle, Integer> stockByStyle = new EnumMap<>(BeerStyle.class);
@@ -22,6 +24,7 @@ public class TavernBreweryService {
     @PostConstruct
     void init() {
         resetSimulation();
+        LOG.infov("Brewery service initialized with stockPerBeer={0}", INITIAL_STOCK_PER_BEER);
     }
 
     /**
@@ -56,13 +59,23 @@ public class TavernBreweryService {
             totalMissing += missing;
         }
 
-        return new DayReport(
+        DayReport report = new DayReport(
             totalRequested,
             totalServed,
             totalMissing,
             toOrderedMap(servedByStyle),
             toOrderedMap(missingByStyle)
         );
+
+        LOG.infov(
+            "Day consumption processed: requested={0}, served={1}, missing={2}",
+            totalRequested,
+            totalServed,
+            totalMissing
+        );
+        LOG.debugv("Day consumption details servedByBeer={0}, missingByBeer={1}", report.servedByBeer(), report.missingByBeer());
+
+        return report;
     }
 
     /**
@@ -86,6 +99,8 @@ public class TavernBreweryService {
         }
 
         lastBrewedByStyle = brewedByStyle;
+        LOG.infov("Nightly brew completed: totalBrewed={0}", totalBrewed);
+        LOG.debugv("Nightly brew details brewedByBeer={0}", toOrderedMap(lastBrewedByStyle));
         return totalBrewed;
     }
 
@@ -119,6 +134,7 @@ public class TavernBreweryService {
         for (BeerStyle style : BeerStyle.values()) {
             lastBrewedByStyle.put(style, 0);
         }
+        LOG.infov("Brewery simulation reset: beers={0}, stockPerBeer={1}", BeerStyle.values().length, INITIAL_STOCK_PER_BEER);
     }
 
     private EnumMap<BeerStyle, Integer> aggregateRequestedByStyle(Map<BeerStyle, Integer> requestedOrders) {
