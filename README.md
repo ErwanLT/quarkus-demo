@@ -31,6 +31,9 @@ Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée
 ### [Rate Limiting (Taverne DnD)](web-concept/rate-limiting-tutorial)
 Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter l'abus de commandes à la taverne.
 
+### [GraphQL Tutorial (Taverne DnD)](web-concept/graphql-tutorial)
+Tutoriel sur l'exposition de données via GraphQL, incluant la gestion du registre des aventuriers et des quêtes avec une architecture industrialisée.
+
 ### [i18n & l10n (Taverne DnD)](web-concept/i18n-tutorial)
 Tutoriel sur l'internationalisation avec Qute MessageBundle et `Accept-Language`, incluant la localisation des messages, des montants et des pluriels.
 
@@ -43,7 +46,7 @@ Tutoriel de base pour exposer metriques, health checks, tracing OpenTelemetry et
 Extension orientee exploitation avec Prometheus, Grafana, Alertmanager et scenario d'alerting de bout en bout.
 
 ### [Tests de Charge (Gatling)](operations/load-testing-tutorial)
-Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour stresser le tavernier et vérifier la résilience de l'application.
+Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour stresser le tavernier et vérifier la résilience de l'application. (Nécessite le profil `-Pload-testing`).
 
 ### [Batch Processing (Brassage de nuit)](operations/batch-processing-tutorial)
 Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.

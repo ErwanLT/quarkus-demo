@@ -17,7 +17,7 @@ Avant de lancer les tests de charge, vous devez démarrer l'application cible (l
 Pour exécuter la simulation de test de charge (100 aventuriers sur 15 secondes), lancez la commande suivante (une fois que la taverne est prête à accueillir des clients) :
 
 ```bash
-./mvnw clean gatling:test -pl operations/load-testing-tutorial
+./mvnw clean gatling:test -pl operations/load-testing-tutorial -Pload-testing
 ```
 
 Le rapport de test sera généré dans le dossier `target/gatling/`. Vous pourrez l'ouvrir avec un simple navigateur web pour visualiser les graphiques interactifs des performances du tavernier !
