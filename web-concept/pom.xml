@@ -16,6 +16,7 @@
         <module>qute-tutorial</module>
         <module>rate-limiting-tutorial</module>
         <module>i18n-tutorial</module>
+        <module>graphql-tutorial</module>
     </modules>
 
 </project>
