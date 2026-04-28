@@ -15,8 +15,16 @@
     <modules>
         <module>observabilite-tutoriel</module>
         <module>observabilite-advanced-tutorial</module>
-        <module>load-testing-tutorial</module>
         <module>batch-processing-tutorial</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>load-testing</id>
+            <modules>
+                <module>load-testing-tutorial</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
