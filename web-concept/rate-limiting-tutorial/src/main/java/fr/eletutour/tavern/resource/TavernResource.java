@@ -64,7 +64,10 @@ public class TavernResource {
     @GET
     @Path("/cave")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response fetchFromCellar() {
+    public Response fetchFromCellar(@QueryParam("reset") boolean reset) {
+        if (reset) {
+            tavernService.resetCellarTrips();
+        }
         return Response.ok(tavernService.fetchFromCellar()).build();
     }
 

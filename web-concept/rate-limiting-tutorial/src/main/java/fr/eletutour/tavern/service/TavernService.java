@@ -39,6 +39,13 @@ public class TavernService {
     }
 
     /**
+     * Réinitialise le compteur de trajets à la cave.
+     */
+    public void resetCellarTrips() {
+        cellarTrips.set(0);
+    }
+
+    /**
      * Demande au tavernier d'aller chercher une bouteille à la cave.
      * <p>
      * Le tavernier a tendance à trébucher dans les escaliers. Cette méthode échoue
@@ -50,8 +57,7 @@ public class TavernService {
      */
     @Retry(maxRetries = 3, delay = 200)
     public String fetchFromCellar() {
-        // 60% de chance de trébucher à chaque tentative, indépendant des autres requêtes
-        if (Math.random() < 0.60) {
+        if (cellarTrips.getAndIncrement() < 2) {
             LOG.warn("Oups ! Le tavernier a glissé sur une marche vers la cave !");
             throw new RuntimeException("Tavernier tombé dans les escaliers");
         }
