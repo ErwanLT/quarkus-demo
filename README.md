@@ -1,3 +1,4 @@
+[![Java CI with Maven](https://github.com/ErwanLT/quarkus-demo/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/ErwanLT/quarkus-demo/actions/workflows/maven.yml)
 [![Java](https://img.shields.io/badge/Java-25-blue.svg?logo=java)](https://www.java.com)
 [![Quarkus](https://img.shields.io/badge/Quarkus-3.34.1-blue.svg?logo=quarkus)](https://quarkus.io)
 
