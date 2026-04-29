@@ -1,0 +1,49 @@
+"Données publiques d'un aventurier"
+type AventurierResponse {
+    "Classe (ex: Guerrier, Mage)"
+    classe: String!
+    "Identifiant unique"
+    id: BigInteger!
+    "Niveau d'expérience"
+    niveau: Int!
+    "Nom de l'aventurier"
+    nom: String!
+    "Liste des quêtes en cours ou terminées"
+    quetes: [QueteResponse!]!
+}
+
+"Mutation root"
+type Mutation {
+    "Ajoute un nouvel aventurier dans la taverne."
+    ajouterAventurier(input: AventurierInput!): AventurierResponse!
+}
+
+"Query root"
+type Query {
+    "Recherche un aventurier par son identifiant unique."
+    aventurier(id: BigInteger!): AventurierResponse
+    "Liste tous les aventuriers présents dans la taverne."
+    aventuriers: [AventurierResponse!]!
+}
+
+"Détails d'une quête"
+type QueteResponse {
+    "Niveau de difficulté"
+    difficulte: String
+    "Identifiant de la quête"
+    id: BigInteger!
+    "Montant de la prime"
+    recompenseOr: Int
+    "Intitulé"
+    titre: String!
+}
+
+"Données pour la création d'un aventurier"
+input AventurierInput {
+    "Classe choisie"
+    classe: String!
+    "Niveau initial (doit être > 0)"
+    niveau: Int!
+    "Nom de l'aventurier"
+    nom: String!
+}

@@ -17,6 +17,7 @@
         <module>rate-limiting-tutorial</module>
         <module>i18n-tutorial</module>
         <module>graphql-tutorial</module>
+        <module>graphql-client-tutorial</module>
     </modules>
 
 </project>
