@@ -18,6 +18,7 @@
         <module>i18n-tutorial</module>
         <module>graphql-tutorial</module>
         <module>graphql-client-tutorial</module>
+        <module>graphql-client-advanced-tutorial</module>
     </modules>
 
 </project>
