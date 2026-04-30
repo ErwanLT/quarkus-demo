@@ -22,7 +22,7 @@ Les mots de passe sont en **bcrypt** (par defaut avec security-jpa).
 ## Comment l'executer
 
 ```bash
-mvn quarkus:dev
+./mvnw -pl core-concept/security/basic-auth/basic-auth-jpa-tutorial quarkus:dev
 ```
 
 ## Tests rapides

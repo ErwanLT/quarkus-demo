@@ -15,7 +15,7 @@ Ce module montre comment securiser la reserve de nourriture et de biere d'une ta
 ## Comment l'executer
 
 ```bash
-mvn quarkus:dev
+./mvnw -pl core-concept/security/basic-auth/basic-auth-jdbc-tutorial quarkus:dev
 ```
 
 ## Tests rapides

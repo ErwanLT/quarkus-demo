@@ -16,6 +16,11 @@
 ## Web Concept (`web-concept`)
 - Qute (templates, layout, formulaires, Panache)
 - Rate limiting (Taverne DnD - `@RateLimit`)
+- GraphQL
+  - Serveur (MicroProfile GraphQL)
+  - Client TypeSafe (SmallRye)
+  - Client Dynamique & Generateur
+- Internationalisation & Localisation (i18n/l10n)
 
 ## Operations (`operations`)
 - Observabilite (metrics, tracing, log correlation)
@@ -51,5 +56,4 @@
 
 ## Web Layer
 - Versioning d'API
-- Internationalisation
 - Upload / Download de fichiers

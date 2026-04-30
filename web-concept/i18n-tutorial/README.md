@@ -30,8 +30,7 @@ Le tutoriel combine :
 1. Démarrer le module :
 
 ```bash
-cd web-concept/i18n-tutorial
-../../mvnw quarkus:dev
+./mvnw -pl web-concept/i18n-tutorial quarkus:dev
 ```
 
 2. Tester la langue via `Accept-Language` :

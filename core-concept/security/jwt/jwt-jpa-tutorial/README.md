@@ -16,7 +16,7 @@ Ce module montre comment securiser le **livre de comptes** et le **coffre fort**
 ## Comment l'executer
 
 ```bash
-mvn quarkus:dev
+./mvnw -pl core-concept/security/jwt/jwt-jpa-tutorial quarkus:dev
 ```
 
 ## Tests rapides

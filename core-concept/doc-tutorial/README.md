@@ -22,7 +22,7 @@ quarkus.swagger-ui.always-include=true
 ## Comment l'executer
 
 ```bash
-mvn quarkus:dev
+./mvnw -pl core-concept/doc-tutorial quarkus:dev
 ```
 
 Exemples rapides :

@@ -32,7 +32,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRhdmVybi1rZXkifQ.eyJpc3MiOiJ0YXZlc
 ## Comment l'executer
 
 ```bash
-mvn quarkus:dev
+./mvnw -pl core-concept/security/jwt/jwt-tutorial quarkus:dev
 ```
 
 ## Tests rapides

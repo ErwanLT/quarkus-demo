@@ -1,6 +1,6 @@
 [![Java CI with Maven](https://github.com/ErwanLT/quarkus-demo/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/ErwanLT/quarkus-demo/actions/workflows/maven.yml)
-[![Java](https://img.shields.io/badge/Java-25-blue.svg?logo=java)](https://www.java.com)
-[![Quarkus](https://img.shields.io/badge/Quarkus-3.34.1-blue.svg?logo=quarkus)](https://quarkus.io)
+[![Java](https://img.shields.io/badge/Java-21-blue.svg?logo=java)](https://www.java.com)
+[![Quarkus](https://img.shields.io/badge/Quarkus-3.34.6-blue.svg?logo=quarkus)](https://quarkus.io)
 
 # Quarkus Demo
 
@@ -32,8 +32,14 @@ Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée
 ### [Rate Limiting (Taverne DnD)](web-concept/rate-limiting-tutorial)
 Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter l'abus de commandes à la taverne.
 
-### [GraphQL Tutorial (Taverne DnD)](web-concept/graphQL)
-Tutoriel sur l'exposition de données via GraphQL, incluant la gestion du registre des aventuriers et des quêtes avec une architecture industrialisée.
+### [GraphQL (Taverne DnD)](web-concept/graphQL)
+Tutoriel complet sur l'utilisation de GraphQL avec Quarkus.
+#### [GraphQL Serveur](web-concept/graphQL/graphql-tutorial)
+Exposition de données via MicroProfile GraphQL et gestion du registre des aventuriers.
+#### [GraphQL Client TypeSafe](web-concept/graphQL/graphql-client-tutorial)
+Consommation de l'API via SmallRye GraphQL TypeSafe Client.
+#### [GraphQL Client Advanced](web-concept/graphQL/graphql-client-advanced-tutorial)
+Utilisation du Dynamic Client et du Generator SmallRye.
 
 ### [i18n & l10n (Taverne DnD)](web-concept/i18n-tutorial)
 Tutoriel sur l'internationalisation avec Qute MessageBundle et `Accept-Language`, incluant la localisation des messages, des montants et des pluriels.
