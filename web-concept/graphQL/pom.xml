@@ -5,18 +5,23 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>fr.eletutour</groupId>
-        <artifactId>quarkus-demo</artifactId>
+        <artifactId>web-concept</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
 
-    <artifactId>web-concept</artifactId>
+    <artifactId>graphQL</artifactId>
+
+    <properties>
+        <maven.compiler.source>26</maven.compiler.source>
+        <maven.compiler.target>26</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <modules>
-        <module>qute-tutorial</module>
-        <module>rate-limiting-tutorial</module>
-        <module>i18n-tutorial</module>
-        <module>graphQL</module>
+        <module>graphql-tutorial</module>
+        <module>graphql-client-tutorial</module>
+        <module>graphql-client-advanced-tutorial</module>
     </modules>
 
 </project>
