@@ -32,7 +32,7 @@ Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée
 ### [Rate Limiting (Taverne DnD)](web-concept/rate-limiting-tutorial)
 Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter l'abus de commandes à la taverne.
 
-### [GraphQL Tutorial (Taverne DnD)](web-concept/graphql-tutorial)
+### [GraphQL Tutorial (Taverne DnD)](web-concept/graphQL)
 Tutoriel sur l'exposition de données via GraphQL, incluant la gestion du registre des aventuriers et des quêtes avec une architecture industrialisée.
 
 ### [i18n & l10n (Taverne DnD)](web-concept/i18n-tutorial)
