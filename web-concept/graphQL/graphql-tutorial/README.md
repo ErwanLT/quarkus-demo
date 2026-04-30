@@ -48,6 +48,6 @@ mutation {
 ## Lancer le module
 
 ```bash
-./mvnw quarkus:dev -pl web-concept/graphql-tutorial
+./mvnw quarkus:dev -pl graphql-tutorial
 ```
 L'interface **GraphQL UI** sera accessible sur `http://localhost:8080/q/graphql-ui`.

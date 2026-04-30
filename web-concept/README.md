@@ -13,7 +13,7 @@ Démonstration avec l'interface de la taverne **The Falling Whale** incluant :
 Tutoriel sur la gestion du débit des requêtes avec SmallRye Fault Tolerance.
 Démonstration dans la Taverne avec la mécanique du `@RateLimit` pour éviter que les nains ne dévalisent les tonneaux trop vite.
 
-## [GraphQL Tutorial](graphql-tutorial)
+## [GraphQL](graphQL)
 Tutoriel sur l'exposition de données via GraphQL (MicroProfile GraphQL).
 Démonstration avec le registre des aventuriers, incluant l'utilisation de DTOs (Records), de la couche Service et des contraintes de non-nullité.
 
