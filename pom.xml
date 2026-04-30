@@ -13,6 +13,7 @@
         <module>core-concept</module>
         <module>web-concept</module>
         <module>operations</module>
+        <module>database-access</module>
     </modules>
 
     <properties>

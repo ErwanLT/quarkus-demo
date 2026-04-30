@@ -27,6 +27,9 @@
 - Tests de charge (Gatling Java DSL)
 - Batch processing (brassage nocturne multi-bieres)
 
+## Database Access (`database-access`)
+- Hibernate Panache (Active Record vs Repository)
+
 # Sujets non encore traites (Roadmap)
 
 ## Core Concept
@@ -35,8 +38,6 @@
 - Quarkus Native (GraalVM)
 
 ## Database Access
-- Hibernate ORM avance
-- Panache
 - Flyway / Liquibase
 - Reactive SQL (R2DBC)
 - MongoDB

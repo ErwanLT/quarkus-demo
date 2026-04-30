@@ -57,3 +57,8 @@ Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour st
 
 ### [Batch Processing (Brassage de nuit)](operations/batch-processing-tutorial)
 Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.
+
+## Database Access (`database-access`)
+
+### [Hibernate Panache](database-access/panache-tutorial)
+Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les patterns Active Record et Repository via le Grimoire des Recettes de la Taverne.
