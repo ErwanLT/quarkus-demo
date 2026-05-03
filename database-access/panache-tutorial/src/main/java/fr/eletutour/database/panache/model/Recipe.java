@@ -5,12 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Entité Recipe utilisant le pattern Repository.
- * L'entité reste un POJO JPA classique (avec ou sans extensions PanacheEntityBase).
  */
 @Entity
 public class Recipe {
@@ -23,6 +24,11 @@ public class Recipe {
     public String description;
 
     @ManyToMany
+    @JoinTable(
+        name = "RECIPE_INGREDIENT",
+        joinColumns = @JoinColumn(name = "recipe_id"),
+        inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     public List<Ingredient> ingredients = new ArrayList<>();
 
     public Recipe() {
