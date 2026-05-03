@@ -4,6 +4,7 @@ import fr.eletutour.database.panache.dto.IngredientDTO;
 import fr.eletutour.database.panache.dto.RecipeDTO;
 import fr.eletutour.database.panache.model.Ingredient;
 import fr.eletutour.database.panache.model.Recipe;
+import fr.eletutour.database.panache.repository.IngredientRepository;
 import fr.eletutour.database.panache.repository.RecipeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -22,6 +23,9 @@ public class GrimoireService {
     @Inject
     RecipeRepository recipeRepository;
 
+    @Inject
+    IngredientRepository ingredientRepository;
+
     public List<IngredientDTO> consulterLaReserve() {
         return Ingredient.<Ingredient>listAll().stream()
                 .map(this::mapToIngredientDTO)
@@ -39,13 +43,13 @@ public class GrimoireService {
         validerIngredient(dto);
         
         Ingredient ingredient = new Ingredient(dto.name(), dto.unit(), dto.cost());
-        ingredient.persist();
+        ingredientRepository.persist(ingredient);
         
         return mapToIngredientDTO(ingredient);
     }
 
     public List<RecipeDTO> consulterLeGrimoire() {
-        return recipeRepository.listAll().stream()
+        return recipeRepository.listAllWithIngredients().stream()
                 .map(this::mapToRecipeDTO)
                 .collect(Collectors.toList());
     }
@@ -83,7 +87,7 @@ public class GrimoireService {
         }
     }
 
-    // --- Mappings (internes au service) ---
+    // --- Mappers (internes au service) ---
 
     private IngredientDTO mapToIngredientDTO(Ingredient ingredient) {
         return new IngredientDTO(ingredient.id, ingredient.name, ingredient.unit, ingredient.cost);

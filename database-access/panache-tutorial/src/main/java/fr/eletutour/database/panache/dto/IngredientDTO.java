@@ -4,12 +4,12 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @Schema(description = "Représentation d'un ingrédient magique")
 public record IngredientDTO(
-    @Schema(description = "Identifiant de l'ingrédient", example = "1")
+    @Schema(description = "Identifiant de l'ingrédient", examples = "1")
     Long id,
-    @Schema(description = "Nom de l'ingrédient", example = "Queue de Phénix")
+    @Schema(description = "Nom de l'ingrédient", examples = "Queue de Phénix")
     String name,
-    @Schema(description = "Unité de mesure", example = "unité")
+    @Schema(description = "Unité de mesure", examples = "unité")
     String unit,
-    @Schema(description = "Coût en pièces d'or", example = "150.0")
+    @Schema(description = "Coût en pièces d'or", examples = "150.0")
     double cost
 ) {}
