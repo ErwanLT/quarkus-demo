@@ -31,7 +31,7 @@ public class MainLayout extends AppLayout {
         Span eyebrow = new Span("Maison et exploitation");
         eyebrow.addClassName("brand-eyebrow");
 
-        H2 title = new H2("La Taverne du Griffon");
+        H2 title = new H2("The Falling Whale");
         title.addClassName("brand-title");
 
         Paragraph subtitle = new Paragraph("Gestion et pilotage d'établissement");
