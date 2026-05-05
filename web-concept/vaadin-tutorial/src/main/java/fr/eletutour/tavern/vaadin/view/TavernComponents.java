@@ -64,6 +64,7 @@ final class TavernComponents {
         heading.addClassName("section-title");
 
         Div section = new Div();
+        section.setWidthFull();
         section.addClassName("section-block");
         section.getStyle()
                 .set("display", "flex")

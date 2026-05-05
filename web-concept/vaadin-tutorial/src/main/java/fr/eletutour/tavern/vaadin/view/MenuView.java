@@ -4,6 +4,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -29,18 +30,18 @@ public class MenuView extends VerticalLayout {
         add(TavernComponents.createSection("L'ardoise du jour", createMenuGrid(menuBoard)));
     }
 
-    private Div createMenuGrid(MenuBoard menuBoard) {
-        Div grid = new Div();
-        grid.getStyle()
-                .set("display", "grid")
-                .set("grid-template-columns", "repeat(auto-fit, minmax(350px, 1fr))")
-                .set("gap", "1.5rem")
-                .set("width", "100%");
+    private HorizontalLayout createMenuGrid(MenuBoard menuBoard) {
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.setWidthFull();
+        layout.setSpacing(true);
+        layout.setPadding(false);
 
         for (MenuSection section : menuBoard.sections()) {
-            grid.add(createMenuCard(section));
+            Div card = createMenuCard(section);
+            layout.add(card);
+            layout.setFlexGrow(1, card);
         }
-        return grid;
+        return layout;
     }
 
     private Div createMenuCard(MenuSection section) {
@@ -58,6 +59,7 @@ public class MenuView extends VerticalLayout {
         section.entries().stream().map(this::createMenuEntry).forEach(entries::add);
 
         Div card = new Div(title, description, entries);
+        card.setWidthFull();
         card.getStyle()
                 .set("padding", "1.25rem")
                 .set("background", "white")
@@ -75,12 +77,14 @@ public class MenuView extends VerticalLayout {
         price.getStyle().set("color", "#007bff").set("font-weight", "700");
 
         Div topLine = new Div(name, price);
+        topLine.setWidthFull();
         topLine.getStyle().set("display", "flex").set("justify-content", "space-between").set("align-items", "baseline");
 
         Paragraph note = new Paragraph(entry.note());
         note.getStyle().set("margin", "0").set("color", "#6c757d").set("font-size", "0.85rem").set("font-style", "italic");
 
         Div row = new Div(topLine, note);
+        row.setWidthFull();
         row.getStyle()
                 .set("padding-bottom", "0.5rem")
                 .set("border-bottom", "1px solid #f8f9fa");
