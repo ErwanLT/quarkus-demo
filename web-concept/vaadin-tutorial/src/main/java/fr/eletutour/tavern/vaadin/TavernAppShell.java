@@ -1,6 +1,7 @@
 package fr.eletutour.tavern.vaadin;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 
 /**
@@ -8,6 +9,7 @@ import com.vaadin.flow.theme.Theme;
  * the Vaadin application. The @Theme annotation points to the custom theme
  * folder in src/main/frontend/themes/falling-whale.
  */
+@PWA(name = "The Falling Whale", shortName = "Whale")
 @Theme("falling-whale")
 public class TavernAppShell implements AppShellConfigurator {
 }
