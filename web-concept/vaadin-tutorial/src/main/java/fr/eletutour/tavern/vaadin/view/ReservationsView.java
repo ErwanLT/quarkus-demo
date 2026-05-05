@@ -10,6 +10,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -73,7 +74,8 @@ public class ReservationsView extends VerticalLayout {
     protected void onAttach(AttachEvent attachEvent) {
         listener = event -> attachEvent.getUI().access(() -> {
             grid.setItems(tavernService.getReservationBoard().reservations());
-            Notification.show("Mise à jour : Nouvelle réservation de " + event.entry().guestName());
+            Notification notification = Notification.show("Mise à jour : Nouvelle réservation de " + event.entry().guestName());
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         });
         broadcaster.register(listener);
     }
