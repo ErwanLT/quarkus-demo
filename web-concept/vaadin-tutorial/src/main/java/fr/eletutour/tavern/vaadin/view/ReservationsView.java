@@ -1,5 +1,7 @@
 package fr.eletutour.tavern.vaadin.view;
 
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -17,20 +19,30 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.quarkus.annotation.UIScoped;
 import fr.eletutour.tavern.vaadin.model.ReservationBoard;
 import fr.eletutour.tavern.vaadin.model.ReservationEntry;
+import fr.eletutour.tavern.vaadin.service.ReservationAddedEvent;
+import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
 
+@UIScoped
 @PageTitle("Reservations")
 @Route(value = "reservations", layout = MainLayout.class)
 public class ReservationsView extends VerticalLayout {
 
     private final Grid<ReservationEntry> grid = new Grid<>(ReservationEntry.class, false);
+    private final TavernService tavernService;
+    private final TavernBroadcaster broadcaster;
+    private Consumer<ReservationAddedEvent> listener;
 
-    public ReservationsView(TavernService tavernService) {
+    public ReservationsView(TavernService tavernService, TavernBroadcaster broadcaster) {
+        this.tavernService = tavernService;
+        this.broadcaster = broadcaster;
         ReservationBoard reservationBoard = tavernService.getReservationBoard();
 
         addClassName("view-shell");
@@ -55,6 +67,23 @@ public class ReservationsView extends VerticalLayout {
         
         add(TavernComponents.createSection("Notes de maitre d'hotel",
                 TavernComponents.createListPanel("Consignes de placement", reservationBoard.hostNotes())));
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        listener = event -> attachEvent.getUI().access(() -> {
+            grid.setItems(tavernService.getReservationBoard().reservations());
+            Notification.show("Mise à jour : Nouvelle réservation de " + event.entry().guestName());
+        });
+        broadcaster.register(listener);
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        if (listener != null) {
+            broadcaster.unregister(listener);
+            listener = null;
+        }
     }
 
     private void openReservationForm(TavernService tavernService) {
@@ -102,8 +131,6 @@ public class ReservationsView extends VerticalLayout {
                     note.getValue()
             );
             tavernService.addReservation(entry);
-            grid.setItems(tavernService.getReservationBoard().reservations());
-            Notification.show("Réservation enregistrée !");
             dialog.close();
         });
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

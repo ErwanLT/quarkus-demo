@@ -8,14 +8,18 @@ import fr.eletutour.tavern.vaadin.model.ReservationEntry;
 import fr.eletutour.tavern.vaadin.model.ServiceBoard;
 import fr.eletutour.tavern.vaadin.repository.InMemoryTavernRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class TavernService {
 
     private final InMemoryTavernRepository repository;
+    private final TavernBroadcaster broadcaster;
 
-    public TavernService(InMemoryTavernRepository repository) {
+    @Inject
+    public TavernService(InMemoryTavernRepository repository, TavernBroadcaster broadcaster) {
         this.repository = repository;
+        this.broadcaster = broadcaster;
     }
 
     public DashboardSnapshot getDashboard() {
@@ -40,5 +44,6 @@ public class TavernService {
 
     public void addReservation(ReservationEntry entry) {
         repository.addReservation(entry);
+        broadcaster.broadcast(new ReservationAddedEvent(entry));
     }
 }
