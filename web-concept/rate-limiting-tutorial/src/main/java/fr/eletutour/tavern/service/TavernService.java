@@ -1,9 +1,9 @@
 package fr.eletutour.tavern.service;
 
 import io.smallrye.faulttolerance.api.RateLimit;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Retry;
-import jakarta.enterprise.context.ApplicationScoped;
 import org.jboss.logging.Logger;
 
 import java.time.temporal.ChronoUnit;

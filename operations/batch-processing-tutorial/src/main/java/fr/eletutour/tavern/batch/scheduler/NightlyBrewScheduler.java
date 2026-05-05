@@ -1,11 +1,12 @@
 package fr.eletutour.tavern.batch.scheduler;
 
+import io.quarkus.scheduler.Scheduled;
 import jakarta.batch.operations.JobOperator;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import java.util.Properties;
 import org.jboss.logging.Logger;
-import io.quarkus.scheduler.Scheduled;
+
+import java.util.Properties;
 
 @ApplicationScoped
 public class NightlyBrewScheduler {

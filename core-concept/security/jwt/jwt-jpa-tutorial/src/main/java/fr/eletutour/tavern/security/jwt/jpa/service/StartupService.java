@@ -2,10 +2,10 @@ package fr.eletutour.tavern.security.jwt.jpa.service;
 
 import fr.eletutour.tavern.security.jwt.jpa.model.TavernUser;
 import io.quarkus.elytron.security.common.BcryptUtil;
-import jakarta.enterprise.context.ApplicationScoped;
 import io.quarkus.runtime.StartupEvent;
-import jakarta.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class StartupService {

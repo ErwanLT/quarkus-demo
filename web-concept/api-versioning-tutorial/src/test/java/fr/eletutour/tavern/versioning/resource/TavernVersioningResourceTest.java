@@ -5,13 +5,9 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static fr.eletutour.tavern.versioning.resource.TavernVersioningResource.API_VERSION_HEADER;
-import static fr.eletutour.tavern.versioning.resource.TavernVersioningResource.MENU_V1_MEDIA_TYPE;
-import static fr.eletutour.tavern.versioning.resource.TavernVersioningResource.MENU_V2_MEDIA_TYPE;
+import static fr.eletutour.tavern.versioning.resource.TavernVersioningResource.*;
 import static fr.eletutour.tavern.versioning.resource.UnknownMenuVersionExceptionMapper.PROBLEM_JSON;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 class TavernVersioningResourceTest {

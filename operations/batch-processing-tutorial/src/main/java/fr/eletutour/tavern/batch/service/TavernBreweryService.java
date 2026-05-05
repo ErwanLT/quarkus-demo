@@ -5,11 +5,12 @@ import fr.eletutour.tavern.batch.model.DayReport;
 import fr.eletutour.tavern.batch.model.StockSnapshot;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.jboss.logging.Logger;
+
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class TavernBreweryService {

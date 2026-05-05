@@ -1,12 +1,13 @@
 package fr.eletutour.observability.service;
 
+import fr.eletutour.observability.metrics.BusinessTimed;
 import fr.eletutour.observability.model.OrderResponse;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.time.Instant;
 import org.jboss.logging.Logger;
-import fr.eletutour.observability.metrics.BusinessTimed;
+
+import java.time.Instant;
 
 @ApplicationScoped
 public class TavernService {

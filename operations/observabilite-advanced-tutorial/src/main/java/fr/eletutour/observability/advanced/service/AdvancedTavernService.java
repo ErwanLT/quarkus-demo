@@ -5,8 +5,9 @@ import fr.eletutour.observability.advanced.model.OrderResponse;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.time.Instant;
 import org.jboss.logging.Logger;
+
+import java.time.Instant;
 
 @ApplicationScoped
 public class AdvancedTavernService {

@@ -9,8 +9,9 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import java.util.stream.Collectors;
 import org.jboss.logging.Logger;
+
+import java.util.stream.Collectors;
 
 @Provider
 @Priority(Priorities.USER)

@@ -1,8 +1,8 @@
 package fr.eletutour.tavern.versioning.service;
 
+import fr.eletutour.tavern.versioning.dto.MenuResponse;
 import fr.eletutour.tavern.versioning.dto.MenuV1Response;
 import fr.eletutour.tavern.versioning.dto.MenuV2Response;
-import fr.eletutour.tavern.versioning.dto.MenuResponse;
 import fr.eletutour.tavern.versioning.dto.PriceResponse;
 import fr.eletutour.tavern.versioning.model.MenuVersion;
 import jakarta.enterprise.context.ApplicationScoped;

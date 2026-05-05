@@ -4,8 +4,9 @@ import fr.eletutour.tavern.batch.model.BeerStyle;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import java.util.Map;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+import java.util.Map;
 
 @Schema(name = "DayConsumptionRequest", description = "Demandes de bieres de la journee, par type de biere.")
 public record DayConsumptionRequestDto(

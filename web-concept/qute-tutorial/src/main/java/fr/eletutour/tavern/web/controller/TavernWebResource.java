@@ -1,8 +1,8 @@
 package fr.eletutour.tavern.web.controller;
 
+import fr.eletutour.tavern.web.model.Booking;
 import fr.eletutour.tavern.web.model.Drink;
 import fr.eletutour.tavern.web.model.Food;
-import fr.eletutour.tavern.web.model.Booking;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.transaction.Transactional;
