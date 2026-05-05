@@ -21,11 +21,15 @@ public class ReservationsView extends VerticalLayout {
         setSizeFull();
         setPadding(false);
         setSpacing(false);
+        getStyle().set("background", "transparent");
 
         add(TavernComponents.createPageLayout("Reservations",
-                "Le livre de salle reste net avant le coup de feu",
+                "Le livre de salle",
                 reservationBoard.summary()));
-        add(TavernComponents.createSection("Tableau de reservations", createReservationGrid(reservationBoard)));
+        
+        Div gridContainer = createReservationGrid(reservationBoard);
+        add(TavernComponents.createSection("Tableau de reservations", gridContainer));
+        
         add(TavernComponents.createSection("Notes de maitre d'hotel",
                 TavernComponents.createListPanel("Consignes de placement", reservationBoard.hostNotes())));
     }
@@ -33,18 +37,21 @@ public class ReservationsView extends VerticalLayout {
     private Div createReservationGrid(ReservationBoard reservationBoard) {
         Grid<ReservationEntry> grid = new Grid<>(ReservationEntry.class, false);
         grid.addColumn(ReservationEntry::guestName).setHeader("Compagnie").setAutoWidth(true).setFlexGrow(1);
-        grid.addColumn(ReservationEntry::guestCount).setHeader("Convives").setAutoWidth(true);
-        grid.addColumn(ReservationEntry::arrivalTime).setHeader("Arrivee").setAutoWidth(true);
+        grid.addColumn(ReservationEntry::guestCount).setHeader("Convives").setTextAlign(com.vaadin.flow.component.grid.ColumnTextAlign.CENTER).setAutoWidth(true);
+        grid.addColumn(ReservationEntry::arrivalTime).setHeader("Arrivée").setAutoWidth(true);
         grid.addColumn(ReservationEntry::area).setHeader("Zone").setAutoWidth(true);
         grid.addColumn(ReservationEntry::status).setHeader("Statut").setAutoWidth(true);
-        grid.addColumn(ReservationEntry::note).setHeader("Note").setFlexGrow(1);
-        grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES, GridVariant.LUMO_NO_BORDER);
-        grid.addClassName("tavern-grid");
+        grid.addColumn(ReservationEntry::note).setHeader("Note").setFlexGrow(2);
+        
+        grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES, GridVariant.LUMO_COLUMN_BORDERS);
         grid.setItems(reservationBoard.reservations());
         grid.setWidthFull();
+        grid.setAllRowsVisible(true);
+        grid.getStyle().set("border-radius", "8px").set("border", "1px solid #dee2e6");
 
         Div wrapper = new Div(grid);
-        wrapper.addClassName("grid-frame");
+        wrapper.setWidthFull();
+        wrapper.getStyle().set("padding", "0");
         return wrapper;
     }
 }

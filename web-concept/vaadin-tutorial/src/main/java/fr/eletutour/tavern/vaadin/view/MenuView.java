@@ -23,14 +23,19 @@ public class MenuView extends VerticalLayout {
         setSizeFull();
         setPadding(false);
         setSpacing(false);
+        getStyle().set("background", "transparent");
 
-        add(TavernComponents.createPageLayout("Carte et ardoise", menuBoard.title(), menuBoard.chefNote()));
-        add(createMenuGrid(menuBoard));
+        add(TavernComponents.createPageLayout("Carte & Menu", menuBoard.title(), menuBoard.chefNote()));
+        add(TavernComponents.createSection("L'ardoise du jour", createMenuGrid(menuBoard)));
     }
 
     private Div createMenuGrid(MenuBoard menuBoard) {
         Div grid = new Div();
-        grid.addClassName("menu-grid");
+        grid.getStyle()
+                .set("display", "grid")
+                .set("grid-template-columns", "repeat(auto-fit, minmax(350px, 1fr))")
+                .set("gap", "1.5rem")
+                .set("width", "100%");
 
         for (MenuSection section : menuBoard.sections()) {
             grid.add(createMenuCard(section));
@@ -40,38 +45,45 @@ public class MenuView extends VerticalLayout {
 
     private Div createMenuCard(MenuSection section) {
         H3 title = new H3(section.title());
-        title.addClassName("panel-title");
+        title.getStyle().set("margin", "0").set("color", "#007bff").set("font-size", "1.2rem");
 
         Paragraph description = new Paragraph(section.description());
-        description.addClassName("panel-copy");
+        description.getStyle().set("margin", "0.25rem 0 1rem").set("color", "#6c757d").set("font-size", "0.9rem");
 
         VerticalLayout entries = new VerticalLayout();
         entries.setPadding(false);
         entries.setSpacing(false);
-        entries.addClassName("menu-entries");
+        entries.getStyle().set("gap", "0.75rem");
 
         section.entries().stream().map(this::createMenuEntry).forEach(entries::add);
 
         Div card = new Div(title, description, entries);
-        card.addClassName("menu-card");
+        card.getStyle()
+                .set("padding", "1.25rem")
+                .set("background", "white")
+                .set("border", "1px solid #dee2e6")
+                .set("border-radius", "8px")
+                .set("box-shadow", "0 1px 3px rgba(0,0,0,0.05)");
         return card;
     }
 
     private Div createMenuEntry(MenuEntry entry) {
         Span name = new Span(entry.name());
-        name.addClassName("menu-entry-name");
+        name.getStyle().set("font-weight", "600").set("color", "#212529");
 
         Span price = new Span(entry.price());
-        price.addClassName("menu-entry-price");
+        price.getStyle().set("color", "#007bff").set("font-weight", "700");
 
         Div topLine = new Div(name, price);
-        topLine.addClassName("menu-entry-header");
+        topLine.getStyle().set("display", "flex").set("justify-content", "space-between").set("align-items", "baseline");
 
         Paragraph note = new Paragraph(entry.note());
-        note.addClassName("menu-entry-note");
+        note.getStyle().set("margin", "0").set("color", "#6c757d").set("font-size", "0.85rem").set("font-style", "italic");
 
         Div row = new Div(topLine, note);
-        row.addClassName("menu-entry");
+        row.getStyle()
+                .set("padding-bottom", "0.5rem")
+                .set("border-bottom", "1px solid #f8f9fa");
         return row;
     }
 }

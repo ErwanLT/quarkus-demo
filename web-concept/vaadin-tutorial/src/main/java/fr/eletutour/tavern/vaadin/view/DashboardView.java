@@ -23,44 +23,68 @@ public class DashboardView extends VerticalLayout {
         setSizeFull();
         setPadding(false);
         setSpacing(false);
+        getStyle().set("background", "transparent");
 
-        add(TavernComponents.createPageLayout("Salle commune", snapshot.heroTitle(), snapshot.heroDescription()));
-        add(createActions());
-        add(TavernComponents.createSection("Les chiffres qui tiennent le comptoir",
-                TavernComponents.createMetricGrid(snapshot.metrics())));
-        add(createDashboardGrid(snapshot));
+        var hero = TavernComponents.createPageLayout("Tableau de bord", snapshot.heroTitle(), snapshot.heroDescription());
+        hero.setWidthFull();
+        add(hero);
+        
+        HorizontalLayout actions = createActions();
+        actions.setWidthFull();
+        actions.getStyle().set("padding", "0 1.5rem").set("margin-bottom", "1rem");
+        add(actions);
+
+        // Metrics Section - Full width guaranteed
+        var metricsSection = TavernComponents.createSection("Indicateurs de performance", TavernComponents.createMetricGrid(snapshot.metrics()));
+        metricsSection.setWidthFull();
+        add(metricsSection);
+        
+        var mainGridSection = TavernComponents.createSection("Analyse de l'activité", createDashboardGrid(snapshot));
+        mainGridSection.setWidthFull();
+        add(mainGridSection);
     }
 
     private HorizontalLayout createActions() {
         Button serviceCall = new Button("Lancer l'appel du service", VaadinIcon.MEGAPHONE.create(),
-                event -> Notification.show("Le personnel de salle est prevenu pour le coup de feu."));
+                event -> Notification.show("Le personnel de salle est prévenu."));
         serviceCall.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        Button cellarCheck = new Button("Passer la cave en revue", VaadinIcon.BAR_CHART.create(),
-                event -> Notification.show("La cave remonte les references sous tension."));
+        Button cellarCheck = new Button("État de la cave", VaadinIcon.BAR_CHART.create(),
+                event -> Notification.show("Chargement des références sous tension..."));
         cellarCheck.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         HorizontalLayout actions = new HorizontalLayout(serviceCall, cellarCheck);
-        actions.addClassName("page-actions");
         actions.setPadding(false);
         actions.setSpacing(true);
+        actions.setWidthFull();
         return actions;
     }
 
-    private Div createDashboardGrid(DashboardSnapshot snapshot) {
-        Div grid = new Div();
-        grid.addClassName("dashboard-grid");
+    private VerticalLayout createDashboardGrid(DashboardSnapshot snapshot) {
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setWidthFull();
+        mainLayout.setPadding(false);
+        mainLayout.setSpacing(true);
+
+        // Story and Priorities on one row
+        HorizontalLayout topRow = new HorizontalLayout();
+        topRow.setWidthFull();
+        topRow.setSpacing(true);
 
         Div story = TavernComponents.createPanel(snapshot.roomHeadline(), snapshot.roomStory());
-        story.addClassName("span-8");
+        story.setWidthFull();
+        Div priorities = TavernComponents.createListPanel("Priorités immédiates", snapshot.priorities());
+        priorities.setWidthFull();
 
-        Div priorities = TavernComponents.createListPanel("Priorites immediates", snapshot.priorities());
-        priorities.addClassName("span-4");
+        topRow.add(story, priorities);
+        topRow.setFlexGrow(1, story);
+        topRow.setFlexGrow(1, priorities);
 
+        // Highlights on its own row below
         Div highlights = TavernComponents.createListPanel("Signaux du soir", snapshot.tonightHighlights());
-        highlights.addClassName("span-12");
+        highlights.setWidthFull();
 
-        grid.add(story, priorities, highlights);
-        return grid;
+        mainLayout.add(topRow, highlights);
+        return mainLayout;
     }
 }

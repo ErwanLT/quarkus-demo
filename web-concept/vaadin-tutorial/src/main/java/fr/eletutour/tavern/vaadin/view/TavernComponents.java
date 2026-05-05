@@ -34,30 +34,28 @@ final class TavernComponents {
         header.setSpacing(false);
         header.addClassName("page-hero");
         header.getStyle()
-                .set("gap", "0.3rem")
-                .set("padding", "1.55rem 1.7rem")
-                .set("border", "1px solid rgba(224, 177, 119, 0.16)")
-                .set("border-radius", "24px")
-                .set("background",
-                        "radial-gradient(circle at top right, rgba(203, 123, 58, 0.16), transparent 30%), linear-gradient(135deg, rgba(62, 39, 28, 0.92) 0%, rgba(26, 19, 16, 0.94) 100%)")
-                .set("box-shadow", "0 24px 50px rgba(0, 0, 0, 0.26)");
+                .set("gap", "0.2rem")
+                .set("padding", "1rem 1.5rem")
+                .set("background", "white")
+                .set("border-bottom", "1px solid #dee2e6")
+                .set("margin-bottom", "1rem");
         kicker.getStyle()
-                .set("color", "#d4a36f")
-                .set("font-size", "0.82rem")
+                .set("color", "#007bff")
+                .set("font-size", "0.7rem")
                 .set("text-transform", "uppercase")
-                .set("letter-spacing", "0.11em")
+                .set("letter-spacing", "0.05em")
                 .set("font-weight", "700");
         heading.getStyle()
                 .set("margin", "0")
-                .set("color", "#fff8f0")
-                .set("font-size", "clamp(2rem, 4vw, 3.2rem)")
-                .set("line-height", "1");
+                .set("color", "#212529")
+                .set("font-size", "1.75rem")
+                .set("line-height", "1.2");
         text.getStyle()
                 .set("margin", "0")
-                .set("max-width", "60rem")
-                .set("color", "#d8c7b3")
-                .set("line-height", "1.6")
-                .set("font-size", "1.02rem");
+                .set("max-width", "50rem")
+                .set("color", "#495057")
+                .set("line-height", "1.4")
+                .set("font-size", "0.95rem");
         return header;
     }
 
@@ -70,9 +68,10 @@ final class TavernComponents {
         section.getStyle()
                 .set("display", "flex")
                 .set("flex-direction", "column")
-                .set("gap", "1rem")
-                .set("margin-top", "0.5rem");
-        heading.getStyle().set("margin", "0").set("color", "#f3e7d7").set("font-size", "1.45rem");
+                .set("gap", "0.75rem")
+                .set("padding", "0 1.5rem")
+                .set("margin-bottom", "2rem");
+        heading.getStyle().set("margin", "0").set("color", "#212529").set("font-size", "1.25rem").set("font-weight", "600");
         section.add(heading);
         for (Component component : content) {
             section.add(component);
@@ -80,47 +79,45 @@ final class TavernComponents {
         return section;
     }
 
-    static Div createMetricGrid(List<HighlightMetric> metrics) {
-        Div grid = new Div();
-        grid.addClassName("metrics-grid");
-        grid.getStyle()
-                .set("display", "grid")
-                .set("grid-template-columns", "repeat(auto-fit, minmax(220px, 1fr))")
-                .set("gap", "1rem");
+    static HorizontalLayout createMetricGrid(List<HighlightMetric> metrics) {
+        HorizontalLayout grid = new HorizontalLayout();
+        grid.setWidthFull();
+        grid.setSpacing(true);
+        grid.setPadding(false);
+        
         metrics.stream()
                 .map(TavernComponents::createMetricCard)
-                .forEach(grid::add);
+                .forEach(card -> {
+                    grid.add(card);
+                    grid.setFlexGrow(1, card);
+                });
         return grid;
     }
 
     static Div createMetricCard(HighlightMetric metric) {
         Span label = new Span(metric.label());
-        label.addClassName("metric-label");
-
         H3 value = new H3(metric.value());
-        value.addClassName("metric-value");
-
         Paragraph detail = new Paragraph(metric.detail());
-        detail.addClassName("metric-detail");
 
         Div card = new Div(label, value, detail);
-        card.addClassName("metric-card");
+        card.setWidthFull();
         card.getStyle()
-                .set("padding", "1.15rem")
-                .set("border", "1px solid rgba(220, 175, 118, 0.14)")
-                .set("border-radius", "20px")
-                .set("background", "linear-gradient(180deg, rgba(31, 22, 18, 0.92) 0%, rgba(22, 17, 14, 0.94) 100%)")
-                .set("box-shadow", "0 18px 35px rgba(0, 0, 0, 0.2)");
+                .set("padding", "1rem")
+                .set("background", "white")
+                .set("border", "1px solid #dee2e6")
+                .set("border-radius", "8px")
+                .set("box-shadow", "0 1px 3px rgba(0,0,0,0.05)")
+                .set("display", "flex")
+                .set("flex-direction", "column");
+
         label.getStyle()
-                .set("display", "block")
-                .set("margin-bottom", "0.5rem")
-                .set("color", "#bc8b5b")
-                .set("font-size", "0.78rem")
+                .set("color", "#6c757d")
+                .set("font-size", "0.75rem")
                 .set("text-transform", "uppercase")
-                .set("letter-spacing", "0.1em")
-                .set("font-weight", "700");
-        value.getStyle().set("margin", "0").set("color", "#fff8f0").set("font-size", "2rem");
-        detail.getStyle().set("margin", "0.4rem 0 0").set("color", "#cfb8a0").set("line-height", "1.45");
+                .set("font-weight", "700")
+                .set("margin-bottom", "0.25rem");
+        value.getStyle().set("margin", "0").set("color", "#007bff").set("font-size", "1.75rem");
+        detail.getStyle().set("margin", "0.25rem 0 0").set("color", "#495057").set("font-size", "0.85rem");
         return card;
     }
 
@@ -134,8 +131,8 @@ final class TavernComponents {
         Div panel = new Div(heading, text);
         panel.addClassName("panel-card");
         applySurface(panel);
-        heading.getStyle().set("margin", "0").set("color", "#fff4e8").set("font-size", "1.45rem");
-        text.getStyle().set("margin", "0.45rem 0 0").set("color", "#d1bdab").set("line-height", "1.6");
+        heading.getStyle().set("margin", "0").set("color", "#212529").set("font-size", "1.1rem").set("font-weight", "600");
+        text.getStyle().set("margin", "0.5rem 0 0").set("color", "#495057").set("font-size", "0.95rem").set("line-height", "1.5");
         return panel;
     }
 
@@ -147,13 +144,13 @@ final class TavernComponents {
         list.setPadding(false);
         list.setSpacing(false);
         list.addClassName("stack-list");
-        list.getStyle().set("margin-top", "0.95rem").set("gap", "0.7rem");
+        list.getStyle().set("margin-top", "0.75rem").set("gap", "0.5rem");
         items.stream().map(TavernComponents::createListItem).forEach(list::add);
 
         Div panel = new Div(heading, list);
         panel.addClassName("panel-card");
         applySurface(panel);
-        heading.getStyle().set("margin", "0").set("color", "#fff4e8").set("font-size", "1.45rem");
+        heading.getStyle().set("margin", "0").set("color", "#212529").set("font-size", "1.1rem").set("font-weight", "600");
         return panel;
     }
 
@@ -162,20 +159,21 @@ final class TavernComponents {
         row.addClassName("stack-item");
         row.getStyle()
                 .set("margin", "0")
-                .set("padding", "0.9rem 1rem")
-                .set("border-radius", "14px")
-                .set("background", "rgba(255, 255, 255, 0.04)")
-                .set("color", "#f1e6d7")
-                .set("border", "1px solid rgba(221, 177, 118, 0.08)");
+                .set("padding", "0.5rem 0.75rem")
+                .set("border-radius", "4px")
+                .set("background", "#f8f9fa")
+                .set("color", "#212529")
+                .set("font-size", "0.9rem")
+                .set("border", "1px solid #e9ecef");
         return row;
     }
 
     private static void applySurface(Div surface) {
         surface.getStyle()
                 .set("padding", "1.25rem")
-                .set("border", "1px solid rgba(220, 175, 118, 0.14)")
-                .set("border-radius", "20px")
-                .set("background", "linear-gradient(180deg, rgba(31, 22, 18, 0.92) 0%, rgba(22, 17, 14, 0.94) 100%)")
-                .set("box-shadow", "0 18px 35px rgba(0, 0, 0, 0.2)");
+                .set("background", "white")
+                .set("border", "1px solid #dee2e6")
+                .set("border-radius", "8px")
+                .set("box-shadow", "0 1px 3px rgba(0,0,0,0.05)");
     }
 }
