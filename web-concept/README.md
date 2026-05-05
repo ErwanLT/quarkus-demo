@@ -20,3 +20,7 @@ Démonstration avec le registre des aventuriers, incluant l'utilisation de DTOs 
 ## [i18n Tutorial](i18n-tutorial)
 Tutoriel sur l'internationalisation et la localisation d'une API REST Quarkus.
 Démonstration dans la Taverne avec la résolution de langue via `Accept-Language`, des traductions multi-langues (fr, en, de, es, la), et des cas l10n (monnaie, pluriels).
+
+## [API Versioning Tutorial](api-versioning-tutorial)
+Tutoriel sur le versioning d'API REST Quarkus.
+Démonstration dans la Taverne avec quatre approches : version dans le path, query parameter, header HTTP, et content negotiation via media type.

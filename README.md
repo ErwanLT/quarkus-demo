@@ -44,6 +44,9 @@ Utilisation du Dynamic Client et du Generator SmallRye.
 ### [i18n & l10n (Taverne DnD)](web-concept/i18n-tutorial)
 Tutoriel sur l'internationalisation avec Qute MessageBundle et `Accept-Language`, incluant la localisation des messages, des montants et des pluriels.
 
+### [API Versioning (Taverne DnD)](web-concept/api-versioning-tutorial)
+Tutoriel sur le versioning d'API REST avec Quarkus : path, query parameter, header HTTP et content negotiation via media type.
+
 ## Operations (`operations`)
 
 ### [Observabilite - socle](operations/observabilite-tutoriel)

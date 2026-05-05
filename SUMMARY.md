@@ -21,6 +21,7 @@
   - Client TypeSafe (SmallRye)
   - Client Dynamique & Generateur
 - Internationalisation & Localisation (i18n/l10n)
+- Versioning d'API REST (path, parameter, header, media type)
 
 ## Operations (`operations`)
 - Observabilite (metrics, tracing, log correlation)
@@ -56,5 +57,4 @@
 - Docker / Kubernetes
 
 ## Web Layer
-- Versioning d'API
 - Upload / Download de fichiers
