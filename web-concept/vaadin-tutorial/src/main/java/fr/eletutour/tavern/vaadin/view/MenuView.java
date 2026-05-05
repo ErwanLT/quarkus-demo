@@ -74,7 +74,7 @@ public class MenuView extends VerticalLayout {
         name.getStyle().set("font-weight", "600").set("color", "#212529");
 
         Span price = new Span(entry.price());
-        price.getStyle().set("color", "#007bff").set("font-weight", "700");
+        price.setClassName("price");
 
         Div topLine = new Div(name, price);
         topLine.setWidthFull();

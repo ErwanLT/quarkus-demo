@@ -1,0 +1,29 @@
+/* Styles pour The Falling Whale */
+
+:root {
+    --whale-blue: #007bff;
+    --whale-dark: #212529;
+    --whale-light: #f8f9fa;
+    --whale-border: #dee2e6;
+    --whale-gray: #6c757d;
+}
+
+.tavern-app-layout {
+    background-color: var(--whale-light);
+    color: var(--whale-dark);
+}
+
+/* On pourra migrer ici les styles inline petit à petit */
+.brand-title {
+    font-weight: 800 !important;
+    letter-spacing: -0.02em;
+}
+
+.page-hero {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+}
+
+.price {
+    color: darkgoldenrod;
+    font-weight: 700;
+}

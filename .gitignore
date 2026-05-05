@@ -29,4 +29,4 @@ replay_pid*
 /.quarkus/
 /target/
 /**/target/
-/web-concept/vaadin-tutorial/src/main/frontend/
+/web-concept/vaadin-tutorial/src/main/frontend/generated/
