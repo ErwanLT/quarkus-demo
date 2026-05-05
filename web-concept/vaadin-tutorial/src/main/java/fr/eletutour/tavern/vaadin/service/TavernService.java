@@ -4,6 +4,7 @@ import fr.eletutour.tavern.vaadin.model.CellarBoard;
 import fr.eletutour.tavern.vaadin.model.DashboardSnapshot;
 import fr.eletutour.tavern.vaadin.model.MenuBoard;
 import fr.eletutour.tavern.vaadin.model.ReservationBoard;
+import fr.eletutour.tavern.vaadin.model.ReservationEntry;
 import fr.eletutour.tavern.vaadin.model.ServiceBoard;
 import fr.eletutour.tavern.vaadin.repository.InMemoryTavernRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,5 +36,9 @@ public class TavernService {
 
     public ServiceBoard getServiceBoard() {
         return repository.fetchServiceBoard();
+    }
+
+    public void addReservation(ReservationEntry entry) {
+        repository.addReservation(entry);
     }
 }
