@@ -1,6 +1,7 @@
 package fr.eletutour.tavern.vaadin.view;
 
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -18,26 +19,40 @@ public class ServiceView extends VerticalLayout {
         setSizeFull();
         setPadding(false);
         setSpacing(false);
+        getStyle().set("background", "transparent");
 
         add(TavernComponents.createPageLayout("Rythme du service",
-                "Tenir la cadence sans casser l'ambiance",
+                "Gestion du flux et de la cadence",
                 serviceBoard.shiftReading()));
-        add(TavernComponents.createSection("Cadence de la maison",
+        
+        add(TavernComponents.createSection("Indicateurs de cadence",
                 TavernComponents.createMetricGrid(serviceBoard.serviceMetrics())));
-        add(createServiceGrid(serviceBoard));
+        
+        add(TavernComponents.createSection("Organisation du service", createServiceContent(serviceBoard)));
     }
 
-    private Div createServiceGrid(ServiceBoard serviceBoard) {
-        Div grid = new Div();
-        grid.addClassName("dashboard-grid");
+    private VerticalLayout createServiceContent(ServiceBoard serviceBoard) {
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setWidthFull();
+        mainLayout.setPadding(false);
+        mainLayout.setSpacing(true);
 
-        Div staffing = TavernComponents.createListPanel("Repartition de l'equipe", serviceBoard.teamAssignments());
-        staffing.addClassName("span-6");
+        // Team and Reading side by side (50/50)
+        HorizontalLayout row = new HorizontalLayout();
+        row.setWidthFull();
+        row.setSpacing(true);
+
+        Div staffing = TavernComponents.createListPanel("Répartition de l'équipe", serviceBoard.teamAssignments());
+        staffing.setWidthFull();
 
         Div reading = TavernComponents.createPanel(serviceBoard.shiftReadingTitle(), serviceBoard.shiftReading());
-        reading.addClassName("span-6");
+        reading.setWidthFull();
 
-        grid.add(staffing, reading);
-        return grid;
+        row.add(staffing, reading);
+        row.setFlexGrow(1, staffing);
+        row.setFlexGrow(1, reading);
+
+        mainLayout.add(row);
+        return mainLayout;
     }
 }
