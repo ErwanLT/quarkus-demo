@@ -1,0 +1,21 @@
+package fr.eletutour.tavern.vaadin;
+
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
+
+@QuarkusTest
+class AdminServletTest {
+
+    @Test
+    void shouldServeVaadinBootstrapPageOnRootPath() {
+        given()
+                .when().get("/")
+                .then()
+                .statusCode(200)
+                .body(containsString("flow/quarkus"))
+                .body(containsString("./VAADIN/build/"));
+    }
+}
