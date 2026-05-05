@@ -46,48 +46,39 @@ public class MenuView extends VerticalLayout {
 
     private Div createMenuCard(MenuSection section) {
         H3 title = new H3(section.title());
-        title.getStyle().set("margin", "0").set("color", "#007bff").set("font-size", "1.2rem");
+        title.setClassName("panel-title");
 
         Paragraph description = new Paragraph(section.description());
-        description.getStyle().set("margin", "0.25rem 0 1rem").set("color", "#6c757d").set("font-size", "0.9rem");
+        description.setClassName("panel-description");
 
         VerticalLayout entries = new VerticalLayout();
         entries.setPadding(false);
         entries.setSpacing(false);
-        entries.getStyle().set("gap", "0.75rem");
+        entries.setClassName("menu-entries-container");
 
         section.entries().stream().map(this::createMenuEntry).forEach(entries::add);
 
         Div card = new Div(title, description, entries);
-        card.setWidthFull();
-        card.getStyle()
-                .set("padding", "1.25rem")
-                .set("background", "white")
-                .set("border", "1px solid #dee2e6")
-                .set("border-radius", "8px")
-                .set("box-shadow", "0 1px 3px rgba(0,0,0,0.05)");
+        card.setClassName("whale-panel");
         return card;
     }
 
     private Div createMenuEntry(MenuEntry entry) {
         Span name = new Span(entry.name());
-        name.getStyle().set("font-weight", "600").set("color", "#212529");
+        name.setClassName("menu-entry-name");
 
         Span price = new Span(entry.price());
         price.setClassName("price");
 
         Div topLine = new Div(name, price);
-        topLine.setWidthFull();
-        topLine.getStyle().set("display", "flex").set("justify-content", "space-between").set("align-items", "baseline");
+        topLine.setClassName("menu-entry-header");
 
         Paragraph note = new Paragraph(entry.note());
-        note.getStyle().set("margin", "0").set("color", "#6c757d").set("font-size", "0.85rem").set("font-style", "italic");
+        note.setClassName("menu-entry-note");
 
         Div row = new Div(topLine, note);
         row.setWidthFull();
-        row.getStyle()
-                .set("padding-bottom", "0.5rem")
-                .set("border-bottom", "1px solid #f8f9fa");
+        row.setClassName("menu-entry-row");
         return row;
     }
 }

@@ -32,22 +32,16 @@ public class DashboardView extends VerticalLayout {
         getStyle().set("background", "transparent");
 
         var hero = TavernComponents.createPageLayout("Tableau de bord", snapshot.heroTitle(), snapshot.heroDescription());
-        hero.setWidthFull();
         add(hero);
         
         HorizontalLayout actions = createActions(tavernService);
-        actions.setWidthFull();
-        actions.getStyle().set("padding", "0 1.5rem").set("margin-bottom", "1rem");
         add(actions);
 
-        // Metrics Section - Full width guaranteed
-        var metricsSection = TavernComponents.createSection("Indicateurs de performance", TavernComponents.createMetricGrid(snapshot.metrics()));
-        metricsSection.setWidthFull();
-        add(metricsSection);
+        // Metrics Section
+        add(TavernComponents.createSection("Indicateurs de performance", TavernComponents.createMetricGrid(snapshot.metrics())));
         
-        var mainGridSection = TavernComponents.createSection("Analyse de l'activité", createDashboardGrid(snapshot));
-        mainGridSection.setWidthFull();
-        add(mainGridSection);
+        // Main Activity Grid
+        add(TavernComponents.createSection("Analyse de l'activité", createDashboardGrid(snapshot)));
     }
 
     private HorizontalLayout createActions(TavernService tavernService) {
@@ -63,6 +57,7 @@ public class DashboardView extends VerticalLayout {
         HorizontalLayout actions = new HorizontalLayout(serviceCall, cellarCheck);
         actions.setPadding(false);
         actions.setSpacing(true);
+        actions.setClassName("dashboard-actions");
         actions.setWidthFull();
         return actions;
     }
@@ -90,37 +85,25 @@ public class DashboardView extends VerticalLayout {
 
     private Div createStockRow(CellarStock stock) {
         Span product = new Span(stock.productName());
-        product.getStyle().set("font-weight", "600").set("color", "#212529");
+        product.setClassName("stock-name");
 
         Span level = new Span(stock.currentLevel() + " / " + stock.maxLevel() + " " + stock.unit());
-        level.getStyle().set("color", "#6c757d").set("font-size", "0.85rem");
+        level.setClassName("stock-level");
 
         Div header = new Div(product, level);
-        header.setWidthFull();
-        header.getStyle().set("display", "flex").set("justify-content", "space-between").set("align-items", "baseline").set("margin-bottom", "0.25rem");
+        header.setClassName("stock-header");
 
         Div progressFill = new Div();
+        progressFill.setClassName("stock-progress-fill");
         int percentage = (int) Math.round((stock.currentLevel() * 100.0) / stock.maxLevel());
         String color = percentage < 25 ? "#dc3545" : (percentage < 50 ? "#ffc107" : "#28a745");
-        
-        progressFill.getStyle()
-                .set("width", percentage + "%")
-                .set("height", "100%")
-                .set("background-color", color)
-                .set("border-radius", "4px");
+        progressFill.getStyle().set("width", percentage + "%").set("background-color", color);
 
         Div progressTrack = new Div(progressFill);
-        progressTrack.setWidthFull();
-        progressTrack.getStyle()
-                .set("height", "8px")
-                .set("background-color", "#e9ecef")
-                .set("border-radius", "4px");
+        progressTrack.setClassName("stock-progress-track");
 
         Div row = new Div(header, progressTrack);
-        row.setWidthFull();
-        row.getStyle()
-                .set("padding", "0.75rem 0")
-                .set("border-bottom", "1px solid #f8f9fa");
+        row.setClassName("stock-row");
         return row;
     }
 
@@ -130,7 +113,6 @@ public class DashboardView extends VerticalLayout {
         mainLayout.setPadding(false);
         mainLayout.setSpacing(true);
 
-        // Story and Priorities on one row
         HorizontalLayout topRow = new HorizontalLayout();
         topRow.setWidthFull();
         topRow.setSpacing(true);
@@ -144,7 +126,6 @@ public class DashboardView extends VerticalLayout {
         topRow.setFlexGrow(1, story);
         topRow.setFlexGrow(1, priorities);
 
-        // Highlights on its own row below
         Div highlights = TavernComponents.createListPanel("Signaux du soir", snapshot.tonightHighlights());
         highlights.setWidthFull();
 
