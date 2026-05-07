@@ -96,7 +96,7 @@ public class DashboardView extends VerticalLayout {
         Div progressFill = new Div();
         progressFill.setClassName("stock-progress-fill");
         int percentage = (int) Math.round((stock.currentLevel() * 100.0) / stock.maxLevel());
-        String color = percentage < 25 ? "#dc3545" : (percentage < 50 ? "#ffc107" : "#28a745");
+        String color = percentage < 25 ? "var(--stock-low)" : (percentage < 50 ? "var(--stock-medium)" : "var(--stock-high)");
         progressFill.getStyle().set("width", percentage + "%").set("background-color", color);
 
         Div progressTrack = new Div(progressFill);

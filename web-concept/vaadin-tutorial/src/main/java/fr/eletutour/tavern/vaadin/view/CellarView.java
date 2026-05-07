@@ -74,41 +74,28 @@ public class CellarView extends VerticalLayout {
 
     private Div createStockRow(CellarStock stock) {
         Span product = new Span(stock.productName());
-        product.getStyle().set("font-weight", "600").set("color", "#212529");
+        product.setClassName("stock-name");
 
         Span level = new Span(stock.currentLevel() + " / " + stock.maxLevel() + " " + stock.unit());
-        level.getStyle().set("color", "#6c757d").set("font-size", "0.85rem");
+        level.setClassName("stock-level");
 
         Div header = new Div(product, level);
-        header.setWidthFull();
-        header.getStyle().set("display", "flex").set("justify-content", "space-between").set("align-items", "baseline").set("margin-bottom", "0.25rem");
+        header.setClassName("stock-header");
 
         Div progressFill = new Div();
+        progressFill.setClassName("stock-progress-fill");
         int percentage = (int) Math.round((stock.currentLevel() * 100.0) / stock.maxLevel());
-        String color = percentage < 25 ? "#dc3545" : (percentage < 50 ? "#ffc107" : "#28a745");
-        
-        progressFill.getStyle()
-                .set("width", percentage + "%")
-                .set("height", "100%")
-                .set("background-color", color)
-                .set("border-radius", "4px");
+        String color = percentage < 25 ? "var(--stock-low)" : (percentage < 50 ? "var(--stock-medium)" : "var(--stock-high)");
+        progressFill.getStyle().set("width", percentage + "%").set("background-color", color);
 
         Div progressTrack = new Div(progressFill);
-        progressTrack.setWidthFull();
-        progressTrack.getStyle()
-                .set("height", "8px")
-                .set("background-color", "#e9ecef")
-                .set("border-radius", "4px")
-                .set("margin-bottom", "0.5rem");
+        progressTrack.setClassName("stock-progress-track");
 
         Paragraph note = new Paragraph(stock.note());
-        note.getStyle().set("margin", "0").set("color", "#6c757d").set("font-size", "0.8rem").set("font-style", "italic");
+        note.setClassName("menu-entry-note");
 
         Div row = new Div(header, progressTrack, note);
-        row.setWidthFull();
-        row.getStyle()
-                .set("padding", "0.75rem 0")
-                .set("border-bottom", "1px solid #f8f9fa");
+        row.setClassName("stock-row");
         return row;
     }
 }

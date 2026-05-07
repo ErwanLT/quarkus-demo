@@ -1,104 +1,332 @@
-/* Styles pour The Falling Whale - Medieval Modern */
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Pirata+One&family=Almendra:ital,wght@0,400;0,700;1,400&display=swap');
 
+/* Configuration du Thème Medieval Fantasy */
 :root {
-    --whale-gold: darkgoldenrod;
-    --whale-gold-light: #f4dfc9;
-    --whale-dark: #1a1512;
-    --whale-text: #2d241e;
-    --whale-gray: #6c757d;
-    --whale-parchment: #fdfaf3;
-    --whale-parchment-dark: #f5f0e1;
-    --whale-border: rgba(184, 134, 11, 0.2);
-    --whale-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    /* Palette Chromatique */
+    --whale-parchment: #f4e4bc;
+    --whale-parchment-light: #fdf5e6;
+    --whale-parchment-dark: #e8d0a0;
+    --whale-wood-dark: #3e2723;
+    --whale-wood-medium: #5d4037;
+    --whale-gold: #d4af37;
+    --whale-gold-bright: #ffd700;
+    --whale-iron: #2c2c2c;
+    --whale-blood: #8b0000;
+    --whale-ink: #1a1a1a;
+    
+    /* Couleurs de Statut des Stocks */
+    --stock-low: #8b0000;    /* Rouge sang */
+    --stock-medium: #a67c00; /* Or sombre / Ambre */
+    --stock-high: #2d5a27;   /* Vert forêt */
+    
+    /* Textures et Effets */
+    --parchment-texture: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0) 100%),
+                         repeating-linear-gradient(45deg, rgba(184, 134, 11, 0.05) 0px, rgba(184, 134, 11, 0.05) 1px, transparent 1px, transparent 10px);
+    --wood-texture: linear-gradient(to right, rgba(0,0,0,0.3), transparent 20%, transparent 80%, rgba(0,0,0,0.3)),
+                    repeating-linear-gradient(to bottom, #3e2723, #3e2723 2px, #4e342e 2px, #4e342e 4px);
+    
+    --medieval-shadow: 2px 4px 12px rgba(0, 0, 0, 0.4), inset 0 0 40px rgba(139, 69, 19, 0.1);
+    --inner-border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* Base de l'application */
 .tavern-app-layout {
-    background-color: var(--whale-parchment);
-    color: var(--whale-text);
-    font-family: 'Georgia', serif;
+    background: var(--whale-parchment);
+    background-image: var(--parchment-texture);
+    color: var(--whale-ink);
+    font-family: 'Almendra', serif;
+    font-size: 1.1rem;
 }
 
-/* Base Layout Classes */
-.view-shell {
-    padding: 0;
+/* Typographie Spécialisée */
+h1, h2, h3, .brand-title, .page-title {
+    font-family: 'Pirata One', cursive;
+    text-transform: none;
+    letter-spacing: 1px;
 }
 
-/* Page Hero / Header Section */
+.page-kicker, .brand-eyebrow {
+    font-family: 'MedievalSharp', cursive;
+    text-transform: uppercase;
+}
+
+/* Header & Navigation */
+.topbar-shell {
+    background: var(--whale-wood-dark) !important;
+    background-image: var(--wood-texture) !important;
+    border-bottom: 3px solid var(--whale-gold) !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important;
+    color: var(--whale-parchment) !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.brand-copy {
+    width: 100%;
+}
+
+.brand-title {
+    color: var(--whale-gold) !important;
+    font-size: 2.5rem !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.brand-eyebrow {
+    color: var(--whale-parchment-dark) !important;
+}
+
+.brand-subtitle {
+    color: var(--whale-parchment-light) !important;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.drawer-shell {
+    background: var(--whale-wood-medium) !important;
+    background-image: var(--wood-texture) !important;
+    border-right: 2px solid var(--whale-iron) !important;
+    color: var(--whale-parchment) !important;
+}
+
+.drawer-section-label {
+    color: var(--whale-gold) !important;
+    font-family: 'MedievalSharp', cursive;
+    border-bottom: 1px solid var(--whale-gold);
+    margin: 1rem 0.5rem 0.5rem !important;
+}
+
+/* SideNav Item Styling */
+vaadin-side-nav-item::part(link) {
+    color: var(--whale-parchment-light);
+}
+
+vaadin-side-nav-item::part(link):hover {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--whale-gold-bright);
+}
+
+/* Page Hero */
 .page-hero {
-    background: white;
-    border-bottom: 2px solid var(--whale-gold);
-    padding: 1.5rem 2rem !important;
-    margin-bottom: 2rem;
+    background: var(--whale-parchment-light) !important;
+    background-image: var(--parchment-texture) !important;
+    border: 1px solid var(--whale-parchment-dark);
+    border-bottom: 4px double var(--whale-gold);
+    margin: 1rem !important;
+    padding: 2rem !important;
+    box-shadow: var(--medieval-shadow);
+    border-radius: 2px;
 }
 
 .page-title {
-    color: var(--whale-dark) !important;
-    font-size: 2.2rem !important;
-    font-weight: 700 !important;
-    margin: 0 !important;
-    font-variant: small-caps;
+    font-size: 3rem !important;
+    color: var(--whale-blood) !important;
 }
 
-.page-kicker {
-    color: var(--whale-gold) !important;
-    font-weight: 800 !important;
-    font-size: 0.8rem !important;
-    letter-spacing: 0.1em;
-}
-
-/* Sections */
-.section-block {
-    padding: 0 2rem;
-    margin-bottom: 3rem;
-}
-
-.section-title {
-    color: var(--whale-dark) !important;
-    font-size: 1.4rem !important;
-    border-bottom: 1px solid var(--whale-border);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem !important;
-}
-
-/* Common Card/Panel Style (replacing @extend) */
+/* Panels & Cards (Parchment look) */
 .whale-panel, .metric-card, .menu-card {
-    background: white;
-    border: 1px solid var(--whale-border);
-    border-radius: 4px;
-    padding: 1.5rem;
-    box-shadow: var(--whale-shadow);
+    background: var(--whale-parchment-light);
+    background-image: var(--parchment-texture);
+    border: 1px solid #d2b48c;
+    border-radius: 0;
+    box-shadow: var(--medieval-shadow);
+    padding: 2rem;
     position: relative;
+    overflow: hidden;
 }
 
+/* Corner Ornaments */
 .whale-panel::before, .metric-card::before, .menu-card::before {
-    content: '';
+    content: '◈';
     position: absolute;
-    top: 5px; left: 5px; right: 5px; bottom: 5px;
-    border: 1px solid rgba(184, 134, 11, 0.05);
-    pointer-events: none;
+    top: 5px; left: 5px;
+    color: var(--whale-gold);
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.whale-panel::after, .metric-card::after, .menu-card::after {
+    content: '◈';
+    position: absolute;
+    bottom: 5px; right: 5px;
+    color: var(--whale-gold);
+    font-size: 0.8rem;
+    opacity: 0.6;
 }
 
 .panel-title {
-    color: var(--whale-dark) !important;
-    font-size: 1.2rem !important;
-    font-weight: 700 !important;
+    border-bottom: 1px solid var(--whale-gold);
+    padding-bottom: 0.5rem;
+    color: var(--whale-ink) !important;
 }
 
-.panel-description {
-    margin: 0.25rem 0 1rem;
-    color: var(--whale-gray);
-    font-size: 0.9rem;
+/* Metrics */
+.metric-value {
+    font-family: 'Pirata One', cursive;
+    color: var(--whale-blood) !important;
+    font-size: 3.5rem !important;
 }
 
-/* Menu Specific */
-.menu-entries-container {
-    gap: 0.75rem;
-    display: flex;
-    flex-direction: column;
+.metric-label {
+    font-family: 'MedievalSharp', cursive;
+    color: var(--whale-wood-dark);
 }
 
-.menu-entry-name {
-    font-weight: 600;
+/* Buttons (Leather/Wax seal) */
+vaadin-button {
+    font-family: 'MedievalSharp', cursive !important;
+    border-radius: 0 !important;
+    text-transform: uppercase;
+    font-weight: bold !important;
+}
+
+vaadin-button[theme~="primary"] {
+    background: var(--whale-blood) !important;
+    color: var(--whale-parchment) !important;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    border: 1px solid var(--whale-gold);
+}
+
+vaadin-button[theme~="tertiary"] {
+    color: var(--whale-wood-dark) !important;
+    text-decoration: underline;
+}
+
+/* Stock Rows */
+.stock-row {
+    border-bottom: 1px dashed var(--whale-parchment-dark);
+}
+
+.stock-name {
+    font-family: 'MedievalSharp', cursive;
+}
+
+.stock-progress-track {
+    background: #2a2a2a !important; /* Fer plus sombre */
+    border: 1px solid var(--whale-gold);
+    height: 14px !important;
+    border-radius: 0 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.stock-progress-fill {
+    height: 100%;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.3) 100%);
+    transition: width 0.5s ease-in-out;
+}
+
+/* Highlight Box */
+.drawer-highlight {
+    background: rgba(139, 0, 0, 0.1) !important;
+    border: 2px solid var(--whale-gold) !important;
+    border-radius: 0 !important;
+    font-family: 'Almendra', serif;
+    position: relative;
+}
+
+.drawer-highlight::before {
+    content: '⚠';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--whale-wood-medium);
+    color: var(--whale-gold);
+    padding: 0 5px;
+}
+
+/* Sections */
+.section-title {
+    font-size: 2rem !important;
+    color: var(--whale-wood-dark) !important;
+    text-align: center;
+    margin: 2rem 0 !important;
+}
+
+.section-title::before, .section-title::after {
+    content: ' — ';
+    color: var(--whale-gold);
+}
+
+/* Dialogs */
+vaadin-dialog-overlay::part(overlay) {
+    background: var(--whale-parchment);
+    background-image: var(--parchment-texture);
+    border: 5px double var(--whale-wood-dark);
+    box-shadow: 0 0 50px rgba(0,0,0,0.6);
+}
+
+vaadin-dialog-overlay::part(header) {
+    background: var(--whale-parchment-dark) !important;
+    background-image: var(--parchment-texture) !important;
+    color: var(--whale-blood) !important;
+    font-family: 'Pirata One', cursive !important;
+    font-size: 2.2rem !important;
+    border-bottom: 4px double var(--whale-gold);
+    padding: 1.2rem 1.5rem !important;
+    text-shadow: none !important;
+    box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+vaadin-dialog-overlay::part(footer) {
+    background: var(--whale-parchment-dark);
+}
+
+/* Grid - Le Grand Livre de Compte */
+vaadin-grid {
+    background: var(--whale-parchment-light) !important;
+    background-image: var(--parchment-texture) !important;
+    font-family: 'Almendra', serif;
+    border: 3px double var(--whale-wood-dark) !important;
+    box-shadow: var(--medieval-shadow);
+}
+
+vaadin-grid::part(header-cell) {
+    background: var(--whale-wood-dark);
+    background-image: var(--wood-texture);
+    color: var(--whale-gold);
+    font-family: 'MedievalSharp', cursive;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-bottom: 2px solid var(--whale-gold);
+}
+
+vaadin-grid::part(body-cell) {
+    background: transparent;
+    color: var(--whale-ink);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+vaadin-grid::part(row):hover {
+    background: rgba(212, 175, 55, 0.15) !important;
+}
+
+vaadin-grid::part(selected-row) {
+    background: rgba(139, 0, 0, 0.1) !important;
+}
+
+/* Formulaires & Champs de saisie */
+vaadin-text-field, vaadin-integer-field, vaadin-text-area, vaadin-select, vaadin-time-picker {
+    --lumo-contrast-10pct: rgba(139, 69, 19, 0.1);
+    --lumo-body-text-color: var(--whale-ink);
+}
+
+vaadin-text-field::part(label), vaadin-integer-field::part(label), 
+vaadin-text-area::part(label), vaadin-select::part(label), 
+vaadin-time-picker::part(label) {
+    font-family: 'MedievalSharp', cursive;
+    color: var(--whale-wood-dark);
+    font-weight: bold;
+}
+
+vaadin-text-field [part="input-field"], vaadin-integer-field [part="input-field"],
+vaadin-text-area [part="input-field"], vaadin-select [part="input-field"],
+vaadin-time-picker [part="input-field"] {
+    background: var(--whale-parchment-light) !important;
+    border: 1px solid var(--whale-parchment-dark) !important;
+    border-bottom: 2px solid var(--whale-gold) !important;
+    border-radius: 0 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .menu-entry-header {
@@ -108,111 +336,55 @@
     width: 100%;
 }
 
-.menu-entry-note {
-    margin: 0;
-    color: var(--whale-gray);
-    font-size: 0.85rem;
-    font-style: italic;
-}
-
+/* Specific component tweaks */
 .price {
+    font-family: 'Pirata One', cursive !important;
+    font-size: 1.3rem;
     color: var(--whale-gold);
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
+    font-weight: bold;
 }
 
-.menu-entry-row {
-    border-bottom: 1px solid var(--whale-parchment-dark);
-    padding: 0.75rem 0;
+.menu-entry-name {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 1.2rem;
+    color: var(--whale-blood);
+    font-weight: bold;
 }
 
-/* Metric Cards Specific */
-.metric-card {
-    text-align: center;
+.menu-entry-note {
+    font-style: italic;
+    font-size: 1rem;
+    color: #555;
+    margin: 0.2rem 0;
 }
 
-.metric-value {
-    color: var(--whale-gold) !important;
-    font-size: 2.5rem !important;
-    margin: 0.5rem 0 !important;
+/* Custom Scrollbar (Medieval style) */
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-/* Navigation / Header Styles */
-.topbar-shell {
-    background: white !important;
-    border-bottom: 1px solid var(--whale-border) !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03) !important;
-    width: 100% !important;
+::-webkit-scrollbar-track {
+    background: var(--whale-wood-dark);
 }
 
-.brand-title {
-    color: var(--whale-dark) !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.02em;
+::-webkit-scrollbar-thumb {
+    background: var(--whale-gold);
+    border: 2px solid var(--whale-wood-dark);
 }
 
-.brand-eyebrow {
-    color: var(--whale-gold) !important;
+::-webkit-scrollbar-thumb:hover {
+    background: var(--whale-gold-bright);
 }
 
-.brand-subtitle {
-    color: var(--whale-gray) !important;
+/* Icons styling */
+vaadin-icon {
+    color: var(--whale-gold);
 }
 
-.drawer-shell {
-    background: var(--whale-parchment-dark) !important;
-    border-right: 1px solid var(--whale-border) !important;
+vaadin-side-nav-item vaadin-icon {
+    color: var(--whale-parchment-dark);
 }
 
-.drawer-section-label {
-    color: var(--whale-gray) !important;
-    font-weight: 700;
-}
-
-.drawer-highlight {
-    background: var(--whale-gold-light) !important;
-    border: 1px solid var(--whale-gold) !important;
-    border-radius: 8px;
-    margin: 1rem;
-    padding: 1rem;
-}
-
-.dashboard-actions {
-    padding: 0 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.stock-row {
-    width: 100%;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--whale-parchment-dark);
-}
-
-.stock-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 0.25rem;
-    width: 100%;
-}
-
-.stock-name {
-    font-weight: 600;
-}
-
-.stock-level {
-    color: var(--whale-gray);
-    font-size: 0.85rem;
-}
-
-.stock-progress-track {
-    height: 8px;
-    background-color: var(--whale-parchment-dark);
-    border-radius: 4px;
-    width: 100%;
-}
-
-.stock-progress-fill {
-    height: 100%;
-    border-radius: 4px;
+vaadin-side-nav-item:hover vaadin-icon {
+    color: var(--whale-gold-bright);
 }
