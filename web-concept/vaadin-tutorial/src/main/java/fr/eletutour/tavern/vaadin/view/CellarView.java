@@ -1,5 +1,7 @@
 package fr.eletutour.tavern.vaadin.view;
 
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
@@ -10,13 +12,21 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import fr.eletutour.tavern.vaadin.model.CellarBoard;
 import fr.eletutour.tavern.vaadin.model.CellarStock;
+import fr.eletutour.tavern.vaadin.service.StockUpdatedEvent;
+import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import java.util.function.Consumer;
 
 @PageTitle("Cave et futailles")
 @Route(value = "cellar", layout = MainLayout.class)
 public class CellarView extends VerticalLayout {
 
-    public CellarView(TavernService tavernService) {
+    private final TavernBroadcaster broadcaster;
+    private final Div stockPanel = new Div();
+    private Consumer<StockUpdatedEvent> listener;
+
+    public CellarView(TavernService tavernService, TavernBroadcaster broadcaster) {
+        this.broadcaster = broadcaster;
         CellarBoard cellarBoard = tavernService.getCellarBoard();
 
         addClassName("view-shell");
@@ -32,6 +42,22 @@ public class CellarView extends VerticalLayout {
         add(TavernComponents.createSection("Gestion des stocks et actions", createCellarContent(cellarBoard)));
     }
 
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        listener = event -> attachEvent.getUI().access(() -> {
+            updateStockPanel(event.stocks());
+        });
+        broadcaster.registerStockListener(listener);
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        if (listener != null) {
+            broadcaster.unregisterStockListener(listener);
+            listener = null;
+        }
+    }
+
     private VerticalLayout createCellarContent(CellarBoard cellarBoard) {
         VerticalLayout content = new VerticalLayout();
         content.setWidthFull();
@@ -43,7 +69,6 @@ public class CellarView extends VerticalLayout {
         topRow.setWidthFull();
         topRow.setSpacing(true);
 
-        Div stockPanel = new Div();
         stockPanel.setWidthFull();
         stockPanel.getStyle()
                 .set("padding", "1.25rem")
@@ -52,10 +77,7 @@ public class CellarView extends VerticalLayout {
                 .set("border-radius", "8px")
                 .set("box-shadow", "0 1px 3px rgba(0,0,0,0.05)");
         
-        H3 stockTitle = new H3("Niveaux de cave");
-        stockTitle.getStyle().set("margin", "0 0 1rem 0").set("color", "#212529").set("font-size", "1.1rem").set("font-weight", "600");
-        stockPanel.add(stockTitle);
-        cellarBoard.stocks().stream().map(this::createStockRow).forEach(stockPanel::add);
+        updateStockPanel(cellarBoard.stocks());
 
         Div notePanel = TavernComponents.createPanel(cellarBoard.cellarNoteTitle(), cellarBoard.cellarNote());
         notePanel.setWidthFull();
@@ -70,6 +92,14 @@ public class CellarView extends VerticalLayout {
 
         content.add(topRow, tasks);
         return content;
+    }
+
+    private void updateStockPanel(java.util.List<CellarStock> stocks) {
+        stockPanel.removeAll();
+        H3 stockTitle = new H3("Niveaux de cave");
+        stockTitle.getStyle().set("margin", "0 0 1rem 0").set("color", "#212529").set("font-size", "1.1rem").set("font-weight", "600");
+        stockPanel.add(stockTitle);
+        stocks.stream().map(this::createStockRow).forEach(stockPanel::add);
     }
 
     private Div createStockRow(CellarStock stock) {

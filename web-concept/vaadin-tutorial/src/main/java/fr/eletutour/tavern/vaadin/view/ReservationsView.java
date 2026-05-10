@@ -77,13 +77,13 @@ public class ReservationsView extends VerticalLayout {
             Notification notification = Notification.show("Mise à jour : Nouvelle réservation de " + event.entry().guestName());
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         });
-        broadcaster.register(listener);
+        broadcaster.registerReservationListener(listener);
     }
 
     @Override
     protected void onDetach(DetachEvent detachEvent) {
         if (listener != null) {
-            broadcaster.unregister(listener);
+            broadcaster.unregisterReservationListener(listener);
             listener = null;
         }
     }

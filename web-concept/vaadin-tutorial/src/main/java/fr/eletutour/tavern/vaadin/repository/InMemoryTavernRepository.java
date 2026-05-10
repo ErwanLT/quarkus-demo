@@ -24,7 +24,17 @@ public class InMemoryTavernRepository {
             new ReservationEntry("Messagère du sud", 2, "21:00", "Balcon intérieur", "Rapide", "Repas court avant départ au petit matin."),
             new ReservationEntry("Guilde des cartographes", 5, "20:30", "Arrière-salle", "Confirmée", "Discussion privée sans animation musicale.")));
 
+    private final List<CellarStock> cellarStocks = new ArrayList<>(List.of(
+            new CellarStock("Blonde des remparts", 42, 60, "pintes", "Encore solide pour le premier pic de la nuit."),
+            new CellarStock("Hydromel réservé", 9, 18, "cruchons", "A conserver pour les grandes tables."),
+            new CellarStock("Vin d'épices", 17, 24, "bouteilles", "Rotation saine sans tension immédiate."),
+            new CellarStock("Cidre du nord", 6, 20, "service(s)", "Commande à déclencher avant demain midi.")));
+
     public DashboardSnapshot fetchDashboardSnapshot() {
+        long lowStocks = cellarStocks.stream()
+                .filter(s -> s.currentLevel() < s.maxLevel() * 0.25)
+                .count();
+
         return new DashboardSnapshot(
                 "La grande salle entre dans son heure la plus vive",
                 "Entre le comptoir, les chambres et la cave, le service doit rester précis sans perdre l'âme chaleureuse de la maison.",
@@ -32,7 +42,7 @@ public class InMemoryTavernRepository {
                         new HighlightMetric("Tables en service", "18 / 24", "Le premier flux est presque complet."),
                         new HighlightMetric("Recette du jour", "2 480 or", "Les plats mijotés portent le ticket moyen."),
                         new HighlightMetric("Attente moyenne", "11 min", "La cuisine tient un rythme propre."),
-                        new HighlightMetric("Fûts à surveiller", "2", "L'ambrée et le cidre tombent vite.")),
+                        new HighlightMetric("Fûts à surveiller", String.valueOf(lowStocks), lowStocks > 0 ? "Des fûts sont bientôt vides." : "Les niveaux sont sains.")),
                 "Ambiance du soir",
                 "Trois bardes sont annoncés au coin du feu, la table des mercenaires demande de la discrétion et les voyageurs tardifs remplissent déjà les chambres hautes.",
                 List.of(
@@ -89,17 +99,28 @@ public class InMemoryTavernRepository {
 
     public CellarBoard fetchCellarBoard() {
         return new CellarBoard(
-                List.of(
-                        new CellarStock("Blonde des remparts", 42, 60, "pintes", "Encore solide pour le premier pic de la nuit."),
-                        new CellarStock("Hydromel réservé", 9, 18, "cruchons", "A conserver pour les grandes tables."),
-                        new CellarStock("Vin d'épices", 17, 24, "bouteilles", "Rotation saine sans tension immédiate."),
-                        new CellarStock("Cidre du nord", 6, 20, "service(s)", "Commande à déclencher avant demain midi.")),
+                new ArrayList<>(cellarStocks),
                 "Lecture du cellier",
                 "La cave est saine mais l'ambrée fruitée et le cidre descendent vite. Il faut remonter les fûts avant que la salle sature le comptoir.",
                 List.of(
                         "Remonter un fût d'ambrée avant 19h00",
                         "Mettre trois bouteilles de réserve de côté pour les négociants",
                         "Vérifier la température des foudres côté pierre"));
+    }
+
+    public void updateStock(String productName, int delta) {
+        for (int i = 0; i < cellarStocks.size(); i++) {
+            CellarStock stock = cellarStocks.get(i);
+            if (stock.productName().equals(productName)) {
+                int newLevel = Math.max(0, Math.min(stock.maxLevel(), stock.currentLevel() + delta));
+                cellarStocks.set(i, new CellarStock(stock.productName(), newLevel, stock.maxLevel(), stock.unit(), stock.note()));
+                return;
+            }
+        }
+    }
+
+    public List<CellarStock> getCellarStocks() {
+        return new ArrayList<>(cellarStocks);
     }
 
     public ServiceBoard fetchServiceBoard() {

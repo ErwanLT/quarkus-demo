@@ -30,3 +30,4 @@ replay_pid*
 /target/
 /**/target/
 /web-concept/vaadin-tutorial/src/main/frontend/generated/
+/web-concept/vaadin-tutorial/src/main/bundles/

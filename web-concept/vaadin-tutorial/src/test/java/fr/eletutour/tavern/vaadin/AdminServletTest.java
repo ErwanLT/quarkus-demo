@@ -15,7 +15,6 @@ class AdminServletTest {
                 .when().get("/")
                 .then()
                 .statusCode(200)
-                .body(containsString("flow/quarkus"))
-                .body(containsString("./VAADIN/build/"));
+                .body(containsString("id=\"outlet\""));
     }
 }

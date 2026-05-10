@@ -33,6 +33,11 @@
             <artifactId>vaadin-quarkus-extension</artifactId>
             <version>${vaadin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-dev</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

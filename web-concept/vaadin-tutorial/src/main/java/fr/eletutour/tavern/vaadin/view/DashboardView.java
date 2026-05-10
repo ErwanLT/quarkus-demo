@@ -1,5 +1,7 @@
 package fr.eletutour.tavern.vaadin.view;
 
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -16,13 +18,24 @@ import com.vaadin.flow.router.Route;
 import fr.eletutour.tavern.vaadin.model.CellarBoard;
 import fr.eletutour.tavern.vaadin.model.CellarStock;
 import fr.eletutour.tavern.vaadin.model.DashboardSnapshot;
+import fr.eletutour.tavern.vaadin.service.StockUpdatedEvent;
+import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import java.util.function.Consumer;
 
 @PageTitle("Salle commune")
 @Route(value = "", layout = MainLayout.class)
 public class DashboardView extends VerticalLayout {
 
-    public DashboardView(TavernService tavernService) {
+    private final TavernService tavernService;
+    private final TavernBroadcaster broadcaster;
+    private final Div metricsContainer = new Div();
+    private final VerticalLayout dialogLayout = new VerticalLayout();
+    private Consumer<StockUpdatedEvent> listener;
+
+    public DashboardView(TavernService tavernService, TavernBroadcaster broadcaster) {
+        this.tavernService = tavernService;
+        this.broadcaster = broadcaster;
         DashboardSnapshot snapshot = tavernService.getDashboard();
 
         addClassName("view-shell");
@@ -38,10 +51,38 @@ public class DashboardView extends VerticalLayout {
         add(actions);
 
         // Metrics Section
-        add(TavernComponents.createSection("Indicateurs de performance", TavernComponents.createMetricGrid(snapshot.metrics())));
+        updateMetrics(snapshot);
+        add(TavernComponents.createSection("Indicateurs de performance", metricsContainer));
         
         // Main Activity Grid
         add(TavernComponents.createSection("Analyse de l'activité", createDashboardGrid(snapshot)));
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        listener = event -> attachEvent.getUI().access(() -> {
+            updateMetrics(tavernService.getDashboard());
+            updateDialogContent(event.stocks());
+        });
+        broadcaster.registerStockListener(listener);
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        if (listener != null) {
+            broadcaster.unregisterStockListener(listener);
+            listener = null;
+        }
+    }
+
+    private void updateMetrics(DashboardSnapshot snapshot) {
+        metricsContainer.removeAll();
+        metricsContainer.add(TavernComponents.createMetricGrid(snapshot.metrics()));
+    }
+
+    private void updateDialogContent(java.util.List<CellarStock> stocks) {
+        dialogLayout.removeAll();
+        stocks.forEach(stock -> dialogLayout.add(createStockRow(stock)));
     }
 
     private HorizontalLayout createActions(TavernService tavernService) {
@@ -67,13 +108,12 @@ public class DashboardView extends VerticalLayout {
         dialog.setHeaderTitle("État des stocks - Cave & Futailles");
         dialog.setWidth("600px");
 
-        VerticalLayout dialogLayout = new VerticalLayout();
         dialogLayout.setPadding(false);
         dialogLayout.setSpacing(false);
         dialogLayout.setWidthFull();
 
         CellarBoard cellarBoard = tavernService.getCellarBoard();
-        cellarBoard.stocks().forEach(stock -> dialogLayout.add(createStockRow(stock)));
+        updateDialogContent(cellarBoard.stocks());
 
         dialog.add(dialogLayout);
 
