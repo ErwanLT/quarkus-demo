@@ -15,6 +15,7 @@ import fr.eletutour.tavern.vaadin.model.CellarStock;
 import fr.eletutour.tavern.vaadin.service.StockUpdatedEvent;
 import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import fr.eletutour.tavern.vaadin.view.component.StockRow;
 import java.util.function.Consumer;
 
 @PageTitle("Cave et futailles")
@@ -99,33 +100,6 @@ public class CellarView extends VerticalLayout {
         H3 stockTitle = new H3("Niveaux de cave");
         stockTitle.getStyle().set("margin", "0 0 1rem 0").set("color", "#212529").set("font-size", "1.1rem").set("font-weight", "600");
         stockPanel.add(stockTitle);
-        stocks.stream().map(this::createStockRow).forEach(stockPanel::add);
-    }
-
-    private Div createStockRow(CellarStock stock) {
-        Span product = new Span(stock.productName());
-        product.setClassName("stock-name");
-
-        Span level = new Span(stock.currentLevel() + " / " + stock.maxLevel() + " " + stock.unit());
-        level.setClassName("stock-level");
-
-        Div header = new Div(product, level);
-        header.setClassName("stock-header");
-
-        Div progressFill = new Div();
-        progressFill.setClassName("stock-progress-fill");
-        int percentage = (int) Math.round((stock.currentLevel() * 100.0) / stock.maxLevel());
-        String color = percentage < 25 ? "var(--stock-low)" : (percentage < 50 ? "var(--stock-medium)" : "var(--stock-high)");
-        progressFill.getStyle().set("width", percentage + "%").set("background-color", color);
-
-        Div progressTrack = new Div(progressFill);
-        progressTrack.setClassName("stock-progress-track");
-
-        Paragraph note = new Paragraph(stock.note());
-        note.setClassName("menu-entry-note");
-
-        Div row = new Div(header, progressTrack, note);
-        row.setClassName("stock-row");
-        return row;
+        stocks.stream().map(stock -> new StockRow(stock, true)).forEach(stockPanel::add);
     }
 }

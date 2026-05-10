@@ -12,6 +12,7 @@ import fr.eletutour.tavern.vaadin.model.MenuBoard;
 import fr.eletutour.tavern.vaadin.model.MenuEntry;
 import fr.eletutour.tavern.vaadin.model.MenuSection;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import fr.eletutour.tavern.vaadin.view.component.MenuEntryRow;
 
 @PageTitle("Carte et ardoise")
 @Route(value = "menu", layout = MainLayout.class)
@@ -56,29 +57,10 @@ public class MenuView extends VerticalLayout {
         entries.setSpacing(false);
         entries.setClassName("menu-entries-container");
 
-        section.entries().stream().map(this::createMenuEntry).forEach(entries::add);
+        section.entries().stream().map(MenuEntryRow::new).forEach(entries::add);
 
         Div card = new Div(title, description, entries);
         card.setClassName("whale-panel");
         return card;
-    }
-
-    private Div createMenuEntry(MenuEntry entry) {
-        Span name = new Span(entry.name());
-        name.setClassName("menu-entry-name");
-
-        Span price = new Span(entry.price());
-        price.setClassName("price");
-
-        Div topLine = new Div(name, price);
-        topLine.setClassName("menu-entry-header");
-
-        Paragraph note = new Paragraph(entry.note());
-        note.setClassName("menu-entry-note");
-
-        Div row = new Div(topLine, note);
-        row.setWidthFull();
-        row.setClassName("menu-entry-row");
-        return row;
     }
 }

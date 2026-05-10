@@ -11,6 +11,8 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import fr.eletutour.tavern.vaadin.model.HighlightMetric;
+import fr.eletutour.tavern.vaadin.view.component.MetricCard;
+import fr.eletutour.tavern.vaadin.view.component.TavernPanel;
 
 import java.util.List;
 
@@ -57,7 +59,7 @@ final class TavernComponents {
         grid.setPadding(false);
         
         metrics.stream()
-                .map(TavernComponents::createMetricCard)
+                .map(MetricCard::new)
                 .forEach(card -> {
                     grid.add(card);
                     grid.setFlexGrow(1, card);
@@ -65,52 +67,12 @@ final class TavernComponents {
         return grid;
     }
 
-    static Div createMetricCard(HighlightMetric metric) {
-        Span label = new Span(metric.label());
-        label.setClassName("metric-label");
-
-        H3 value = new H3(metric.value());
-        value.setClassName("metric-value");
-
-        Paragraph detail = new Paragraph(metric.detail());
-        detail.setClassName("metric-detail");
-
-        Div card = new Div(label, value, detail);
-        card.setClassName("metric-card");
-        return card;
-    }
-
     static Div createPanel(String title, String body) {
-        H3 heading = new H3(title);
-        heading.setClassName("panel-title");
-
-        Paragraph text = new Paragraph(body);
-        text.setClassName("panel-copy");
-
-        Div panel = new Div(heading, text);
-        panel.setClassName("whale-panel");
-        return panel;
+        return new TavernPanel(title, body);
     }
 
     static Div createListPanel(String title, List<String> items) {
-        H3 heading = new H3(title);
-        heading.setClassName("panel-title");
-
-        VerticalLayout list = new VerticalLayout();
-        list.setPadding(false);
-        list.setSpacing(false);
-        list.setClassName("stack-list");
-        items.stream().map(TavernComponents::createListItem).forEach(list::add);
-
-        Div panel = new Div(heading, list);
-        panel.setClassName("whale-panel");
-        return panel;
-    }
-
-    private static Paragraph createListItem(String item) {
-        Paragraph row = new Paragraph(item);
-        row.setClassName("stack-item");
-        return row;
+        return new TavernPanel(title, items);
     }
 
     private static void applySurface(Div surface) {

@@ -21,6 +21,7 @@ import fr.eletutour.tavern.vaadin.model.DashboardSnapshot;
 import fr.eletutour.tavern.vaadin.service.StockUpdatedEvent;
 import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import fr.eletutour.tavern.vaadin.view.component.StockRow;
 import java.util.function.Consumer;
 
 @PageTitle("Salle commune")
@@ -82,7 +83,7 @@ public class DashboardView extends VerticalLayout {
 
     private void updateDialogContent(java.util.List<CellarStock> stocks) {
         dialogLayout.removeAll();
-        stocks.forEach(stock -> dialogLayout.add(createStockRow(stock)));
+        stocks.forEach(stock -> dialogLayout.add(new StockRow(stock)));
     }
 
     private HorizontalLayout createActions(TavernService tavernService) {
@@ -123,29 +124,6 @@ public class DashboardView extends VerticalLayout {
         return dialog;
     }
 
-    private Div createStockRow(CellarStock stock) {
-        Span product = new Span(stock.productName());
-        product.setClassName("stock-name");
-
-        Span level = new Span(stock.currentLevel() + " / " + stock.maxLevel() + " " + stock.unit());
-        level.setClassName("stock-level");
-
-        Div header = new Div(product, level);
-        header.setClassName("stock-header");
-
-        Div progressFill = new Div();
-        progressFill.setClassName("stock-progress-fill");
-        int percentage = (int) Math.round((stock.currentLevel() * 100.0) / stock.maxLevel());
-        String color = percentage < 25 ? "var(--stock-low)" : (percentage < 50 ? "var(--stock-medium)" : "var(--stock-high)");
-        progressFill.getStyle().set("width", percentage + "%").set("background-color", color);
-
-        Div progressTrack = new Div(progressFill);
-        progressTrack.setClassName("stock-progress-track");
-
-        Div row = new Div(header, progressTrack);
-        row.setClassName("stock-row");
-        return row;
-    }
 
     private VerticalLayout createDashboardGrid(DashboardSnapshot snapshot) {
         VerticalLayout mainLayout = new VerticalLayout();
