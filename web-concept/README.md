@@ -24,3 +24,10 @@ Démonstration dans la Taverne avec la résolution de langue via `Accept-Languag
 ## [API Versioning Tutorial](api-versioning-tutorial)
 Tutoriel sur le versioning d'API REST Quarkus.
 Démonstration dans la Taverne avec quatre approches : version dans le path, query parameter, header HTTP, et content negotiation via media type.
+
+## [Vaadin Tutorial](vaadin-tutorial)
+Tutoriel sur l'intégration de **Vaadin Flow** dans Quarkus.
+Démonstration d'une interface d'administration riche pour la taverne avec :
+*   Un thème **Médiéval Fantastique** personnalisé (Lumo bypass).
+*   Des vues découpées en composants (Dashboard, Carte, Stocks, Réservations).
+*   Une simulation de stocks en temps réel avec diffusion (Broadcaster) vers l'UI.

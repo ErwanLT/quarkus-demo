@@ -47,6 +47,9 @@ Tutoriel sur l'internationalisation avec Qute MessageBundle et `Accept-Language`
 ### [API Versioning (Taverne DnD)](web-concept/api-versioning-tutorial)
 Tutoriel sur le versioning d'API REST avec Quarkus : path, query parameter, header HTTP et content negotiation via media type.
 
+### [Vaadin Tutorial](web-concept/vaadin-tutorial)
+Tutoriel sur l'intégration de **Vaadin Flow** pour construire des interfaces d'administration riches et réactives avec un thème médiéval personnalisé.
+
 ## Operations (`operations`)
 
 ### [Observabilite - socle](operations/observabilite-tutoriel)
