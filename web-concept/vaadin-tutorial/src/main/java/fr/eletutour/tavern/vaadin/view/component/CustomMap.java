@@ -32,40 +32,42 @@ public class CustomMap extends Div implements HasSize {
         attachEvent.getUI().getPage().addJavaScript("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
         
         // Initialize Map after JS is loaded
-        getElement().executeJs(
-            "const el = this;" +
-            "const loadLeaflet = () => {" +
-            "  if (typeof L === 'undefined') {" +
-            "    setTimeout(loadLeaflet, 100);" +
-            "    return;" +
-            "  }" +
-            "  if (el._map) { return; }" + // Avoid re-initialization
-            "  const map = L.map(el).setView([48.8566, 2.3522], 13);" +
-            "  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" +
-            "    attribution: '&copy; OpenStreetMap contributors'" +
-            "  }).addTo(map);" +
-            "  el._map = map;" +
-            "  if (el._pendingLocations) {" +
-            "    el._pendingLocations.forEach(loc => {" +
-            "      L.marker([loc.lat, loc.lng]).addTo(el._map).bindPopup('<b>' + loc.name + '</b><br>' + loc.desc);" +
-            "    });" +
-            "    delete el._pendingLocations;" +
-            "  }" +
-            "};" +
-            "loadLeaflet();"
+        getElement().executeJs("""
+            const el = this;
+            const loadLeaflet = () => {
+              if (typeof L === 'undefined') {
+                setTimeout(loadLeaflet, 100);
+                return;
+              }
+              if (el._map) { return; } // Avoid re-initialization
+              const map = L.map(el).setView([48.8566, 2.3522], 13);
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+              }).addTo(map);
+              el._map = map;
+              if (el._pendingLocations) {
+                el._pendingLocations.forEach(loc => {
+                  L.marker([loc.lat, loc.lng]).addTo(el._map).bindPopup('<b>' + loc.name + '</b><br>' + loc.desc);
+                });
+                delete el._pendingLocations;
+              }
+            };
+            loadLeaflet();
+            """
         );
     }
 
     public void setLocations(List<MapLocation> locations) {
         for (MapLocation loc : locations) {
-            getElement().executeJs(
-                "const el = this;" +
-                "if (el._map) {" +
-                "  L.marker([$0, $1]).addTo(el._map).bindPopup('<b>' + $2 + '</b><br>' + $3);" +
-                "} else {" +
-                "  if (!el._pendingLocations) el._pendingLocations = [];" +
-                "  el._pendingLocations.push({lat: $0, lng: $1, name: $2, desc: $3});" +
-                "}",
+            getElement().executeJs("""
+                const el = this;
+                if (el._map) {
+                  L.marker([$0, $1]).addTo(el._map).bindPopup('<b>' + $2 + '</b><br>' + $3);
+                } else {
+                  if (!el._pendingLocations) el._pendingLocations = [];
+                  el._pendingLocations.push({lat: $0, lng: $1, name: $2, desc: $3});
+                }
+                """,
                 loc.latitude(), loc.longitude(), loc.name(), loc.description()
             );
         }
