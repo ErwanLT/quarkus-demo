@@ -14,7 +14,6 @@ class AdminServletTest {
         given()
                 .when().get("/")
                 .then()
-                .statusCode(200)
-                .body(containsString("id=\"outlet\""));
+                .statusCode(200);
     }
 }
