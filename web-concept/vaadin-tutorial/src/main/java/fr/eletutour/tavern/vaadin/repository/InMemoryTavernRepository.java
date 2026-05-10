@@ -1,9 +1,11 @@
 package fr.eletutour.tavern.vaadin.repository;
 
+import fr.eletutour.tavern.vaadin.model.AnalyticsData;
 import fr.eletutour.tavern.vaadin.model.CellarBoard;
 import fr.eletutour.tavern.vaadin.model.CellarStock;
 import fr.eletutour.tavern.vaadin.model.DashboardSnapshot;
 import fr.eletutour.tavern.vaadin.model.HighlightMetric;
+import fr.eletutour.tavern.vaadin.model.MapLocation;
 import fr.eletutour.tavern.vaadin.model.MenuBoard;
 import fr.eletutour.tavern.vaadin.model.MenuEntry;
 import fr.eletutour.tavern.vaadin.model.MenuSection;
@@ -29,6 +31,35 @@ public class InMemoryTavernRepository {
             new CellarStock("Hydromel réservé", 9, 18, "cruchons", "A conserver pour les grandes tables."),
             new CellarStock("Vin d'épices", 17, 24, "bouteilles", "Rotation saine sans tension immédiate."),
             new CellarStock("Cidre du nord", 6, 20, "service(s)", "Commande à déclencher avant demain midi.")));
+
+    private final List<MapLocation> mapLocations = List.of(
+            new MapLocation("The Falling Whale", 48.8566, 2.3522, "Votre humble taverne, au coeur de l'action.", "Tavern"),
+            new MapLocation("Docks de Port-Lune", 48.8584, 2.2945, "Arrivage de poissons frais et de rumeurs lointaines.", "POI"),
+            new MapLocation("Marché d'Argent", 48.8606, 2.3376, "Epices, étoffes et pickpockets de talent.", "POI"),
+            new MapLocation("Forêt Interdite", 48.8800, 2.3000, "Attention aux araignées géantes et aux arbres qui parlent.", "Danger")
+    );
+
+    public List<MapLocation> fetchMapLocations() {
+        return mapLocations;
+    }
+
+    public AnalyticsData fetchRevenueData() {
+        return new AnalyticsData(
+                "Revenus des 7 derniers jours (PO)",
+                List.of("Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"),
+                List.of(1250.0, 1480.0, 1100.0, 1950.0, 2800.0, 3200.0, 2480.0),
+                "bar"
+        );
+    }
+
+    public AnalyticsData fetchDrinkPopularity() {
+        return new AnalyticsData(
+                "Popularité des boissons",
+                List.of("Blonde", "Hydromel", "Vin d'épices", "Cidre", "Grog"),
+                List.of(45.0, 25.0, 15.0, 10.0, 5.0),
+                "pie"
+        );
+    }
 
     public DashboardSnapshot fetchDashboardSnapshot() {
         long lowStocks = cellarStocks.stream()

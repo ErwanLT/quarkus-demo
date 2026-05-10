@@ -16,10 +16,12 @@ Puis ouvrir `http://localhost:8080/`.
 - Le servlet `AdminServlet` mappe Vaadin sur `/*` pour exposer l'application a la racine du module.
 - Le package `view` contient uniquement l'assemblage UI Vaadin.
 - `TavernService` orchestre les donnees exposees aux vues.
-- `InMemoryTavernRepository` centralise les jeux de donnees de demonstration.
+- `InMemoryTavernRepository` centralise les jeux de données de démonstration.
 - Le rendu visuel est compose cote composants pour garder un exemple simple a executer dans Quarkus sans pipeline frontend additionnel.
+- **Intégration JS (Bridge Java-JS) :** Démonstration de l'utilisation de bibliothèques gratuites (**Leaflet** pour la carte et **Chart.js** pour les graphiques) en remplacement des composants payants Vaadin Pro. Cela montre comment étendre Vaadin avec `getElement().executeJs()` et les annotations `@JavaScript`/`@StyleSheet`.
 
 ## Aperçu du Thème : "The Falling Whale"
+
 
 L'application utilise désormais un thème **Médiéval Fantastique** personnalisé via CSS (Lumo bypass) :
 

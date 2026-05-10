@@ -53,6 +53,8 @@ public class MainLayout extends AppLayout {
         navigation.addItem(new SideNavItem("Tableau de bord", DashboardView.class, VaadinIcon.DASHBOARD.create()));
         navigation.addItem(new SideNavItem("Carte & Menu", MenuView.class, VaadinIcon.MENU.create()));
         navigation.addItem(new SideNavItem("Réservations", ReservationsView.class, VaadinIcon.CALENDAR.create()));
+        navigation.addItem(new SideNavItem("Exploration", TavernMapView.class, VaadinIcon.ABSOLUTE_POSITION.create()));
+        navigation.addItem(new SideNavItem("Analytiques", AnalyticsView.class, VaadinIcon.CHART_LINE.create()));
         navigation.addItem(new SideNavItem("Stocks & Cave", CellarView.class, VaadinIcon.STORAGE.create()));
         navigation.addItem(new SideNavItem("Service", ServiceView.class, VaadinIcon.RECORDS.create()));
 

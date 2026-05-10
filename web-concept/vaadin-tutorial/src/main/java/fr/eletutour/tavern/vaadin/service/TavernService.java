@@ -1,7 +1,9 @@
 package fr.eletutour.tavern.vaadin.service;
 
+import fr.eletutour.tavern.vaadin.model.AnalyticsData;
 import fr.eletutour.tavern.vaadin.model.CellarBoard;
 import fr.eletutour.tavern.vaadin.model.DashboardSnapshot;
+import fr.eletutour.tavern.vaadin.model.MapLocation;
 import fr.eletutour.tavern.vaadin.model.MenuBoard;
 import fr.eletutour.tavern.vaadin.model.ReservationBoard;
 import fr.eletutour.tavern.vaadin.model.ReservationEntry;
@@ -9,6 +11,8 @@ import fr.eletutour.tavern.vaadin.model.ServiceBoard;
 import fr.eletutour.tavern.vaadin.repository.InMemoryTavernRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
+import java.util.List;
 
 @ApplicationScoped
 public class TavernService {
@@ -40,6 +44,18 @@ public class TavernService {
 
     public ServiceBoard getServiceBoard() {
         return repository.fetchServiceBoard();
+    }
+
+    public List<MapLocation> getMapLocations() {
+        return repository.fetchMapLocations();
+    }
+
+    public AnalyticsData getRevenueData() {
+        return repository.fetchRevenueData();
+    }
+
+    public AnalyticsData getDrinkPopularity() {
+        return repository.fetchDrinkPopularity();
     }
 
     public void addReservation(ReservationEntry entry) {
