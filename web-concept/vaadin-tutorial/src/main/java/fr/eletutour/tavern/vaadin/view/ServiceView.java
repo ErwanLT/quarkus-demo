@@ -7,7 +7,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import fr.eletutour.tavern.vaadin.model.ServiceBoard;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import jakarta.annotation.security.RolesAllowed;
 
+@RolesAllowed("STAFF")
 @PageTitle("Rythme du service")
 @Route(value = "service", layout = MainLayout.class)
 public class ServiceView extends VerticalLayout {

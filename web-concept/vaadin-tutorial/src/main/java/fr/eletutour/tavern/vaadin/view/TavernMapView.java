@@ -5,7 +5,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import fr.eletutour.tavern.vaadin.service.TavernService;
 import fr.eletutour.tavern.vaadin.view.component.CustomMap;
+import jakarta.annotation.security.RolesAllowed;
 
+@RolesAllowed("STAFF")
 @PageTitle("Exploration des environs")
 @Route(value = "map", layout = MainLayout.class)
 public class TavernMapView extends VerticalLayout {

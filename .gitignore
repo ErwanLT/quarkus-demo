@@ -31,3 +31,8 @@ replay_pid*
 /**/target/
 /web-concept/vaadin-tutorial/src/main/frontend/generated/
 /web-concept/vaadin-tutorial/src/main/bundles/
+/web-concept/vaadin-tutorial/node_modules/
+/web-concept/vaadin-tutorial/package.json
+/web-concept/vaadin-tutorial/package-lock.json
+/web-concept/vaadin-tutorial/tsconfig.json
+/web-concept/vaadin-tutorial/types.d.ts

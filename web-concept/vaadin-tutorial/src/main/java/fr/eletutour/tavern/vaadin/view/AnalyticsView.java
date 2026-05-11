@@ -12,10 +12,12 @@ import fr.eletutour.tavern.vaadin.service.StockUpdatedEvent;
 import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
 import fr.eletutour.tavern.vaadin.view.component.CustomChart;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.util.List;
 import java.util.function.Consumer;
 
+@RolesAllowed("ADMIN")
 @PageTitle("Analytiques de la Taverne")
 @Route(value = "analytics", layout = MainLayout.class)
 public class AnalyticsView extends VerticalLayout {

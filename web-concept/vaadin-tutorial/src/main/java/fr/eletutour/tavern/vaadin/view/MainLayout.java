@@ -2,23 +2,40 @@ package fr.eletutour.tavern.vaadin.view;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import fr.eletutour.tavern.vaadin.service.SecurityService;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import jakarta.inject.Inject;
 
-public class MainLayout extends AppLayout {
+public class MainLayout extends AppLayout implements BeforeEnterObserver {
 
-    public MainLayout(TavernService tavernService) {
+    private final SecurityService securityService;
+
+    @Inject
+    public MainLayout(TavernService tavernService, SecurityService securityService) {
+        this.securityService = securityService;
         addClassName("tavern-app-layout");
         addToNavbar(createHeader());
         addToDrawer(createDrawer(tavernService));
         setPrimarySection(Section.DRAWER);
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (securityService.getAuthenticatedUser().isAnonymous()) {
+            event.rerouteTo(LoginView.class);
+        }
     }
 
     private Div createHeader() {
@@ -38,9 +55,14 @@ public class MainLayout extends AppLayout {
         copy.setClassName("brand-copy");
         copy.getStyle().set("display", "flex").set("flex-direction", "column").set("gap", "0.1rem");
 
-        Div header = new Div(toggle, copy);
+        Button logout = new Button("Déconnexion", e -> securityService.logout());
+        logout.getStyle().set("margin-left", "auto").set("margin-right", "1rem");
+        logout.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+
+        Div header = new Div(toggle, copy, logout);
         header.setClassName("topbar-shell");
         header.getStyle().set("display", "flex").set("align-items", "center").set("gap", "1rem");
+        header.setWidthFull();
         return header;
     }
 

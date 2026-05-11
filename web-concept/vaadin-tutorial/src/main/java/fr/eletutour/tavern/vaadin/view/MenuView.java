@@ -13,7 +13,9 @@ import fr.eletutour.tavern.vaadin.model.MenuEntry;
 import fr.eletutour.tavern.vaadin.model.MenuSection;
 import fr.eletutour.tavern.vaadin.service.TavernService;
 import fr.eletutour.tavern.vaadin.view.component.MenuEntryRow;
+import jakarta.annotation.security.RolesAllowed;
 
+@RolesAllowed("STAFF")
 @PageTitle("Carte et ardoise")
 @Route(value = "menu", layout = MainLayout.class)
 public class MenuView extends VerticalLayout {

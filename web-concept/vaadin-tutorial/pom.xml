@@ -33,6 +33,10 @@
             <artifactId>vaadin-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-security</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-quarkus-extension</artifactId>
             <version>${vaadin.version}</version>
@@ -41,6 +45,10 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-dev</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-elytron-security-properties-file</artifactId>
         </dependency>
     </dependencies>
 

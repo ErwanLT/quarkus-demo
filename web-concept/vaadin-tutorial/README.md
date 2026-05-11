@@ -19,6 +19,10 @@ Puis ouvrir `http://localhost:8080/`.
 - `InMemoryTavernRepository` centralise les jeux de données de démonstration.
 - Le rendu visuel est compose cote composants pour garder un exemple simple a executer dans Quarkus sans pipeline frontend additionnel.
 - **Intégration JS (Bridge Java-JS) :** Démonstration de l'utilisation de bibliothèques gratuites (**Leaflet** pour la carte et **Chart.js** pour les graphiques) en remplacement des composants payants Vaadin Pro. Cela montre comment étendre Vaadin avec `getElement().executeJs()` et les annotations `@JavaScript`/`@StyleSheet`.
+- **Sécurisation (Quarkus Security) :** Mise en place d'une authentification par formulaire avec gestion des rôles.
+  - **Accès STAFF :** `servante` / `biere` (voit tout sauf les analytiques).
+  - **Accès ADMIN :** `tavernier` / `secret` (accès complet).
+  - Intégration de `LoginForm` Vaadin avec le mécanisme de sécurité de Quarkus.
 
 ## Aperçu du Thème : "The Falling Whale"
 

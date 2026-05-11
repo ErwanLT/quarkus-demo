@@ -26,11 +26,13 @@ import fr.eletutour.tavern.vaadin.model.ReservationEntry;
 import fr.eletutour.tavern.vaadin.service.ReservationAddedEvent;
 import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
+@RolesAllowed("STAFF")
 @UIScoped
 @PageTitle("Reservations")
 @Route(value = "reservations", layout = MainLayout.class)

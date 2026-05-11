@@ -16,8 +16,10 @@ import fr.eletutour.tavern.vaadin.service.StockUpdatedEvent;
 import fr.eletutour.tavern.vaadin.service.TavernBroadcaster;
 import fr.eletutour.tavern.vaadin.service.TavernService;
 import fr.eletutour.tavern.vaadin.view.component.StockRow;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.function.Consumer;
 
+@RolesAllowed("STAFF")
 @PageTitle("Cave et futailles")
 @Route(value = "cellar", layout = MainLayout.class)
 public class CellarView extends VerticalLayout {
