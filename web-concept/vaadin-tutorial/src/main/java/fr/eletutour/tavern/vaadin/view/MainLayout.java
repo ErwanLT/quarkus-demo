@@ -1,5 +1,6 @@
 package fr.eletutour.tavern.vaadin.view;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -56,8 +57,6 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
         copy.getStyle().set("display", "flex").set("flex-direction", "column").set("gap", "0.1rem");
 
         Button logout = new Button("Déconnexion", e -> securityService.logout());
-        logout.getStyle().set("margin-left", "auto").set("margin-right", "1rem");
-        logout.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         Div header = new Div(toggle, copy, logout);
         header.setClassName("topbar-shell");
