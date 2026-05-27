@@ -33,7 +33,7 @@ public class StockSimulationService {
         scheduler.scheduleAtFixedRate(this::simulateStockChanges, 5, 10, TimeUnit.SECONDS);
     }
 
-    private void simulateStockChanges() {
+    void simulateStockChanges() {
         LOG.debug("Simulation d'un cycle de consommation...");
         for (CellarStock stock : repository.getCellarStocks()) {
             // Simulate consumption
