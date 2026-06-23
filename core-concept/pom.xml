@@ -23,6 +23,7 @@
         <module>doc-tutorial</module>
         <module>security</module>
         <module>exception-handling-tutorial</module>
+        <module>cache-tutorial</module>
     </modules>
 
 </project>

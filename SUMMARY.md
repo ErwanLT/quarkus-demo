@@ -12,6 +12,7 @@
   - JWT
     - JWT classique
     - JWT + JPA (login + generation de token)
+- Mise en cache (L'ardoise magique - `@CacheResult`, `@CacheInvalidate`)
 
 ## Web Concept (`web-concept`)
 - Qute (templates, layout, formulaires, Panache)

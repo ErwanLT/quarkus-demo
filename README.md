@@ -24,6 +24,11 @@ Exemples Basic Auth pour proteger la reserve de nourriture et de biere.
 #### [JWT](core-concept/security/jwt)
 Exemple JWT pour proteger le livre de comptes et le coffre fort.
 
+### [Cache - L'ardoise magique](core-concept/cache-tutorial)
+Démonstration de `quarkus-cache` avec `@CacheResult`, `@CacheInvalidate` et `@CacheInvalidateAll`.
+Le tavernier lève les yeux vers son ardoise magique (le cache mémoire) plutôt que de redescendre
+à la cave consulter le grand livre à chaque commande d'un aventurier.
+
 ## Web Concept (`web-concept`)
 
 ### [Qute Tutorial](web-concept/qute-tutorial)
