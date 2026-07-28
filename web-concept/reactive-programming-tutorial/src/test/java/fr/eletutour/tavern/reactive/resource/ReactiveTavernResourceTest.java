@@ -27,6 +27,23 @@ class ReactiveTavernResourceTest {
     }
 
     @Test
+    @DisplayName("Devrait servir plusieurs chopes simultanement via Uni.join")
+    void shouldExposeSimultaneousBeerRoundWithUniJoin() {
+        RestAssured.given()
+                .queryParam("aventuriers", "Gimli,Legolas,Frodon")
+                .queryParam("durationMs", 10)
+                .when()
+                .get("/taverne/reactif/pression/simultanee")
+                .then()
+                .statusCode(200)
+                .body("$", hasSize(3))
+                .body("[0].adventurer", equalTo("Gimli"))
+                .body("[1].adventurer", equalTo("Legolas"))
+                .body("[2].adventurer", equalTo("Frodon"))
+                .body("[0].durationMs", equalTo(10));
+    }
+
+    @Test
     @DisplayName("Devrait collecter le flux Multi dans une liste JSON")
     void shouldCollectMultiAsJsonList() {
         RestAssured.given()

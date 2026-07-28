@@ -15,6 +15,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -70,7 +71,7 @@ public class ReactiveTavernResource {
     @APIResponse(
             responseCode = "200",
             description = "Chopes servies simultanement.",
-            content = @Content(schema = @Schema(implementation = BeerResponse.class))
+            content = @Content(schema = @Schema(type = SchemaType.ARRAY, implementation = BeerResponse.class))
     )
     public Uni<List<BeerResponse>> pourTournee(
             @Parameter(description = "Noms des aventuriers separes par une virgule.", example = "Gimli,Legolas,Frodon")
