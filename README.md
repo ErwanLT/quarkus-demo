@@ -52,6 +52,9 @@ Tutoriel sur l'internationalisation avec Qute MessageBundle et `Accept-Language`
 ### [API Versioning (Taverne DnD)](web-concept/api-versioning-tutorial)
 Tutoriel sur le versioning d'API REST avec Quarkus : path, query parameter, header HTTP et content negotiation via media type.
 
+### [Programmation reactive (Taverne DnD)](web-concept/reactive-programming-tutorial)
+Tutoriel Mutiny avec le tavernier aux huit bras : `Uni` pour une chope servie plus tard, `Multi` pour une file de clients en flux continu, et comparaison avec l'imperatif bloquant.
+
 ### [Vaadin Tutorial](web-concept/vaadin-tutorial)
 Tutoriel sur l'intégration de **Vaadin Flow** pour construire des interfaces d'administration riches. Inclut une démonstration d'**intégration JavaScript personnalisée** (Leaflet pour les cartes, Chart.js pour les graphiques) pour s'affranchir des composants payants tout en gardant un thème médiéval immersif.
 

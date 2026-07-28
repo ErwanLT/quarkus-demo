@@ -17,6 +17,7 @@
         <module>rate-limiting-tutorial</module>
         <module>i18n-tutorial</module>
         <module>api-versioning-tutorial</module>
+        <module>reactive-programming-tutorial</module>
         <module>vaadin-tutorial</module>
         <module>graphQL</module>
     </modules>

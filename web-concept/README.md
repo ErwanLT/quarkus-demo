@@ -25,6 +25,10 @@ Démonstration dans la Taverne avec la résolution de langue via `Accept-Languag
 Tutoriel sur le versioning d'API REST Quarkus.
 Démonstration dans la Taverne avec quatre approches : version dans le path, query parameter, header HTTP, et content negotiation via media type.
 
+## [Reactive Programming Tutorial](reactive-programming-tutorial)
+Tutoriel sur la programmation réactive avec Mutiny.
+Démonstration dans la Taverne avec le **tavernier aux huit bras** : `Uni` pour une action future unique, `Multi` pour un flux continu de clients, et comparaison avec une approche impérative bloquante.
+
 ## [Vaadin Tutorial](vaadin-tutorial)
 Tutoriel sur l'intégration de **Vaadin Flow** dans Quarkus.
 Démonstration d'une interface d'administration riche pour la taverne avec :
