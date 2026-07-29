@@ -32,6 +32,14 @@ rapport à une CLI classique : le processus ne s'arrête pas après une commande
 garde le commis éveillé dans une boucle, affiche une invite `commis>`, et exécute chaque ligne tapée
 jusqu'à ce qu'on le renvoie se coucher (`quitter`, `exit`, ou `bonne-nuit`).
 
+Le terminal est géré par **JLine3** plutôt que par un simple `Scanner` :
+
+- **Tab** complète le nom d'une mission, puis ses options, à partir du modèle Picocli lui-même
+  (`MissionCompleter`) : pas de liste de complétion à maintenir à la main.
+- **Flèches haut/bas** parcourent l'historique des commandes tapées.
+- **Ctrl+C** annule la ligne en cours sans réveiller le commis pour autant.
+- **Ctrl+D** le renvoie se coucher proprement, comme `quitter`.
+
 ## Lancer le commis en mode dev
 
 ```bash
@@ -69,6 +77,11 @@ avant même d'afficher l'invite.
 ./mvnw package -Dnative
 ./target/commis-de-course-1.0.0-SNAPSHOT-runner
 ```
+
+**Note native + JLine** : JLine s'appuie sur des mécanismes bas niveau du terminal (JNA/JNI selon
+la plateforme) qui demandent parfois une configuration de réflexion GraalVM supplémentaire. Si le
+binaire natif ne gère pas bien Tab ou les flèches, commence par valider en JVM classique (section
+précédente), le temps d'ajuster la configuration `native-image` si besoin.
 
 ## Ajouter une nouvelle mission
 

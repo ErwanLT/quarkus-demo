@@ -3,11 +3,16 @@ package fr.eletutour.taverne.commis;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.inject.Inject;
+import org.jline.reader.EndOfFileException;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.UserInterruptException;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +21,10 @@ import java.util.regex.Pattern;
  * "one-shot" (reveille pour une seule course puis renvoye au lit), ce commis
  * reste dans la cour de la taverne, une lanterne a la main, et attend qu'on
  * lui donne des ordres un a un, jusqu'a ce qu'on le liberre.
+ *
+ * <p>Le terminal est gere par JLine3, ce qui offre gratuitement l'auto-completion
+ * (Tab), l'historique (fleches haut/bas) et l'edition de ligne, choses qu'un simple
+ * {@code Scanner} sur {@code System.in} ne sait pas faire.</p>
  */
 public class CommisShellApplication implements QuarkusApplication {
 
@@ -31,20 +40,28 @@ public class CommisShellApplication implements QuarkusApplication {
     CommandLine.IFactory factory;
 
     @Override
-    public int run(String... args) {
+    public int run(String... args) throws Exception {
         CommandLine commandLine = new CommandLine(new CommisDeCourseCommand(), factory);
 
-        afficherAccueil();
+        try (Terminal terminal = TerminalBuilder.builder().system(true).build()) {
+            LineReader lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .completer(new MissionCompleter(commandLine))
+                    .build();
 
-        try (Scanner clavier = new Scanner(System.in)) {
+            afficherAccueil();
+
             while (true) {
-                System.out.print("commis> ");
-
-                if (!clavier.hasNextLine()) {
+                String ligne;
+                try {
+                    ligne = lineReader.readLine("commis> ").trim();
+                } catch (UserInterruptException interruption) {
+                    // Ctrl+C : on annule la ligne en cours, le commis reste eveille.
+                    continue;
+                } catch (EndOfFileException finDeFichier) {
+                    // Ctrl+D : on renvoie le commis se coucher proprement.
                     break;
                 }
-
-                String ligne = clavier.nextLine().trim();
 
                 if (ligne.isEmpty()) {
                     continue;
@@ -68,8 +85,8 @@ public class CommisShellApplication implements QuarkusApplication {
     private void afficherAccueil() {
         System.out.println("=================================================");
         System.out.println(" Le commis de course est reveille et pret.");
-        System.out.println(" Tapez 'help' pour voir les missions disponibles,");
-        System.out.println(" ou 'quitter' pour le renvoyer se coucher.");
+        System.out.println(" Tab pour l'auto-completion, 'help' pour l'aide,");
+        System.out.println(" 'quitter' pour le renvoyer se coucher.");
         System.out.println("=================================================");
     }
 
