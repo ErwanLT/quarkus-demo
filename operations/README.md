@@ -17,3 +17,7 @@ Tutoriel d'introduction aux tests de charge avec l'API Java de Gatling, avec le 
 
 ## [Batch processing - brassage de nuit](batch-processing-tutorial)
 Simulation d'une journee de consommation puis reappro automatique des stocks la nuit via Quarkus Scheduler.
+
+## [Command line - commis de course](command-line)
+Application Quarkus en ligne de commande avec Picocli et JLine3.
+Le commis expose un shell interactif, complete les missions au clavier et execute des commandes injectables comme `exporter-dettes`, `reassort-urgent` ou `purger-grimoire`.

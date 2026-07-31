@@ -72,7 +72,17 @@ Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour st
 ### [Batch Processing (Brassage de nuit)](operations/batch-processing-tutorial)
 Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.
 
+### [Command Line (Commis de course)](operations/command-line)
+Tutoriel sur la creation d'une application Quarkus en ligne de commande avec Picocli et JLine3, sous forme de shell interactif pour lancer des missions de taverne.
+
 ## Database Access (`database-access`)
 
 ### [Hibernate Panache](database-access/panache-tutorial)
 Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les patterns Active Record et Repository via le Grimoire des Recettes de la Taverne.
+
+## Integration (`integration`)
+
+### [Messaging](integration/messaging)
+Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements.
+#### [Server-Sent Events (Panneau magique)](integration/messaging/sse-tutorial)
+Tutoriel SSE avec RESTEasy Reactive et Mutiny pour diffuser les annonces du barman en temps reel vers les aventuriers connectes.

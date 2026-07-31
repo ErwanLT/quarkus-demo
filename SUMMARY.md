@@ -24,14 +24,20 @@
 - Internationalisation & Localisation (i18n/l10n)
 - Versioning d'API REST (path, parameter, header, media type)
 - Programmation reactive (Mutiny - `Uni`, `Multi`)
+- Vaadin Flow (UI d'administration, composants, simulation temps reel)
 
 ## Operations (`operations`)
 - Observabilite (metrics, tracing, log correlation)
 - Tests de charge (Gatling Java DSL)
 - Batch processing (brassage nocturne multi-bieres)
+- Command line (Picocli, JLine3, shell interactif)
 
 ## Database Access (`database-access`)
 - Hibernate Panache (Active Record vs Repository)
+
+## Integration (`integration`)
+- Messaging
+  - Server-Sent Events (RESTEasy Reactive, Mutiny, flux `text/event-stream`)
 
 # Sujets non encore traites (Roadmap)
 
@@ -47,7 +53,7 @@
 - Multi-tenancy
 
 ## Integration
-- Messaging (JMS, Kafka)
+- Messaging avance (JMS, Kafka)
 - gRPC
 - WebSockets
 - REST Client (MicroProfile Rest Client)
