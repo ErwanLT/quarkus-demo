@@ -8,7 +8,6 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.UserInterruptException;
 import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
@@ -22,9 +21,9 @@ import java.util.regex.Pattern;
  * reste dans la cour de la taverne, une lanterne a la main, et attend qu'on
  * lui donne des ordres un a un, jusqu'a ce qu'on le liberre.
  *
- * <p>Le terminal est gere par JLine3, ce qui offre gratuitement l'auto-completion
- * (Tab), l'historique (fleches haut/bas) et l'edition de ligne, choses qu'un simple
- * {@code Scanner} sur {@code System.in} ne sait pas faire.</p>
+ * <p>Le terminal est desormais un bean CDI (voir {@link TerminalProducer}),
+ * partage entre cette boucle et les missions qui ont besoin d'afficher un
+ * sablier ou une jauge de progression (voir le package {@code affichage}).</p>
  */
 public class CommisShellApplication implements QuarkusApplication {
 
@@ -39,43 +38,44 @@ public class CommisShellApplication implements QuarkusApplication {
     @Inject
     CommandLine.IFactory factory;
 
+    @Inject
+    Terminal terminal;
+
     @Override
     public int run(String... args) throws Exception {
         CommandLine commandLine = new CommandLine(new CommisDeCourseCommand(), factory);
 
-        try (Terminal terminal = TerminalBuilder.builder().system(true).build()) {
-            LineReader lineReader = LineReaderBuilder.builder()
-                    .terminal(terminal)
-                    .completer(new MissionCompleter(commandLine))
-                    .build();
+        LineReader lineReader = LineReaderBuilder.builder()
+                .terminal(terminal)
+                .completer(new MissionCompleter(commandLine))
+                .build();
 
-            afficherAccueil();
+        afficherAccueil();
 
-            while (true) {
-                String ligne;
-                try {
-                    ligne = lineReader.readLine("commis> ").trim();
-                } catch (UserInterruptException interruption) {
-                    // Ctrl+C : on annule la ligne en cours, le commis reste eveille.
-                    continue;
-                } catch (EndOfFileException finDeFichier) {
-                    // Ctrl+D : on renvoie le commis se coucher proprement.
-                    break;
-                }
-
-                if (ligne.isEmpty()) {
-                    continue;
-                }
-                if (MOTS_DE_CONGE.contains(ligne.toLowerCase())) {
-                    break;
-                }
-                if (ligne.equalsIgnoreCase("help")) {
-                    commandLine.usage(System.out);
-                    continue;
-                }
-
-                commandLine.execute(decouper(ligne));
+        while (true) {
+            String ligne;
+            try {
+                ligne = lineReader.readLine("commis> ").trim();
+            } catch (UserInterruptException interruption) {
+                // Ctrl+C : on annule la ligne en cours, le commis reste eveille.
+                continue;
+            } catch (EndOfFileException finDeFichier) {
+                // Ctrl+D : on renvoie le commis se coucher proprement.
+                break;
             }
+
+            if (ligne.isEmpty()) {
+                continue;
+            }
+            if (MOTS_DE_CONGE.contains(ligne.toLowerCase())) {
+                break;
+            }
+            if (ligne.equalsIgnoreCase("help")) {
+                commandLine.usage(System.out);
+                continue;
+            }
+
+            commandLine.execute(decouper(ligne));
         }
 
         System.out.println("Le commis repart se coucher. A bientot pour une prochaine course.");

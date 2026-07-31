@@ -24,7 +24,7 @@ public class RegistreDettesService {
     public List<DetteAventurier> listerDettes() {
         return List.of(
                 new DetteAventurier("Aragorn", new BigDecimal("42.50"), 12),
-                new DetteAventurier("Boromir", new BigDecimal("128.00"), 45),
+                new DetteAventurier("Boromir la cible", new BigDecimal("128.00"), 45),
                 new DetteAventurier("Gimli", new BigDecimal("7.30"), 90)
         );
     }

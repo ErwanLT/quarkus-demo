@@ -3,6 +3,7 @@ package fr.eletutour.taverne.commis;
 import fr.eletutour.taverne.commis.mission.ExporterDettesCommand;
 import fr.eletutour.taverne.commis.mission.PurgerGrimoireCommand;
 import fr.eletutour.taverne.commis.mission.ReassortUrgentCommand;
+import fr.eletutour.taverne.commis.mission.VoyageMarcheCommand;
 import picocli.CommandLine.Command;
 
 /**
@@ -24,7 +25,8 @@ import picocli.CommandLine.Command;
         subcommands = {
                 ExporterDettesCommand.class,
                 ReassortUrgentCommand.class,
-                PurgerGrimoireCommand.class
+                PurgerGrimoireCommand.class,
+                VoyageMarcheCommand.class
         }
 )
 public class CommisDeCourseCommand implements Runnable {

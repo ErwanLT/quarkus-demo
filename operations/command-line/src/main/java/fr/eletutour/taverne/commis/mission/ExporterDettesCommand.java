@@ -1,8 +1,11 @@
 package fr.eletutour.taverne.commis.mission;
 
+import fr.eletutour.taverne.commis.affichage.GrandRegistre;
+import fr.eletutour.taverne.commis.affichage.SceauDuTavernier;
 import fr.eletutour.taverne.commis.domain.DetteAventurier;
 import fr.eletutour.taverne.commis.service.RegistreDettesService;
 import jakarta.inject.Inject;
+import org.jline.terminal.Terminal;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -24,6 +27,9 @@ public class ExporterDettesCommand implements Callable<Integer> {
     @Inject
     RegistreDettesService registreDettesService;
 
+    @Inject
+    Terminal terminal;
+
     @Option(
             names = {"-c", "--critiques-seulement"},
             description = "N'affiche que les dettes critiques (retard superieur a 30 jours)."
@@ -41,14 +47,26 @@ public class ExporterDettesCommand implements Callable<Integer> {
             return 0;
         }
 
-        dettes.forEach(dette -> System.out.printf(
-                "%-12s %8.2f po (%d jours de retard)%s%n",
+        GrandRegistre registre = new GrandRegistre(List.of("Aventurier", "Montant", "Retard"));
+        dettes.forEach(dette -> registre.ajouterLigne(List.of(
                 dette.nomAventurier(),
-                dette.montant(),
-                dette.joursDeRetard(),
-                dette.estCritique() ? "  [CRITIQUE]" : ""
-        ));
+                String.format("%.2f po", dette.montant()),
+                dette.joursDeRetard() + " jours"
+        )));
 
+        System.out.println(registre.construireEntete());
+
+        List<String> lignes = registre.construireLignes();
+        for (int index = 0; index < dettes.size(); index++) {
+            String ligne = lignes.get(index);
+            if (dettes.get(index).estCritique()) {
+                System.out.println(SceauDuTavernier.alerte(terminal, ligne));
+            } else {
+                System.out.println(ligne);
+            }
+        }
+
+        System.out.println(registre.construirePied());
         System.out.printf("%nMission accomplie : %d dette(s) rapportee(s).%n", dettes.size());
         return 0;
     }
