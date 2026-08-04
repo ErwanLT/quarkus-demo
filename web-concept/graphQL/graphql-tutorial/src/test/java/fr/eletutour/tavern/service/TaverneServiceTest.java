@@ -24,7 +24,7 @@ class TaverneServiceTest {
         List<Aventurier> result = taverneService.getAllAventuriers();
         
         assertFalse(result.isEmpty());
-        assertEquals(1, result.size());
+        assertEquals(8, result.size());
         assertEquals("Baldric", result.getFirst().nom);
     }
 
