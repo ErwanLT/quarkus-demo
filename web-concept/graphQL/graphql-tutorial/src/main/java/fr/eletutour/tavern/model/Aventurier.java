@@ -12,6 +12,8 @@ public class Aventurier {
 
     public Integer niveau;
 
+    public Integer soldeOr;
+
     public List<Quete> quetes;
 
 }
