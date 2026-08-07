@@ -5,13 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>fr.eletutour</groupId>
-        <artifactId>graphQL</artifactId>
+        <artifactId>federation-tutorial</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>graphql-tutorial</artifactId>
+    <artifactId>quete-service</artifactId>
 
     <properties>
+        <maven.compiler.source>26</maven.compiler.source>
+        <maven.compiler.target>26</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

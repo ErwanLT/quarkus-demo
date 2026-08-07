@@ -38,3 +38,6 @@ replay_pid*
 /web-concept/vaadin-tutorial/types.d.ts
 
 .DS_Store
+/web-concept/graphQL/federation-tutorial/router/supergraph.graphql
+/web-concept/graphQL/federation-tutorial/router/quete.graphql
+/web-concept/graphQL/federation-tutorial/router/aventurier.graphql

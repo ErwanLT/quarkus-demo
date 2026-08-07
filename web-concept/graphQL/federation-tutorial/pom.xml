@@ -5,31 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>fr.eletutour</groupId>
-        <artifactId>web-concept</artifactId>
+        <artifactId>graphQL</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
+    <modules>
+        <module>aventurier-service</module>
+        <module>quete-service</module>
+    </modules>
 
-    <artifactId>graphQL</artifactId>
+    <artifactId>federation-tutorial</artifactId>
 
     <properties>
         <maven.compiler.source>26</maven.compiler.source>
         <maven.compiler.target>26</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <modules>
-        <module>graphql-tutorial</module>
-        <module>graphql-client-tutorial</module>
-        <module>graphql-client-advanced-tutorial</module>
-        <module>federation-tutorial</module>
-    </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-graphql</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

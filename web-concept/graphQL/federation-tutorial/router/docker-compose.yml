@@ -1,0 +1,16 @@
+services:
+  router:
+    image: ghcr.io/apollographql/router:v1.55.0
+    container_name: taverne-router
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./router.yaml:/dist/config/router.yaml:ro
+      - ./supergraph.graphql:/dist/schema/supergraph.graphql:ro
+    command:
+      - --config
+      - /dist/config/router.yaml
+      - --supergraph
+      - /dist/schema/supergraph.graphql
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
