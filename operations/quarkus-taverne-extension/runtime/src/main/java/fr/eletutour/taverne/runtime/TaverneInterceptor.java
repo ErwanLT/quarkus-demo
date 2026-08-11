@@ -24,7 +24,6 @@ public class TaverneInterceptor {
 
     @AroundInvoke
     Object crierLaQuete(InvocationContext context) throws Exception {
-        System.out.println(">>> TaverneInterceptor entered! config=" + config + " enabled=" + (config != null ? config.enabled() : "null"));
         if (!config.enabled()) {
             return context.proceed();
         }
