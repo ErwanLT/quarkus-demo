@@ -17,6 +17,7 @@
         <module>observabilite-advanced-tutorial</module>
         <module>batch-processing-tutorial</module>
         <module>command-line</module>
+        <module>quarkus-taverne-extension</module>
     </modules>
 
     <profiles>
