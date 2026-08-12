@@ -1,23 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>fr.eletutour</groupId>
         <artifactId>quarkus-taverne-extension</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <artifactId>runtime</artifactId>
-    <name>La Taverne - Runtime</name>
-
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+    <!--  L'artifactId doit être le préfixe exact de celui du module deployment
+             (quarkus-taverne / quarkus-taverne-deployment) : c'est ce couplage
+             nominal qui permet à Quarkus de rattacher les BuildItem de la forge
+             à cette extension, notamment les cards de la Dev UI.  -->
+    <artifactId>quarkus-taverne</artifactId>
+    <name>La Taverne</name>
+    <!--  Reprise telle quelle dans META-INF/quarkus-extension.yaml : sans elle,
+             la Dev UI reçoit une description null et n'affiche plus aucune card.  -->
+    <description>Invoque l'esprit de la taverne : journalise chaque quête entreprise par les héros du royaume.</description>
     <dependencies>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -26,6 +22,8 @@
     </dependencies>
     <build>
         <plugins>
+            <!--  Génère META-INF/quarkus-extension.yaml, indispensable pour que
+                             Quarkus découvre le module deployment associé à cette extension.  -->
             <plugin>
                 <groupId>io.quarkus</groupId>
                 <artifactId>quarkus-extension-maven-plugin</artifactId>
@@ -37,11 +35,13 @@
                         </goals>
                         <phase>process-resources</phase>
                         <configuration>
-                            <deployment>fr.eletutour:deployment:${project.version}</deployment>
+                            <deployment>fr.eletutour:quarkus-taverne-deployment:${project.version}</deployment>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!--  Indexe les classes de ce module (annotations CDI, @ConfigMapping...)
+                             pour qu'elles soient visibles au build par l'application consommatrice.  -->
             <plugin>
                 <groupId>io.smallrye</groupId>
                 <artifactId>jandex-maven-plugin</artifactId>
@@ -56,5 +56,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -4,6 +4,8 @@ import fr.eletutour.taverne.runtime.TaverneInterceptor;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
+import io.quarkus.devui.spi.page.CardPageBuildItem;
+import io.quarkus.devui.spi.page.Page;
 
 /**
  * La forge elle-même. Chaque méthode annotée {@code @BuildStep} est un coup
@@ -41,5 +43,18 @@ class TaverneProcessor {
                 .addBeanClass(TaverneInterceptor.class)
                 .setUnremovable()
                 .build();
+    }
+
+    @BuildStep(onlyIf = io.quarkus.deployment.IsLocalDevelopment.class)
+    CardPageBuildItem carteDeLaTaverne() {
+
+        CardPageBuildItem card = new CardPageBuildItem();
+
+        card.addPage(Page.webComponentPageBuilder()
+                .title("La carte de la Taverne")
+                .icon("font-awesome-solid:map")
+                .componentLink("qwc-taverne-map.js"));
+
+        return card;
     }
 }

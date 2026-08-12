@@ -33,9 +33,8 @@ public class TaverneInterceptor {
 
         try {
             Object resultat = context.proceed();
-            System.out.println(">>> TaverneInterceptor called! quete=" + quete);
             LOG.infof("[la-taverne] %s : quête accomplie.", quete);
-            return "INTERCEPTED: " + resultat;
+            return resultat;
         } catch (Exception e) {
             LOG.warnf("[la-taverne] %s : la quête a échoué (%s).", quete, e.getMessage());
             throw e;

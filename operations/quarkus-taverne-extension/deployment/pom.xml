@@ -1,56 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>fr.eletutour</groupId>
         <artifactId>quarkus-taverne-extension</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <artifactId>deployment</artifactId>
+    <!--  Le suffixe "-deployment" n'est pas décoratif : ArtifactInfoUtil le retire
+             pour retrouver l'artifactId du module runtime. Un module nommé simplement
+             "deployment" ne se rattache à rien.  -->
+    <artifactId>quarkus-taverne-deployment</artifactId>
     <name>La Taverne - Deployment (la forge elle-même)</name>
-
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>fr.eletutour</groupId>
-            <artifactId>runtime</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>quarkus-taverne</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc-deployment</artifactId>
         </dependency>
+        <!--  Nécessaire uniquement pour le CardPageBuildItem de la section Dev UI.
+                     Si tu retires cette carte, retire aussi cette dépendance.  -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest-deployment</artifactId>
+            <artifactId>quarkus-devui-deployment-spi</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-openapi-deployment</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest-jackson-deployment</artifactId>
-        </dependency>
-        <!--  Pour la partie tests d'extension (QuarkusUnitTest)  -->
+        <!--  Pour l'épreuve de trempe (QuarkusUnitTest)  -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit-internal</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
+            <!--  Sans ce processeur d'annotations, aucun @BuildStep n'est découvert :
+                             c'est lui qui génère META-INF/quarkus-build-steps.list, le seul
+                             registre que Quarkus consulte pour trouver la forge.  -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler-plugin.version}</version>
@@ -66,5 +53,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
