@@ -14,6 +14,7 @@
 
     <modules>
         <module>sse-tutorial</module>
+        <module>kafka-tutorial</module>
     </modules>
 
     <properties>

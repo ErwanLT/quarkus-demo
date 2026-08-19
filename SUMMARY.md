@@ -38,6 +38,7 @@
 ## Integration (`integration`)
 - Messaging
   - Server-Sent Events (RESTEasy Reactive, Mutiny, flux `text/event-stream`)
+  - kafka
 
 # Sujets non encore traites (Roadmap)
 
@@ -53,7 +54,7 @@
 - Multi-tenancy
 
 ## Integration
-- Messaging avance (JMS, Kafka)
+- Messaging avance (JMS)
 - gRPC
 - WebSockets
 - REST Client (MicroProfile Rest Client)
