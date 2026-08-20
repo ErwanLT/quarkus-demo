@@ -31,6 +31,7 @@
 - Tests de charge (Gatling Java DSL)
 - Batch processing (brassage nocturne multi-bieres)
 - Command line (Picocli, JLine3, shell interactif)
+- Extension Quarkus personnalisée (intercepteur `@Taverne` avec modules runtime/deployment)
 
 ## Database Access (`database-access`)
 - Hibernate Panache (Active Record vs Repository)
@@ -38,7 +39,7 @@
 ## Integration (`integration`)
 - Messaging
   - Server-Sent Events (RESTEasy Reactive, Mutiny, flux `text/event-stream`)
-  - kafka
+  - Kafka (Volière aux corbeaux, Retry et Dead Letter Queue / DLQ)
 
 # Sujets non encore traites (Roadmap)
 

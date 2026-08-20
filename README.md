@@ -75,6 +75,9 @@ Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatique
 ### [Command Line (Commis de course)](operations/command-line)
 Tutoriel sur la creation d'une application Quarkus en ligne de commande avec Picocli et JLine3, sous forme de shell interactif pour lancer des missions de taverne.
 
+### [Extension Quarkus personnalisée (Rune de la Taverne)](operations/quarkus-taverne-extension)
+Tutoriel sur la création d'une extension Quarkus personnalisée (découpée en modules *runtime* et *deployment*) pour intercepter et loguer des méthodes annotées avec `@Taverne`.
+
 ## Database Access (`database-access`)
 
 ### [Hibernate Panache](database-access/panache-tutorial)
@@ -86,3 +89,5 @@ Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les pa
 Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements.
 #### [Server-Sent Events (Panneau magique)](integration/messaging/sse-tutorial)
 Tutoriel SSE avec RESTEasy Reactive et Mutiny pour diffuser les annonces du barman en temps reel vers les aventuriers connectes.
+#### [Corbeaux messagers (Kafka)](integration/messaging/kafka-tutorial)
+Tutoriel d'intégration avec Apache Kafka (Redpanda) et SmallRye Reactive Messaging, incluant les mécanismes de tentatives (**Retry**) et de redirection vers la **Dead Letter Queue (DLQ)**.

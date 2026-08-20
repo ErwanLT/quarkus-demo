@@ -21,3 +21,6 @@ Simulation d'une journee de consommation puis reappro automatique des stocks la 
 ## [Command line - commis de course](command-line)
 Application Quarkus en ligne de commande avec Picocli et JLine3.
 Le commis expose un shell interactif, complete les missions au clavier et execute des commandes injectables comme `exporter-dettes`, `reassort-urgent` ou `purger-grimoire`.
+
+## [Extension Quarkus personnalisée - rune de la taverne](quarkus-taverne-extension)
+Tutoriel sur la création d'une extension Quarkus personnalisée (découpée en modules *runtime* et *deployment*) permettant de créer l'intercepteur `@Taverne` pour loguer et commenter l'exécution des méthodes annotées.
