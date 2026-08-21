@@ -27,7 +27,7 @@ public class CaveABiereHealthCheck implements HealthCheck {
         return HealthCheckResponse.named("Acces a la reserve de biere")
             .status(accesCaveOk)
             .withData("temperature_cave", accesCaveOk ? "12 C" : "68 C")
-            .withData("escalier_praticable", accesCaveOk)
+            .withData("escalier_praticable", accesCaveOk ? "Oui" : "Non")
             .withData("origine_incendie", etat.origineIncendie())
             .build();
     }
