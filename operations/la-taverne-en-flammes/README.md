@@ -294,13 +294,17 @@ Lorsque l'alerte Prometheus est déclenchée, l'exploitant doit suivre un plan d
 flowchart TD
     A[Alerte Reçue] --> B{Sondes de Santé /q/health}
     B -- DOWN/Liveness --> C[Redémarrer l'instance]
-    B -- DOWN/Readiness --> D{Vérifier les Dépendances}
-    D -- Base de Données --> E[Inspecter le Pool de Connexion Agroal]
-    D -- Messagerie --> F[Inspecter le Consumer Lag]
-    B -- UP mais Lenteur --> G[Analyser les Métriques JVM & Thread Pool]
+    B -- DOWN/Readiness --> D[Inspecter le Pool de Connexion Agroal]
+    B -- UP --> E{Retard de la volière ?}
+    E -- Oui --> F[Inspecter le Consumer Lag]
+    E -- Non --> G{Grimoire distant dégradé ?}
+    G -- Oui --> H[Vérifier @Timeout / @Fallback]
+    G -- Non --> I{Tournées encore en cours ?}
+    I -- Oui --> J[Analyser les Métriques JVM & Thread Pool]
+    I -- Non --> K[UP : rien à signaler]
 ```
 
-Ce diagramme est implémenté par [`RunbookService`](src/main/java/fr/eletutour/tavern/flammes/exploitation/RunbookService.java), qui interroge les sondes puis descend vers la dépendance qui bloque :
+Ce diagramme reprend, dans l'ordre, les branches réellement évaluées par [`RunbookService`](src/main/java/fr/eletutour/tavern/flammes/exploitation/RunbookService.java) : liveness, puis readiness, puis retard de la volière, puis dépendance externe (grimoire), puis lenteur résiduelle :
 
 ```bash
 curl http://localhost:8086/taverne/exploitation/runbook
@@ -314,12 +318,15 @@ curl http://localhost:8086/taverne/exploitation/runbook
   "tourneesEnCours": 0,
   "voliere": { "corbeauxLaches": 0, "corbeauxTraites": 0, "corbeauxEnVol": 0 },
   "lignesGrandLivre": 0,
+  "latenceGrimoireMs": 50,
+  "grimoireEnPanne": false,
   "actions": [
     "Verifier la dependance en cause via GET /q/health/ready",
     "Inspecter le pool de connexions Agroal (vendor_agroal_active_count sur /q/metrics)",
     "Controler le retard de la voliere (equivalent du consumer lag Kafka)",
     "Une fois la cause traitee : POST /taverne/incendie/extinctions"
-  ]
+  ],
+  "etabliLe": "2026-08-21T10:15:32.123Z"
 }
 ```
 
@@ -388,13 +395,18 @@ curl -X POST "http://localhost:8086/taverne/grand-livre/ecritures?aventurier=Gri
 curl -X POST "http://localhost:8086/taverne/grand-livre/ecritures-interrompues"
 curl http://localhost:8086/taverne/grand-livre
 
-# 6. Constituer un retard de plis, puis arreter proprement
+# 6. Constituer un retard de plis
 curl -X POST "http://localhost:8086/taverne/voliere/lachers?nombre=40"
 curl "http://localhost:8086/taverne/salle/tournees?secondes=15" &
-kill -TERM $(jcmd | grep quarkus-run | cut -d' ' -f1)
 
-# 7. Au redemarrage, rejouer l'incident puis rediger le post-mortem
+# 7. Rediger le post-mortem AVANT l'arret : tout l'etat de l'incident est en
+#    memoire pure (IncendieService, CuisineService, VoliereService, H2 en mem
+#    avec drop-and-create). Un redemarrage remet tout a zero, y compris la
+#    chronologie : c'est maintenant qu'il faut le capturer.
 curl http://localhost:8086/taverne/exploitation/post-mortem
+
+# 8. Arreter proprement une fois le document en main
+kill -TERM $(jcmd | grep quarkus-run | cut -d' ' -f1)
 ```
 
 ---
