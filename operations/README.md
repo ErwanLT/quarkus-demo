@@ -24,3 +24,8 @@ Le commis expose un shell interactif, complete les missions au clavier et execut
 
 ## [Extension Quarkus personnalisée - rune de la taverne](quarkus-taverne-extension)
 Tutoriel sur la création d'une extension Quarkus personnalisée (découpée en modules *runtime* et *deployment*) permettant de créer l'intercepteur `@Taverne` pour loguer et commenter l'exécution des méthodes annotées.
+
+## [La taverne en flammes](la-taverne-en-flammes)
+Resilience operationnelle de bout en bout : arret gracieux (`quarkus.shutdown.timeout` et sas de pre-arret),
+sondes `@Liveness` / `@Readiness` pilotables, timeouts Mutiny et MicroProfile Fault Tolerance, vidange des
+messages a l'arret, transactions JTA sous incident, runbook d'incident et post-mortem generes depuis l'etat reel.

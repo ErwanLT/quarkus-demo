@@ -32,6 +32,7 @@
 - Batch processing (brassage nocturne multi-bieres)
 - Command line (Picocli, JLine3, shell interactif)
 - Extension Quarkus personnalisée (intercepteur `@Taverne` avec modules runtime/deployment)
+- Resilience et reprise (arret gracieux, sondes de sante, timeouts, drain, JTA, runbook, post-mortem)
 
 ## Database Access (`database-access`)
 - Hibernate Panache (Active Record vs Repository)

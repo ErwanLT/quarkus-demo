@@ -78,6 +78,12 @@ Tutoriel sur la creation d'une application Quarkus en ligne de commande avec Pic
 ### [Extension Quarkus personnalisée (Rune de la Taverne)](operations/quarkus-taverne-extension)
 Tutoriel sur la création d'une extension Quarkus personnalisée (découpée en modules *runtime* et *deployment*) pour intercepter et loguer des méthodes annotées avec `@Taverne`.
 
+### [La Taverne en Flammes (Résilience & reprise)](operations/la-taverne-en-flammes)
+Tutoriel sur la résilience opérationnelle : arrêt gracieux, sondes `@Liveness` / `@Readiness` pilotables à chaud,
+timeouts réactifs (Mutiny) et déclaratifs (`@Timeout`, `@Retry`, `@Fallback`), vidange des messages à l'arrêt,
+transactions JTA sous incident, runbook d'incident et post-mortem sans blâme. On met le feu à la taverne via l'API
+et on observe chaque mécanisme réagir.
+
 ## Database Access (`database-access`)
 
 ### [Hibernate Panache](database-access/panache-tutorial)
