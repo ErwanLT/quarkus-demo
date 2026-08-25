@@ -16,13 +16,16 @@ Tutoriel sur la désactivation et la personnalisation de la bannière de démarr
 Tutoriel OpenAPI et Swagger UI avec une API de taverne médiévale.
 
 ### [Gestion d'exceptions](core-concept/exception-handling-tutorial)
+[Article](https://www.sfeir.dev/back/cartographier-les-pieges-dun-donjon-industrialiser-la-gestion-des-erreurs-avec-quarkus/)  
 Approche industrialisée de la gestion des erreurs avec Quarkus via des `ExceptionMapper` et le modèle `Problem`.
 
 ### [Security](core-concept/security)
 Tutoriels de securite pour proteger les ressources sensibles de la taverne.
 #### [Basic Auth](core-concept/security/basic-auth)
+[Article](https://www.sfeir.dev/back/securiser-le-cellier-dune-taverne-avec-basic-auth-dans-quarkus/)  
 Exemples Basic Auth pour proteger la reserve de nourriture et de biere.
 #### [JWT](core-concept/security/jwt)
+[Article](https://www.sfeir.dev/back/proteger-le-livre-de-comptes-et-le-coffre-fort-avec-jwt-dans-quarkus/)  
 Exemple JWT pour proteger le livre de comptes et le coffre fort.
 
 ### [Cache - L'ardoise magique](core-concept/cache-tutorial)
@@ -38,6 +41,7 @@ Le tavernier lève les yeux vers son ardoise magique (le cache mémoire) plutôt
 Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée de Quarkus à Thymeleaf, intégrant la gestion des chambres et du registre de la taverne **The Falling Whale**.
 
 ### [Rate Limiting (Taverne DnD)](web-concept/rate-limiting-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-sous-controle-maitriser-les-flux-avec-quarkus/)  
 Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter l'abus de commandes à la taverne.
 
 ### [GraphQL (Taverne DnD)](web-concept/graphQL)
@@ -65,6 +69,7 @@ Tutoriel sur le versioning d'API REST avec Quarkus : path, query parameter, head
 Tutoriel Mutiny avec le tavernier aux huit bras : `Uni` pour une chope servie plus tard, `Multi` pour une file de clients en flux continu, et comparaison avec l'imperatif bloquant.
 
 ### [Vaadin Tutorial](web-concept/vaadin-tutorial)
+[Article](https://www.sfeir.dev/back/dans-les-coulisses-de-the-falling-whale-securite-push-et-javascript/)  
 Tutoriel sur l'intégration de **Vaadin Flow** pour construire des interfaces d'administration riches. Inclut une démonstration d'**intégration JavaScript personnalisée** (Leaflet pour les cartes, Chart.js pour les graphiques) pour s'affranchir des composants payants tout en gardant un thème médiéval immersif.
 
 ## Operations (`operations`)
