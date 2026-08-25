@@ -9,6 +9,7 @@ Projet de démonstration des fonctionnalités et des intégrations possibles ave
 ## Core Concept (`core-concept`)
 
 ### [Bannière Quarkus](core-concept/banner-tutorial)
+[Article](https://www.sfeir.dev/back/comment-personnaliser-la-banniere-dun-projet-quarkus/)  
 Tutoriel sur la désactivation et la personnalisation de la bannière de démarrage Quarkus.
 
 ### [Documentation d'API REST (OpenAPI)](core-concept/doc-tutorial)
@@ -25,6 +26,7 @@ Exemples Basic Auth pour proteger la reserve de nourriture et de biere.
 Exemple JWT pour proteger le livre de comptes et le coffre fort.
 
 ### [Cache - L'ardoise magique](core-concept/cache-tutorial)
+[Article](https://www.sfeir.dev/back/lardoise-magique-au-dessus-du-comptoir-utilisation-du-cache-dans-quarkus/)  
 Démonstration de `quarkus-cache` avec `@CacheResult`, `@CacheInvalidate` et `@CacheInvalidateAll`.
 Le tavernier lève les yeux vers son ardoise magique (le cache mémoire) plutôt que de redescendre
 à la cave consulter le grand livre à chaque commande d'un aventurier.
@@ -32,6 +34,7 @@ Le tavernier lève les yeux vers son ardoise magique (le cache mémoire) plutôt
 ## Web Concept (`web-concept`)
 
 ### [Qute Tutorial](web-concept/qute-tutorial)
+[Article](https://www.sfeir.dev/back/qute-le-scribe-du-donjon-pour-afficher-la-taverne-avec-quarkus/)  
 Tutoriel sur le moteur de template **Qute**, l'alternative moderne et optimisée de Quarkus à Thymeleaf, intégrant la gestion des chambres et du registre de la taverne **The Falling Whale**.
 
 ### [Rate Limiting (Taverne DnD)](web-concept/rate-limiting-tutorial)
@@ -40,19 +43,25 @@ Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter 
 ### [GraphQL (Taverne DnD)](web-concept/graphQL)
 Tutoriel complet sur l'utilisation de GraphQL avec Quarkus.
 #### [GraphQL Serveur](web-concept/graphQL/graphql-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-graphql-decouvrir-graphql-avec-quarkus/)  
 Exposition de données via MicroProfile GraphQL et gestion du registre des aventuriers.
 #### [GraphQL Client TypeSafe](web-concept/graphQL/graphql-client-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-graphql-consommer-une-api-graphql-avec-quarkus/)  
 Consommation de l'API via SmallRye GraphQL TypeSafe Client.
 #### [GraphQL Client Advanced](web-concept/graphQL/graphql-client-advanced-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-graphql-aller-plus-loin-avec-le-client-quarkus/)  
 Utilisation du Dynamic Client et du Generator SmallRye.
 
 ### [i18n & l10n (Taverne DnD)](web-concept/i18n-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-multilingue/)  
 Tutoriel sur l'internationalisation avec Qute MessageBundle et `Accept-Language`, incluant la localisation des messages, des montants et des pluriels.
 
 ### [API Versioning (Taverne DnD)](web-concept/api-versioning-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-aux-grimoires-versionner-une-api-rest-avec-quarkus/)  
 Tutoriel sur le versioning d'API REST avec Quarkus : path, query parameter, header HTTP et content negotiation via media type.
 
 ### [Programmation reactive (Taverne DnD)](web-concept/reactive-programming-tutorial)
+[Article](https://www.sfeir.dev/back/le-tavernier-aux-huit-bras-la-programmation-reactive-vue-depuis-le-comptoir/)  
 Tutoriel Mutiny avec le tavernier aux huit bras : `Uni` pour une chope servie plus tard, `Multi` pour une file de clients en flux continu, et comparaison avec l'imperatif bloquant.
 
 ### [Vaadin Tutorial](web-concept/vaadin-tutorial)
@@ -73,6 +82,7 @@ Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour st
 Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.
 
 ### [Command Line (Commis de course)](operations/command-line)
+[Article](https://www.sfeir.dev/back/donnez-vie-a-vos-cli-avec-quarkus/)  
 Tutoriel sur la creation d'une application Quarkus en ligne de commande avec Picocli et JLine3, sous forme de shell interactif pour lancer des missions de taverne.
 
 ### [Extension Quarkus personnalisée (Rune de la Taverne)](operations/quarkus-taverne-extension)
@@ -87,6 +97,7 @@ et on observe chaque mécanisme réagir.
 ## Database Access (`database-access`)
 
 ### [Hibernate Panache](database-access/panache-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-panache-persister-les-recettes-avec-quarkus/)  
 Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les patterns Active Record et Repository via le Grimoire des Recettes de la Taverne.
 
 ## Integration (`integration`)
@@ -94,6 +105,7 @@ Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les pa
 ### [Messaging](integration/messaging)
 Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements.
 #### [Server-Sent Events (Panneau magique)](integration/messaging/sse-tutorial)
+[Article](https://www.sfeir.dev/back/le-tableau-daffichage-de-la-salle-commune-sse-avec-quarkus/)  
 Tutoriel SSE avec RESTEasy Reactive et Mutiny pour diffuser les annonces du barman en temps reel vers les aventuriers connectes.
 #### [Corbeaux messagers (Kafka)](integration/messaging/kafka-tutorial)
 Tutoriel d'intégration avec Apache Kafka (Redpanda) et SmallRye Reactive Messaging, incluant les mécanismes de tentatives (**Retry**) et de redirection vers la **Dead Letter Queue (DLQ)**.
