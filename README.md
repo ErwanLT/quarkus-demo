@@ -13,6 +13,7 @@ Projet de démonstration des fonctionnalités et des intégrations possibles ave
 Tutoriel sur la désactivation et la personnalisation de la bannière de démarrage Quarkus.
 
 ### [Documentation d'API REST (OpenAPI)](core-concept/doc-tutorial)
+[Article](https://www.sfeir.dev/back/mettre-en-place-la-documentation-openapi-dans-une-application-quarkus/)  
 Tutoriel OpenAPI et Swagger UI avec une API de taverne médiévale.
 
 ### [Gestion d'exceptions](core-concept/exception-handling-tutorial)
@@ -75,15 +76,19 @@ Tutoriel sur l'intégration de **Vaadin Flow** pour construire des interfaces d'
 ## Operations (`operations`)
 
 ### [Observabilite - socle](operations/observabilite-tutoriel)
+[Article](https://www.sfeir.dev/back/observer-la-taverne-en-pleine-effervescence-observabilite-avec-quarkus/)  
 Tutoriel de base pour exposer metriques, health checks, tracing OpenTelemetry et correlation des logs.
 
 ### [Observabilite - avancee](operations/observabilite-advanced-tutorial)
+[Article](https://www.sfeir.dev/back/quand-la-taverne-monte-en-charge-prometheus-grafana-et-alerting-avec-quarkus/)  
 Extension orientee exploitation avec Prometheus, Grafana, Alertmanager et scenario d'alerting de bout en bout.
 
 ### [Tests de Charge (Gatling)](operations/load-testing-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-a-lepreuve-du-siege-tester-la-resilience-avec-gatling/)  
 Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour stresser le tavernier et vérifier la résilience de l'application. (Nécessite le profil `-Pload-testing`).
 
 ### [Batch Processing (Brassage de nuit)](operations/batch-processing-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-nocturne-traiter-les-flux-avec-quarkus-batch/)  
 Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.
 
 ### [Command Line (Commis de course)](operations/command-line)
