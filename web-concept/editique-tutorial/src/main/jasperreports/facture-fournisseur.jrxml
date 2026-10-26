@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Facture fournisseur A4 : rapport maître avec sous-rapports lignes et TVA (JasperReports 7) -->
+<jasperReport name="facture-fournisseur" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#2B2118"/>
+	<style name="Etiquette" fontName="DejaVu Sans" fontSize="8.0" forecolor="#5A4630" bold="true"/>
+	<parameter name="NOM_TAVERNE" class="java.lang.String"/>
+	<parameter name="ADRESSE_TAVERNE" class="java.lang.String"/>
+	<parameter name="LOGO" class="byte[]"/>
+	<parameter name="SOUS_RAPPORT_LIGNES" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="numero" class="java.lang.String"/>
+	<field name="fournisseur" class="fr.eletutour.tavern.editique.model.Fournisseur"/>
+	<field name="dateEmission" class="java.time.LocalDate"/>
+	<field name="dateEcheance" class="java.time.LocalDate"/>
+	<field name="lignes" class="java.util.List"/>
+	<field name="recapTva" class="java.util.List"/>
+	<field name="totalHt" class="java.math.BigDecimal"/>
+	<field name="totalTva" class="java.math.BigDecimal"/>
+	<field name="totalTtc" class="java.math.BigDecimal"/>
+	<!-- Alimentée par le sous-rapport des lignes (returnValue) -->
+	<variable name="NB_LIGNES" calculation="System" class="java.lang.Integer"/>
+	<title height="170">
+		<!-- Image transmise par le Java dans un paramètre (octets du PNG) -->
+		<element kind="image" x="0" y="0" width="50" height="50" scaleImage="RetainShape" hImageAlign="Left" vImageAlign="Middle" usingCache="true">
+			<expression><![CDATA[$P{LOGO}]]></expression>
+		</element>
+		<element kind="textField" x="58" y="13" width="240" height="24" fontSize="14.0" bold="true" vTextAlign="Middle">
+			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
+		</element>
+		<element kind="staticText" x="305" y="0" width="250" height="30" fontSize="24.0" bold="true" hTextAlign="Right" vTextAlign="Middle" forecolor="#4A3720">
+			<text><![CDATA[FACTURE]]></text>
+		</element>
+		<element kind="textField" x="305" y="32" width="250" height="16" fontSize="11.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["N° " + $F{numero}]]></expression>
+		</element>
+		<element kind="line" x="0" y="54" width="555" height="1" forecolor="#5A4630">
+			<pen lineWidth="1.5" lineColor="#5A4630"/>
+		</element>
+		<element kind="staticText" x="0" y="64" width="270" height="12" style="Etiquette">
+			<text><![CDATA[FOURNISSEUR]]></text>
+		</element>
+		<element kind="textField" x="0" y="78" width="270" height="14" bold="true" textAdjust="StretchHeight">
+			<expression><![CDATA[$F{fournisseur}.getNom()]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="92" width="270" height="12" textAdjust="StretchHeight">
+			<expression><![CDATA[$F{fournisseur}.getAdresse()]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="104" width="270" height="12" textAdjust="StretchHeight">
+			<expression><![CDATA[$F{fournisseur}.getVille()]]></expression>
+		</element>
+		<element kind="staticText" x="285" y="64" width="270" height="12" style="Etiquette">
+			<text><![CDATA[CLIENT]]></text>
+		</element>
+		<element kind="textField" x="285" y="78" width="270" height="14" bold="true" textAdjust="StretchHeight">
+			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="285" y="92" width="270" height="12" textAdjust="StretchHeight">
+			<expression><![CDATA[$P{ADRESSE_TAVERNE}]]></expression>
+		</element>
+		<element kind="staticText" x="0" y="130" width="100" height="14" style="Etiquette" vTextAlign="Middle">
+			<text><![CDATA[Date d'émission :]]></text>
+		</element>
+		<element kind="textField" x="100" y="130" width="100" height="14" vTextAlign="Middle">
+			<expression><![CDATA[$F{dateEmission} == null ? "" : java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy").format($F{dateEmission})]]></expression>
+		</element>
+		<element kind="staticText" x="285" y="130" width="100" height="14" style="Etiquette" vTextAlign="Middle">
+			<text><![CDATA[Date d'échéance :]]></text>
+		</element>
+		<element kind="textField" x="385" y="130" width="100" height="14" vTextAlign="Middle">
+			<expression><![CDATA[$F{dateEcheance} == null ? "" : java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy").format($F{dateEcheance})]]></expression>
+		</element>
+	</title>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<element kind="subreport" x="0" y="2" width="555" height="20">
+				<!-- Cas 1 : sous-rapport déjà compilé, passé en paramètre par le Java -->
+				<expression><![CDATA[$P{SOUS_RAPPORT_LIGNES}]]></expression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{lignes})]]></dataSourceExpression>
+				<!-- Le sous-rapport renvoie son nombre de lignes au maître -->
+				<returnValue toVariable="NB_LIGNES" subreportVariable="REPORT_COUNT"/>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="24">
+		<element kind="line" x="0" y="2" width="555" height="1" forecolor="#5A4630">
+			<pen lineWidth="0.5" lineColor="#5A4630"/>
+		</element>
+		<element kind="textField" x="0" y="6" width="400" height="14" fontSize="8.0" vTextAlign="Middle">
+			<expression><![CDATA[$P{NOM_TAVERNE} + " — Facture " + $F{numero}]]></expression>
+		</element>
+		<element kind="textField" x="400" y="6" width="125" height="14" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" x="525" y="6" width="30" height="14" fontSize="8.0" evaluationTime="Report" vTextAlign="Middle">
+			<expression><![CDATA[" / " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="110" splitType="Prevent">
+		<element kind="staticText" x="0" y="14" width="270" height="12" style="Etiquette">
+			<text><![CDATA[RÉCAPITULATIF DE TVA]]></text>
+		</element>
+		<element kind="subreport" x="0" y="28" width="270" height="20">
+			<!-- Cas 2 : sous-rapport résolu par son chemin sur le classpath, avec un paramètre transmis -->
+			<expression><![CDATA["jasperreports/facture-recap-tva.jasper"]]></expression>
+			<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{recapTva})]]></dataSourceExpression>
+			<parameter name="NUMERO_FACTURE">
+				<expression><![CDATA[$F{numero}]]></expression>
+			</parameter>
+		</element>
+		<element kind="staticText" x="305" y="14" width="120" height="16" vTextAlign="Middle">
+			<text><![CDATA[Total HT]]></text>
+		</element>
+		<element kind="textField" x="425" y="14" width="130" height="16" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$F{totalHt}]]></expression>
+		</element>
+		<element kind="staticText" x="305" y="32" width="120" height="16" vTextAlign="Middle">
+			<text><![CDATA[Total TVA]]></text>
+		</element>
+		<element kind="textField" x="425" y="32" width="130" height="16" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$F{totalTva}]]></expression>
+		</element>
+		<element kind="rectangle" x="305" y="54" width="250" height="24" backcolor="#EADFC0">
+			<pen lineWidth="1.0" lineColor="#5A4630"/>
+		</element>
+		<element kind="staticText" x="311" y="54" width="110" height="24" fontSize="11.0" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Total TTC]]></text>
+		</element>
+		<element kind="textField" x="421" y="54" width="130" height="24" fontSize="11.0" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$F{totalTtc}]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="54" width="270" height="14" fontSize="8.0" italic="true" vTextAlign="Middle">
+			<expression><![CDATA["Lignes facturées : " + $V{NB_LIGNES}]]></expression>
+		</element>
+	</summary>
+</jasperReport>

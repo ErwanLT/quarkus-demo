@@ -73,6 +73,9 @@ Tutoriel Mutiny avec le tavernier aux huit bras : `Uni` pour une chope servie pl
 [Article](https://www.sfeir.dev/back/dans-les-coulisses-de-the-falling-whale-securite-push-et-javascript/)  
 Tutoriel sur l'intégration de **Vaadin Flow** pour construire des interfaces d'administration riches. Inclut une démonstration d'**intégration JavaScript personnalisée** (Leaflet pour les cartes, Chart.js pour les graphiques) pour s'affranchir des composants payants tout en gardant un thème médiéval immersif.
 
+### [Éditique (L'imprimerie de la taverne)](web-concept/editique-tutorial)
+Tutoriel sur la génération de documents avec **JasperReports 7** via l'extension Quarkiverse `quarkus-jasperreports` (rapports compilés au build) : ticket de caisse thermique 80 mm, facture fournisseur A4 et relevé mensuel des fournisseurs, avec sous-rapports (paramètres, valeur de retour), composant `list`, logo de la taverne, export PDF/XLSX et vérification des PDF avec PDFBox.
+
 ## Operations (`operations`)
 
 ### [Observabilite - socle](operations/observabilite-tutoriel)

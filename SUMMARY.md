@@ -25,6 +25,7 @@
 - Versioning d'API REST (path, parameter, header, media type)
 - Programmation reactive (Mutiny - `Uni`, `Multi`)
 - Vaadin Flow (UI d'administration, composants, simulation temps reel)
+- Editique JasperReports (ticket de caisse, facture fournisseur, releve, sous-rapports, composant list, export PDF/XLSX)
 
 ## Operations (`operations`)
 - Observabilite (metrics, tracing, log correlation)

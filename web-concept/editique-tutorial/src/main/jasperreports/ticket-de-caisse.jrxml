@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ticket de caisse : rouleau thermique 80 mm, une seule page qui s'allonge (JasperReports 7) -->
+<jasperReport name="ticket-de-caisse" language="java" pageWidth="226" pageHeight="842" columnWidth="210" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" ignorePagination="true" whenNoDataType="AllSectionsNoDetail">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.0"/>
+	<!-- Jeu de données secondaire, parcouru par le composant list du summary -->
+	<dataset name="Paiements">
+		<field name="mode" class="java.lang.String"/>
+		<field name="montant" class="java.math.BigDecimal"/>
+	</dataset>
+	<parameter name="NOM_TAVERNE" class="java.lang.String"/>
+	<parameter name="ADRESSE_TAVERNE" class="java.lang.String"/>
+	<parameter name="NUMERO" class="java.lang.String"/>
+	<parameter name="TABLE" class="java.lang.String"/>
+	<parameter name="SERVEUR" class="java.lang.String"/>
+	<parameter name="DATE_COMMANDE" class="java.time.LocalDateTime"/>
+	<parameter name="PAIEMENTS" class="java.util.List"/>
+	<field name="libelle" class="java.lang.String"/>
+	<field name="quantite" class="java.lang.Integer"/>
+	<field name="prixUnitaire" class="java.math.BigDecimal"/>
+	<field name="montant" class="java.math.BigDecimal"/>
+	<variable name="TOTAL" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{montant}]]></expression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<title height="170">
+		<!-- Image résolue par son chemin sur le classpath (src/main/resources/logo-impression.jpg) -->
+		<element kind="image" x="0" y="0" width="210" height="62" scaleImage="RetainShape" hImageAlign="Center" vImageAlign="Middle" usingCache="true">
+			<expression><![CDATA["logo-impression.jpg"]]></expression>
+		</element>
+		<element kind="textField" x="0" y="66" width="210" height="18" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle" textAdjust="StretchHeight">
+			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="84" width="210" height="12" hTextAlign="Center" textAdjust="StretchHeight">
+			<expression><![CDATA[$P{ADRESSE_TAVERNE}]]></expression>
+		</element>
+		<element kind="line" positionType="Float" x="0" y="102" width="210" height="1">
+			<pen lineWidth="0.75" lineStyle="Dashed"/>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="108" width="210" height="12" textAdjust="StretchHeight">
+			<expression><![CDATA["Commande : " + $P{NUMERO}]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="120" width="210" height="12" textAdjust="StretchHeight">
+			<expression><![CDATA["Table : " + $P{TABLE}]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="132" width="210" height="12" textAdjust="StretchHeight">
+			<expression><![CDATA["Serveur : " + $P{SERVEUR}]]></expression>
+		</element>
+		<element kind="textField" positionType="Float" x="0" y="144" width="210" height="12" textAdjust="StretchHeight">
+			<expression><![CDATA["Date : " + ($P{DATE_COMMANDE} == null ? "" : java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").format($P{DATE_COMMANDE}))]]></expression>
+		</element>
+		<element kind="line" positionType="Float" x="0" y="162" width="210" height="1">
+			<pen lineWidth="0.75" lineStyle="Dashed"/>
+		</element>
+	</title>
+	<columnHeader height="16">
+		<element kind="staticText" x="0" y="2" width="28" height="12" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Qté]]></text>
+		</element>
+		<element kind="staticText" x="34" y="2" width="106" height="12" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Article]]></text>
+		</element>
+		<element kind="staticText" x="140" y="2" width="70" height="12" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Montant]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<element kind="textField" x="0" y="1" width="28" height="12" hTextAlign="Right" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{quantite} + " x"]]></expression>
+			</element>
+			<element kind="textField" x="34" y="1" width="106" height="12" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{libelle}]]></expression>
+			</element>
+			<element kind="textField" x="140" y="1" width="70" height="12" pattern="#,##0.00 po" hTextAlign="Right" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{montant}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<summary height="94">
+		<element kind="line" x="0" y="2" width="210" height="1">
+			<pen lineWidth="0.75" lineStyle="Dashed"/>
+		</element>
+		<element kind="staticText" x="0" y="8" width="90" height="16" fontSize="11.0" bold="true" vTextAlign="Middle">
+			<text><![CDATA[TOTAL]]></text>
+		</element>
+		<element kind="textField" x="90" y="8" width="120" height="16" fontSize="11.0" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$V{TOTAL}]]></expression>
+		</element>
+		<element kind="line" x="0" y="30" width="210" height="1">
+			<pen lineWidth="0.75" lineStyle="Dashed"/>
+		</element>
+		<element kind="staticText" x="0" y="34" width="210" height="12" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Règlement :]]></text>
+		</element>
+		<!-- Composant list : une ligne par paiement, sans passer par un sous-rapport -->
+		<element kind="component" x="0" y="46" width="210" height="12">
+			<component kind="list" printOrder="Vertical">
+				<datasetRun subDataset="Paiements">
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{PAIEMENTS})]]></dataSourceExpression>
+				</datasetRun>
+				<contents height="12">
+					<element kind="textField" x="8" y="0" width="132" height="12" textAdjust="StretchHeight">
+						<expression><![CDATA["• " + $F{mode}]]></expression>
+					</element>
+					<element kind="textField" x="140" y="0" width="70" height="12" pattern="#,##0.00 po" hTextAlign="Right">
+						<expression><![CDATA[$F{montant}]]></expression>
+					</element>
+				</contents>
+			</component>
+		</element>
+		<element kind="line" positionType="Float" x="0" y="62" width="210" height="1">
+			<pen lineWidth="0.75" lineStyle="Dashed"/>
+		</element>
+		<element kind="staticText" positionType="Float" x="0" y="68" width="210" height="22" italic="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Merci de votre visite, aventurier !]]></text>
+		</element>
+	</summary>
+</jasperReport>

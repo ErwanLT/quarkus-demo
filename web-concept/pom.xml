@@ -20,6 +20,7 @@
         <module>reactive-programming-tutorial</module>
         <module>vaadin-tutorial</module>
         <module>graphQL</module>
+        <module>editique-tutorial</module>
     </modules>
 
 </project>

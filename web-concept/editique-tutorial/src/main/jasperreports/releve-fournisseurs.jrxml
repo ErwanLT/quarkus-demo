@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Relevé mensuel des fournisseurs : une bande par fournisseur, ses factures via un composant list (JasperReports 7) -->
+<jasperReport name="releve-fournisseurs" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#2B2118"/>
+	<style name="Etiquette" fontName="DejaVu Sans" fontSize="8.0" forecolor="#5A4630" bold="true"/>
+	<!-- Jeu de données secondaire : les factures d'un fournisseur -->
+	<dataset name="Factures">
+		<field name="numero" class="java.lang.String"/>
+		<field name="dateEmission" class="java.time.LocalDate"/>
+		<field name="dateEcheance" class="java.time.LocalDate"/>
+		<field name="totalHt" class="java.math.BigDecimal"/>
+		<field name="totalTtc" class="java.math.BigDecimal"/>
+	</dataset>
+	<parameter name="NOM_TAVERNE" class="java.lang.String"/>
+	<parameter name="ADRESSE_TAVERNE" class="java.lang.String"/>
+	<parameter name="LOGO" class="byte[]"/>
+	<parameter name="PERIODE" class="java.lang.String"/>
+	<field name="fournisseur" class="fr.eletutour.tavern.editique.model.Fournisseur"/>
+	<field name="factures" class="java.util.List"/>
+	<field name="nombreFactures" class="java.lang.Integer"/>
+	<field name="totalTtc" class="java.math.BigDecimal"/>
+	<variable name="TOTAL_GENERAL" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{totalTtc}]]></expression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="NB_FACTURES" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[$F{nombreFactures}]]></expression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<title height="80">
+		<element kind="image" x="0" y="0" width="54" height="54" scaleImage="RetainShape" hImageAlign="Left" vImageAlign="Middle" usingCache="true">
+			<expression><![CDATA[$P{LOGO}]]></expression>
+		</element>
+		<element kind="textField" x="62" y="8" width="190" height="24" fontSize="14.0" bold="true" vTextAlign="Middle">
+			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
+		</element>
+		<element kind="textField" x="62" y="32" width="190" height="14" vTextAlign="Middle">
+			<expression><![CDATA[$P{ADRESSE_TAVERNE}]]></expression>
+		</element>
+		<element kind="staticText" x="255" y="0" width="300" height="30" fontSize="18.0" bold="true" hTextAlign="Right" vTextAlign="Middle" forecolor="#4A3720">
+			<text><![CDATA[RELEVÉ DES FOURNISSEURS]]></text>
+		</element>
+		<element kind="textField" x="255" y="32" width="300" height="16" fontSize="11.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$P{PERIODE}]]></expression>
+		</element>
+		<element kind="line" x="0" y="58" width="555" height="1">
+			<pen lineWidth="1.5" lineColor="#5A4630"/>
+		</element>
+	</title>
+	<detail>
+		<band height="86" splitType="Prevent">
+			<element kind="rectangle" x="0" y="6" width="555" height="22" backcolor="#EADFC0">
+				<pen lineWidth="0.5" lineColor="#5A4630"/>
+			</element>
+			<element kind="textField" x="6" y="6" width="380" height="22" fontSize="10.0" bold="true" vTextAlign="Middle">
+				<expression><![CDATA[$F{fournisseur}.getNom() + " — " + $F{fournisseur}.getVille()]]></expression>
+			</element>
+			<element kind="textField" x="386" y="6" width="163" height="22" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{nombreFactures} + ($F{nombreFactures} > 1 ? " factures" : " facture")]]></expression>
+			</element>
+			<element kind="staticText" x="6" y="32" width="150" height="14" style="Etiquette" vTextAlign="Middle">
+				<text><![CDATA[Facture]]></text>
+			</element>
+			<element kind="staticText" x="160" y="32" width="90" height="14" style="Etiquette" vTextAlign="Middle">
+				<text><![CDATA[Émission]]></text>
+			</element>
+			<element kind="staticText" x="250" y="32" width="90" height="14" style="Etiquette" vTextAlign="Middle">
+				<text><![CDATA[Échéance]]></text>
+			</element>
+			<element kind="staticText" x="340" y="32" width="100" height="14" style="Etiquette" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Total HT]]></text>
+			</element>
+			<element kind="staticText" x="440" y="32" width="109" height="14" style="Etiquette" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Total TTC]]></text>
+			</element>
+			<!-- Composant list : itère sur la collection du fournisseur courant, sans fichier de sous-rapport -->
+			<element kind="component" x="0" y="48" width="555" height="16">
+				<component kind="list" printOrder="Vertical">
+					<datasetRun subDataset="Factures">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{factures})]]></dataSourceExpression>
+					</datasetRun>
+					<contents height="16">
+						<element kind="line" x="0" y="15" width="555" height="1">
+							<pen lineWidth="0.25" lineColor="#C8C0B0"/>
+						</element>
+						<element kind="textField" x="6" y="0" width="150" height="16" vTextAlign="Middle">
+							<expression><![CDATA[$F{numero}]]></expression>
+						</element>
+						<element kind="textField" x="160" y="0" width="90" height="16" vTextAlign="Middle">
+							<expression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy").format($F{dateEmission})]]></expression>
+						</element>
+						<element kind="textField" x="250" y="0" width="90" height="16" vTextAlign="Middle">
+							<expression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy").format($F{dateEcheance})]]></expression>
+						</element>
+						<element kind="textField" x="340" y="0" width="100" height="16" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+							<expression><![CDATA[$F{totalHt}]]></expression>
+						</element>
+						<element kind="textField" x="440" y="0" width="109" height="16" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+							<expression><![CDATA[$F{totalTtc}]]></expression>
+						</element>
+					</contents>
+				</component>
+			</element>
+			<element kind="staticText" positionType="Float" x="290" y="66" width="150" height="16" bold="true" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Sous-total]]></text>
+			</element>
+			<element kind="textField" positionType="Float" x="440" y="66" width="109" height="16" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{totalTtc}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="24">
+		<element kind="line" x="0" y="2" width="555" height="1">
+			<pen lineWidth="0.5" lineColor="#5A4630"/>
+		</element>
+		<element kind="textField" x="0" y="6" width="400" height="14" fontSize="8.0" vTextAlign="Middle">
+			<expression><![CDATA[$P{NOM_TAVERNE} + " — Relevé " + $P{PERIODE}]]></expression>
+		</element>
+		<element kind="textField" x="400" y="6" width="125" height="14" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" x="525" y="6" width="30" height="14" fontSize="8.0" evaluationTime="Report" vTextAlign="Middle">
+			<expression><![CDATA[" / " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="44" splitType="Prevent">
+		<element kind="rectangle" x="215" y="12" width="340" height="24" backcolor="#EADFC0">
+			<pen lineWidth="1.0" lineColor="#5A4630"/>
+		</element>
+		<element kind="textField" x="221" y="12" width="210" height="24" fontSize="11.0" bold="true" vTextAlign="Middle">
+			<expression><![CDATA["TOTAL GÉNÉRAL (" + $V{NB_FACTURES} + " factures)"]]></expression>
+		</element>
+		<element kind="textField" x="431" y="12" width="118" height="24" fontSize="11.0" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$V{TOTAL_GENERAL}]]></expression>
+		</element>
+	</summary>
+</jasperReport>

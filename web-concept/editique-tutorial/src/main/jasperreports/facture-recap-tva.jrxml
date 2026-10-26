@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sous-rapport : récapitulatif de TVA par taux (JasperReports 7) -->
+<jasperReport name="facture-recap-tva" language="java" pageWidth="270" pageHeight="842" columnWidth="270" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenNoDataType="AllSectionsNoDetail">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.5"/>
+	<parameter name="NUMERO_FACTURE" class="java.lang.String"/>
+	<field name="taux" class="java.math.BigDecimal"/>
+	<field name="baseHt" class="java.math.BigDecimal"/>
+	<field name="montantTva" class="java.math.BigDecimal"/>
+	<columnHeader height="20">
+		<element kind="rectangle" x="0" y="0" width="270" height="20" backcolor="#EADFC0">
+			<pen lineWidth="0.5" lineColor="#5A4630"/>
+		</element>
+		<element kind="staticText" x="4" y="0" width="50" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Taux]]></text>
+		</element>
+		<element kind="staticText" x="58" y="0" width="100" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Base HT]]></text>
+		</element>
+		<element kind="staticText" x="162" y="0" width="104" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Montant TVA]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Prevent">
+			<element kind="textField" x="4" y="2" width="50" height="14" pattern="#,##0.## %" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{taux}]]></expression>
+			</element>
+			<element kind="textField" x="58" y="2" width="100" height="14" pattern="#,##0.00 po" hTextAlign="Right" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{baseHt}]]></expression>
+			</element>
+			<element kind="textField" x="162" y="2" width="104" height="14" pattern="#,##0.00 po" hTextAlign="Right" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{montantTva}]]></expression>
+			</element>
+			<element kind="line" positionType="Float" x="0" y="17" width="270" height="1">
+				<pen lineWidth="0.25" lineColor="#BFB59B"/>
+			</element>
+		</band>
+	</detail>
+	<summary height="14">
+		<element kind="textField" x="4" y="2" width="266" height="12" fontSize="7.0" italic="true" forecolor="#5A4630">
+			<expression><![CDATA["Détail de la TVA de la facture " + $P{NUMERO_FACTURE}]]></expression>
+		</element>
+	</summary>
+</jasperReport>

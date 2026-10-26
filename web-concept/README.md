@@ -35,3 +35,11 @@ Démonstration d'une interface d'administration riche pour la taverne avec :
 *   Un thème **Médiéval Fantastique** personnalisé (Lumo bypass).
 *   Des vues découpées en composants (Dashboard, Carte, Stocks, Réservations).
 *   Une simulation de stocks en temps réel avec diffusion (Broadcaster) vers l'UI.
+
+## [Éditique Tutorial](editique-tutorial)
+Tutoriel sur la génération de documents avec **JasperReports 7** via l'extension Quarkiverse `quarkus-jasperreports`.
+Démonstration dans la Taverne avec :
+*   Un ticket de caisse au format rouleau thermique 80 mm.
+*   Une facture fournisseur A4 avec sous-rapports (passés en paramètre ou par chemin, avec paramètre et valeur de retour) et pagination.
+*   Un relevé mensuel des fournisseurs avec le composant `list`.
+*   L'export PDF et XLSX servi par une API REST.
