@@ -1,0 +1,46 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "2-ajout-de-la-devise",
+        "author": "taverne",
+        "changes": [
+          {
+            "addColumn": {
+              "tableName": "ligne_de_compte",
+              "columns": [
+                {
+                  "column": {
+                    "name": "devise",
+                    "type": "VARCHAR(8)"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "update": {
+              "tableName": "ligne_de_compte",
+              "columns": [
+                {
+                  "column": {
+                    "name": "devise",
+                    "value": "PIECE_OR"
+                  }
+                }
+              ],
+              "where": "devise IS NULL"
+            }
+          },
+          {
+            "addNotNullConstraint": {
+              "tableName": "ligne_de_compte",
+              "columnName": "devise",
+              "columnDataType": "VARCHAR(8)"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

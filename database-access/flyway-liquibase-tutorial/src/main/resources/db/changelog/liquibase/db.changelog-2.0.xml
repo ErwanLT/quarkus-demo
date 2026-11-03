@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2-ajout-de-la-devise" author="taverne">
+        <addColumn tableName="ligne_de_compte">
+            <column name="devise" type="VARCHAR(8)"/>
+        </addColumn>
+        <update tableName="ligne_de_compte">
+            <column name="devise" value="PIECE_OR"/>
+            <where>devise IS NULL</where>
+        </update>
+        <addNotNullConstraint tableName="ligne_de_compte" columnName="devise" columnDataType="VARCHAR(8)"/>
+    </changeSet>
+</databaseChangeLog>

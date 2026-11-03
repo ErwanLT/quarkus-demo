@@ -37,6 +37,7 @@
 
 ## Database Access (`database-access`)
 - Hibernate Panache (Active Record vs Repository)
+- Migrations de schéma (Flyway et Liquibase, baseline, expand/backfill/contract)
 
 ## Integration (`integration`)
 - Messaging
@@ -51,7 +52,6 @@
 - Quarkus Native (GraalVM)
 
 ## Database Access
-- Flyway / Liquibase
 - Reactive SQL (R2DBC)
 - MongoDB
 - Multi-tenancy

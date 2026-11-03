@@ -113,6 +113,9 @@ et on observe chaque mécanisme réagir.
 [Article](https://www.sfeir.dev/back/la-taverne-panache-persister-les-recettes-avec-quarkus/)  
 Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les patterns Active Record et Repository via le Grimoire des Recettes de la Taverne.
 
+### [Le registre des travaux (Flyway & Liquibase)](database-access/flyway-liquibase-tutorial)
+Tutoriel comparatif sur les **migrations de schéma** : scripts Flyway et changeSets Liquibase sur deux bases H2, adoption d'une base existante (baseline / changelogSync), triptyque expand/backfill/contract et validation du schéma par Hibernate Panache.
+
 ## Integration (`integration`)
 
 ### [Messaging](integration/messaging)

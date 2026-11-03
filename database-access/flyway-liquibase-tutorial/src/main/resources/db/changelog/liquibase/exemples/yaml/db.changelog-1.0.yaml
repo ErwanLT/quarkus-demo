@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-creation-du-grand-livre
+      author: taverne
+      changes:
+        - createSequence:
+            sequenceName: ligne_de_compte_SEQ
+            startValue: "1"
+            incrementBy: "50"
+        - createTable:
+            tableName: ligne_de_compte
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: aventurier
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: libelle
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: montant_pieces_or
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enregistre_le
+                  type: "TIMESTAMP WITH TIME ZONE"
+                  constraints:
+                    nullable: false
