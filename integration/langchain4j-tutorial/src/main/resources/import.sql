@@ -1,0 +1,16 @@
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (1, 'Hydromel du Barde', 'Boisson douce fermentée au miel, servie fraîche.', 'miel, eau, levure');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (2, 'Potion de vigueur', 'Infusion chaude aux herbes pour reprendre des forces.', 'thym, gingembre, miel');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (3, 'Lait de dragon', 'Lait épicé et mousseux, sans alcool.', 'lait, cannelle, muscade');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (4, 'Bière brune du Nain', 'Bière maltée aux notes torréfiées, brassée dans les montagnes.', 'orge maltée, houblon, eau, levure');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (5, 'Cidre des Vergers', 'Cidre doux aux pommes, relevé d’une pointe de cannelle.', 'pommes, levure, cannelle');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (6, 'Jus de Mûres Sauvages', 'Jus fruité et légèrement acidulé, pressé à la commande.', 'mûres, eau, sucre');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (7, 'Thé Noir du Rôdeur', 'Thé corsé avec une touche de citron et de miel.', 'thé noir, citron, miel');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (8, 'Infusion du Druide', 'Infusion apaisante aux plantes du jardin de la taverne.', 'menthe, camomille, verveine');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (9, 'Café du Veilleur', 'Café noir épicé pour tenir jusqu’à l’aube.', 'café, cardamome, sucre');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (10, 'Limonade des Fées', 'Limonade maison, vive et rafraîchissante.', 'citron, eau, sucre, menthe');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (11, 'Chocolat Chaud du Dragon', 'Chocolat chaud onctueux avec une pointe de piment.', 'chocolat noir, lait, piment');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (12, 'Vin Chaud de la Garde', 'Vin rouge chauffé avec des agrumes et des épices.', 'vin rouge, orange, cannelle, clou de girofle');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (13, 'Eau Pétillante du Puits', 'Eau pétillante aromatisée au citron et au romarin.', 'eau gazeuse, citron, romarin');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (14, 'Tonic de Mandragore', 'Boisson acidulée au gingembre et au jus de pomme.', 'jus de pomme, gingembre, citron');
+INSERT INTO Recipe (id, name, description, ingredients) VALUES (15, 'Lait d’Amande des Elfes', 'Lait végétal doux, parfumé à la vanille.', 'amandes, eau, vanille, miel');
+ALTER SEQUENCE Recipe_SEQ RESTART WITH 1000;

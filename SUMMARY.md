@@ -43,6 +43,7 @@
 - Messaging
   - Server-Sent Events (RESTEasy Reactive, Mutiny, flux `text/event-stream`)
   - Kafka (Volière aux corbeaux, Retry et Dead Letter Queue / DLQ)
+- IA avec Quarkus LangChain4j (service IA, tools Panache, RAG sur les recettes)
 
 # Sujets non encore traites (Roadmap)
 
@@ -61,7 +62,6 @@
 - gRPC
 - WebSockets
 - REST Client (MicroProfile Rest Client)
-- IA (RAG, tools)
 
 ## Operations
 - Logs structures

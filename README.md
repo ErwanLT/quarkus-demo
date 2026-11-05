@@ -125,3 +125,6 @@ Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements
 Tutoriel SSE avec RESTEasy Reactive et Mutiny pour diffuser les annonces du barman en temps reel vers les aventuriers connectes.
 #### [Corbeaux messagers (Kafka)](integration/messaging/kafka-tutorial)
 Tutoriel d'intégration avec Apache Kafka (Redpanda) et SmallRye Reactive Messaging, incluant les mécanismes de tentatives (**Retry**) et de redirection vers la **Dead Letter Queue (DLQ)**.
+
+#### [L'Oracle au fond de la salle (LangChain4j)](integration/langchain4j-tutorial)
+Le miroir magique du barde : `quarkus-langchain4j`, service IA injectable avec `@RegisterAiService`, tool calling vers Panache et RAG sur le grimoire des recettes.
