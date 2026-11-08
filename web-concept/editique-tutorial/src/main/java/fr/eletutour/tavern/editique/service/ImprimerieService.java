@@ -1,9 +1,13 @@
 package fr.eletutour.tavern.editique.service;
 
+import fr.eletutour.tavern.editique.model.CarteTable;
 import fr.eletutour.tavern.editique.model.Commande;
+import fr.eletutour.tavern.editique.model.EtiquetteProduit;
 import fr.eletutour.tavern.editique.model.FactureFournisseur;
+import fr.eletutour.tavern.editique.model.Produit;
 import fr.eletutour.tavern.editique.model.ReleveFournisseur;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -51,8 +55,19 @@ public class ImprimerieService {
     private final Map<String, JasperReport> rapports = new ConcurrentHashMap<>();
     private final Map<String, byte[]> images = new ConcurrentHashMap<>();
 
+    private final IdentificationService identification;
+
+    @Inject
+    public ImprimerieService(IdentificationService identification) {
+        this.identification = identification;
+    }
+
     /**
      * Imprime le ticket de caisse (rouleau thermique 80 mm) d'une commande.
+     * <p>
+     * Le Code 128 encode le numéro de commande, le QR code l'URL de suivi :
+     * les deux valeurs sont calculées par {@link IdentificationService}.
+     * </p>
      */
     public byte[] imprimerTicket(Commande commande) {
         Map<String, Object> parametres = parametresTaverne();
@@ -61,6 +76,8 @@ public class ImprimerieService {
         parametres.put("SERVEUR", commande.getServeur());
         parametres.put("DATE_COMMANDE", commande.getDate());
         parametres.put("PAIEMENTS", commande.getPaiements());
+        parametres.put("CODE_COMMANDE", identification.codeCommande(commande));
+        parametres.put("URL_COMMANDE", identification.urlCommande(commande));
         JasperPrint print = remplir("ticket-de-caisse", parametres,
                 new JRBeanCollectionDataSource(commande.getLignes()));
         return exporterPdf(print);
@@ -100,12 +117,35 @@ public class ImprimerieService {
     }
 
     /**
+     * Imprime une planche d'étiquettes EAN-13, une par produit.
+     */
+    public byte[] imprimerEtiquettes(List<Produit> produits) {
+        List<EtiquetteProduit> etiquettes = produits.stream()
+                .map(identification::etiquette)
+                .toList();
+        return exporterPdf(remplir("etiquettes-produits", parametresTaverne(),
+                new JRBeanCollectionDataSource(etiquettes)));
+    }
+
+    /**
+     * Imprime les cartes de table : chaque QR code ouvre le menu avec la table en contexte.
+     */
+    public byte[] imprimerCartesTables(List<String> tables) {
+        List<CarteTable> cartes = tables.stream()
+                .map(identification::carteTable)
+                .toList();
+        return exporterPdf(remplir("cartes-tables", parametresTaverne(),
+                new JRBeanCollectionDataSource(cartes)));
+    }
+
+    /**
      * Le sous-rapport des lignes est passé déjà compilé ; celui de la TVA est résolu
      * par le rapport maître lui-même, via son chemin sur le classpath.
      */
     private JasperPrint remplirFacture(FactureFournisseur facture) {
         Map<String, Object> parametres = parametresTaverne();
         parametres.put("SOUS_RAPPORT_LIGNES", charger("facture-lignes"));
+        parametres.put("URL_FACTURE", identification.urlFacture(facture));
         return remplir("facture-fournisseur", parametres,
                 new JRBeanCollectionDataSource(List.of(facture)));
     }

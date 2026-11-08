@@ -1,5 +1,14 @@
 package fr.eletutour.tavern.editique.service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.multi.GenericMultipleBarcodeReader;
+import com.google.zxing.multi.MultipleBarcodeReader;
 import fr.eletutour.tavern.editique.model.Commande;
 import fr.eletutour.tavern.editique.model.FactureFournisseur;
 import fr.eletutour.tavern.editique.model.Fournisseur;
@@ -13,6 +22,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -23,12 +33,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +58,9 @@ class ImprimerieServiceTest {
 
     @Inject
     ImprimerieService imprimerie;
+
+    @Inject
+    IdentificationService identification;
 
     @Inject
     ArchivesTaverne archives;
@@ -89,6 +106,50 @@ class ImprimerieServiceTest {
         try (PDDocument document = Loader.loadPDF(pdf)) {
             return document.getPage(0).getMediaBox();
         }
+    }
+
+    /**
+     * « Scanne » une page du PDF à plusieurs résolutions : on la rasterise à 200
+     * puis 300 dpi, et ZXing cherche tous les codes-barres et QR codes qu'elle
+     * contient. Les codes 1D fins se lisent mieux à 300 dpi, tandis que les QR
+     * codes denses rendus en vectoriel par PDFBox passent mieux à 200 dpi.
+     */
+    private static List<Result> decoderCodes(byte[] pdf, int page, BarcodeFormat... formats) throws IOException {
+        try (PDDocument document = Loader.loadPDF(pdf)) {
+            Map<String, Result> trouves = new LinkedHashMap<>();
+            for (int dpi : new int[]{200, 300}) {
+                BufferedImage image = new PDFRenderer(document).renderImageWithDPI(page - 1, dpi);
+                BinaryBitmap bitmap = new BinaryBitmap(
+                        new HybridBinarizer(new BufferedImageLuminanceSource(image)));
+                Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
+                hints.put(DecodeHintType.POSSIBLE_FORMATS, List.of(formats));
+                hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+                MultiFormatReader lecteur = new MultiFormatReader();
+                lecteur.setHints(hints);
+                MultipleBarcodeReader multi = new GenericMultipleBarcodeReader(lecteur);
+                try {
+                    for (Result resultat : multi.decodeMultiple(bitmap, hints)) {
+                        trouves.putIfAbsent(resultat.getBarcodeFormat() + "\0" + resultat.getText(), resultat);
+                    }
+                } catch (com.google.zxing.NotFoundException ignored) {
+                    // Aucun code lisible à cette résolution : on tente la suivante.
+                }
+            }
+            return new ArrayList<>(trouves.values());
+        }
+    }
+
+    private static List<String> contenus(List<Result> resultats, BarcodeFormat format) {
+        return resultats.stream()
+                .filter(resultat -> resultat.getBarcodeFormat() == format)
+                .map(Result::getText)
+                .toList();
+    }
+
+    private static void assertContientCode(List<Result> resultats, BarcodeFormat format, String attendu) {
+        List<String> contenus = contenus(resultats, format);
+        assertTrue(contenus.contains(attendu),
+                () -> "code " + format + " « " + attendu + " » introuvable, lus : " + contenus);
     }
 
     private static void assertCommencePar(String signature, byte[] contenu) {
@@ -324,5 +385,57 @@ class ImprimerieServiceTest {
         byte[] pdf = imprimerie.imprimerTicket(commande("CMD-0042"));
 
         assertTrue(pdf.length < 150 * 1024, () -> "ticket trop lourd : " + pdf.length / 1024 + " Ko");
+    }
+
+    @Test
+    @DisplayName("Le ticket porte un Code 128 (numéro de commande) et un QR code (URL de suivi)")
+    void codesDuTicket() throws IOException {
+        byte[] pdf = imprimerie.imprimerTicket(commande("CMD-0042"));
+
+        List<Result> codes = decoderCodes(pdf, 1, BarcodeFormat.CODE_128, BarcodeFormat.QR_CODE);
+
+        assertContientCode(codes, BarcodeFormat.CODE_128, "CMD-0042");
+        assertContientCode(codes, BarcodeFormat.QR_CODE,
+                "http://localhost:8080/taverne/commandes/CMD-0042/suivi");
+    }
+
+    @Test
+    @DisplayName("La facture porte un QR code qui ramène vers sa page de suivi")
+    void qrCodeDeLaFacture() throws IOException {
+        byte[] pdf = imprimerie.imprimerFacture(facture("FAC-BDF-2026-117"));
+
+        List<Result> codes = decoderCodes(pdf, 1, BarcodeFormat.QR_CODE);
+
+        assertContientCode(codes, BarcodeFormat.QR_CODE,
+                "http://localhost:8080/taverne/factures/FAC-BDF-2026-117/suivi");
+    }
+
+    @Test
+    @DisplayName("Chaque étiquette produit porte un EAN-13 valide et lisible après impression")
+    void etiquettesProduits() throws IOException {
+        byte[] pdf = imprimerie.imprimerEtiquettes(archives.produits());
+
+        List<Result> codes = decoderCodes(pdf, 1, BarcodeFormat.EAN_13);
+
+        List<String> attendus = archives.produits().stream()
+                .map(produit -> identification.codeEan13(produit.getCodeEan13Base()))
+                .toList();
+        for (String ean13 : attendus) {
+            assertContientCode(codes, BarcodeFormat.EAN_13, ean13);
+        }
+    }
+
+    @Test
+    @DisplayName("Chaque carte de table porte un QR code vers le menu avec sa table en contexte")
+    void qrCodesDesCartesTables() throws IOException {
+        byte[] pdf = imprimerie.imprimerCartesTables(archives.tables());
+
+        List<Result> codes = decoderCodes(pdf, 1, BarcodeFormat.QR_CODE);
+
+        for (String table : archives.tables()) {
+            String url = "http://localhost:8080/taverne/menu?table="
+                    + table.replace(" ", "%20");
+            assertContientCode(codes, BarcodeFormat.QR_CODE, url);
+        }
     }
 }

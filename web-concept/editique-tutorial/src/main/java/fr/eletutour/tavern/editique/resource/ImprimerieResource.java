@@ -100,6 +100,32 @@ public class ImprimerieResource {
     }
 
     /**
+     * Planche d'étiquettes EAN-13 pour tous les produits de la taverne.
+     */
+    @GET
+    @Path("/etiquettes")
+    @Produces("application/pdf")
+    public Response etiquettes() {
+        return Response.ok(imprimerie.imprimerEtiquettes(archives.produits()))
+                .type("application/pdf")
+                .header("Content-Disposition", "inline; filename=\"etiquettes-produits.pdf\"")
+                .build();
+    }
+
+    /**
+     * Cartes de table, chacune avec un QR code vers le menu.
+     */
+    @GET
+    @Path("/tables/cartes")
+    @Produces("application/pdf")
+    public Response cartesTables() {
+        return Response.ok(imprimerie.imprimerCartesTables(archives.tables()))
+                .type("application/pdf")
+                .header("Content-Disposition", "inline; filename=\"cartes-tables.pdf\"")
+                .build();
+    }
+
+    /**
      * Construit le nom du fichier envoyé dans l'en-tête {@code Content-Disposition}.
      * <p>
      * Seuls les caractères {@code [A-Za-z0-9-]} du numéro sont conservés, les autres

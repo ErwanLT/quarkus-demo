@@ -6,6 +6,7 @@ import fr.eletutour.tavern.editique.model.Fournisseur;
 import fr.eletutour.tavern.editique.model.LigneCommande;
 import fr.eletutour.tavern.editique.model.LigneFacture;
 import fr.eletutour.tavern.editique.model.Paiement;
+import fr.eletutour.tavern.editique.model.Produit;
 import fr.eletutour.tavern.editique.model.ReleveFournisseur;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -43,6 +44,8 @@ public class ArchivesTaverne {
 
     private final List<Commande> commandes;
     private final List<FactureFournisseur> factures;
+    private final List<Produit> produits;
+    private final List<String> tables;
 
     public ArchivesTaverne() {
         this.commandes = List.of(
@@ -92,6 +95,28 @@ public class ArchivesTaverne {
                         List.of(
                                 new LigneFacture("FRO-BLEU", "Bleu des cavernes", 3, "pièce",
                                         new BigDecimal("9.50"), TVA_REDUITE))));
+
+        this.produits = List.of(
+                new Produit("TON-ROUSSE", "Tonneau de rousse naine 50L",
+                        new BigDecimal("180.00"), "tonneau", "357000000001"),
+                new Produit("TON-BLONDE", "Tonneau de blonde des cimes 50L",
+                        new BigDecimal("165.00"), "tonneau", "357000000002"),
+                new Produit("HOU-SAC", "Sac de houblon des montagnes",
+                        new BigDecimal("22.50"), "sac", "357000000003"),
+                new Produit("FRO-MEULE", "Meule de tomme des collines",
+                        new BigDecimal("38.00"), "meule", "357000000004"),
+                new Produit("FRO-CHEVRE", "Crottin de chèvre affiné",
+                        new BigDecimal("2.40"), "pièce", "357000000005"),
+                new Produit("FAR-BLE", "Farine de blé tendre T45",
+                        new BigDecimal("14.75"), "sac", "357000000006"),
+                new Produit("HYD-ELF", "Hydromel des Elfes",
+                        new BigDecimal("7.80"), "bouteille", "357000000007"),
+                new Produit("CHO-BDF", "Chope de Barbe-de-Fer",
+                        new BigDecimal("4.50"), "chope", "357000000008"));
+
+        this.tables = List.of(
+                "Table du Dragon", "Coin du Barde", "Table du Nain",
+                "Banquette des Elfes", "Comptoir", "Terrasse du Quai");
     }
 
     /**
@@ -125,6 +150,14 @@ public class ArchivesTaverne {
 
     public Optional<FactureFournisseur> trouverFacture(String numero) {
         return factures.stream().filter(f -> f.getNumero().equals(numero)).findFirst();
+    }
+
+    public List<Produit> produits() {
+        return produits;
+    }
+
+    public List<String> tables() {
+        return tables;
     }
 
     /**

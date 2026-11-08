@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Planche d'étiquettes produit : 3 colonnes x 4 rangées, code EAN-13 par produit (JasperReports 7) -->
+<jasperReport name="etiquettes-produits" language="java" pageWidth="595" pageHeight="842" columnCount="3" columnWidth="185" columnSpacing="0" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" whenNoDataType="AllSectionsNoDetail">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.5" forecolor="#2B2118"/>
+	<field name="reference" class="java.lang.String"/>
+	<field name="designation" class="java.lang.String"/>
+	<field name="prixUnitaire" class="java.math.BigDecimal"/>
+	<field name="unite" class="java.lang.String"/>
+	<field name="ean13" class="java.lang.String"/>
+	<detail>
+		<band height="130" splitType="Prevent">
+			<element kind="rectangle" x="2" y="2" width="181" height="126" backcolor="#FBF7EC">
+				<pen lineWidth="0.75" lineColor="#5A4630"/>
+			</element>
+			<element kind="textField" x="6" y="5" width="173" height="24" fontSize="10.0" bold="true" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{designation}]]></expression>
+			</element>
+			<element kind="textField" x="6" y="31" width="173" height="12" fontSize="8.0" forecolor="#5A4630">
+				<expression><![CDATA["Réf. " + $F{reference}]]></expression>
+			</element>
+			<!-- Code EAN-13 : la clé de contrôle a été calculée par IdentificationService -->
+			<element kind="component" x="6" y="45" width="173" height="60">
+				<component kind="barcode4j:EAN13" evaluationTime="Band" moduleWidth="2.0" textPosition="BOTTOM" quietZone="3.0">
+					<codeExpression><![CDATA[$F{ean13}]]></codeExpression>
+				</component>
+			</element>
+			<element kind="textField" x="6" y="106" width="60" height="16" italic="true" vTextAlign="Middle">
+				<expression><![CDATA["le " + $F{unite}]]></expression>
+			</element>
+			<element kind="textField" x="66" y="106" width="113" height="16" fontSize="10.0" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{prixUnitaire}]]></expression>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

@@ -7,6 +7,7 @@
 	<parameter name="ADRESSE_TAVERNE" class="java.lang.String"/>
 	<parameter name="LOGO" class="byte[]"/>
 	<parameter name="SOUS_RAPPORT_LIGNES" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="URL_FACTURE" class="java.lang.String"/>
 	<field name="numero" class="java.lang.String"/>
 	<field name="fournisseur" class="fr.eletutour.tavern.editique.model.Fournisseur"/>
 	<field name="dateEmission" class="java.time.LocalDate"/>
@@ -26,11 +27,17 @@
 		<element kind="textField" x="58" y="13" width="240" height="24" fontSize="14.0" bold="true" vTextAlign="Middle">
 			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
 		</element>
-		<element kind="staticText" x="305" y="0" width="250" height="30" fontSize="24.0" bold="true" hTextAlign="Right" vTextAlign="Middle" forecolor="#4A3720">
+		<element kind="staticText" x="305" y="0" width="190" height="30" fontSize="24.0" bold="true" hTextAlign="Right" vTextAlign="Middle" forecolor="#4A3720">
 			<text><![CDATA[FACTURE]]></text>
 		</element>
-		<element kind="textField" x="305" y="32" width="250" height="16" fontSize="11.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" x="305" y="32" width="190" height="16" fontSize="11.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
 			<expression><![CDATA["N° " + $F{numero}]]></expression>
+		</element>
+		<!-- QR code : accès à la page de suivi de la facture -->
+		<element kind="component" x="500" y="0" width="55" height="55">
+			<component kind="barcode4j:QRCode" margin="1" errorCorrectionLevel="M">
+				<codeExpression><![CDATA[$P{URL_FACTURE}]]></codeExpression>
+			</component>
 		</element>
 		<element kind="line" x="0" y="54" width="555" height="1" forecolor="#5A4630">
 			<pen lineWidth="1.5" lineColor="#5A4630"/>

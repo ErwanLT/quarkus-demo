@@ -85,6 +85,36 @@ class ImprimerieResourceTest {
     }
 
     @Test
+    @DisplayName("La planche d'étiquettes produit s'affiche directement dans le navigateur (inline)")
+    void etiquettesProduits() {
+        byte[] pdf = RestAssured.given()
+                .when().get("/taverne/etiquettes")
+                .then()
+                .statusCode(200)
+                .contentType(containsString("application/pdf"))
+                .header("Content-Disposition",
+                        allOf(containsString("inline"), containsString("etiquettes-produits.pdf")))
+                .extract().asByteArray();
+
+        assertCommencePar("%PDF", pdf);
+    }
+
+    @Test
+    @DisplayName("Les cartes de table s'affichent directement dans le navigateur (inline)")
+    void cartesTables() {
+        byte[] pdf = RestAssured.given()
+                .when().get("/taverne/tables/cartes")
+                .then()
+                .statusCode(200)
+                .contentType(containsString("application/pdf"))
+                .header("Content-Disposition",
+                        allOf(containsString("inline"), containsString("cartes-tables.pdf")))
+                .extract().asByteArray();
+
+        assertCommencePar("%PDF", pdf);
+    }
+
+    @Test
     @DisplayName("La liste des factures contient celles de la brasserie et de la meunerie")
     void listeDesFactures() {
         RestAssured.given()
