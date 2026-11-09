@@ -70,7 +70,7 @@ public class ImprimerieService {
      * </p>
      */
     public byte[] imprimerTicket(Commande commande) {
-        Map<String, Object> parametres = parametresTaverne();
+        Map<String, Object> parametres = parametresTaverne(Charte.THERMIQUE);
         parametres.put("NUMERO", commande.getNumero());
         parametres.put("TABLE", commande.getTable());
         parametres.put("SERVEUR", commande.getServeur());
@@ -111,7 +111,7 @@ public class ImprimerieService {
      * Imprime le relevé des fournisseurs d'une période : leurs factures et le total dû.
      */
     public byte[] imprimerReleve(List<ReleveFournisseur> releves, String periode) {
-        Map<String, Object> parametres = parametresTaverne();
+        Map<String, Object> parametres = parametresTaverne(Charte.TAVERNE);
         parametres.put("PERIODE", periode);
         return exporterPdf(remplir("releve-fournisseurs", parametres, new JRBeanCollectionDataSource(releves)));
     }
@@ -123,7 +123,7 @@ public class ImprimerieService {
         List<EtiquetteProduit> etiquettes = produits.stream()
                 .map(identification::etiquette)
                 .toList();
-        return exporterPdf(remplir("etiquettes-produits", parametresTaverne(),
+        return exporterPdf(remplir("etiquettes-produits", parametresTaverne(Charte.TAVERNE),
                 new JRBeanCollectionDataSource(etiquettes)));
     }
 
@@ -134,7 +134,7 @@ public class ImprimerieService {
         List<CarteTable> cartes = tables.stream()
                 .map(identification::carteTable)
                 .toList();
-        return exporterPdf(remplir("cartes-tables", parametresTaverne(),
+        return exporterPdf(remplir("cartes-tables", parametresTaverne(Charte.TAVERNE),
                 new JRBeanCollectionDataSource(cartes)));
     }
 
@@ -143,16 +143,18 @@ public class ImprimerieService {
      * par le rapport maître lui-même, via son chemin sur le classpath.
      */
     private JasperPrint remplirFacture(FactureFournisseur facture) {
-        Map<String, Object> parametres = parametresTaverne();
+        Map<String, Object> parametres = parametresTaverne(Charte.TAVERNE);
         parametres.put("SOUS_RAPPORT_LIGNES", charger("facture-lignes"));
         parametres.put("URL_FACTURE", identification.urlFacture(facture));
         return remplir("facture-fournisseur", parametres,
                 new JRBeanCollectionDataSource(List.of(facture)));
     }
 
-    private Map<String, Object> parametresTaverne() {
+    private Map<String, Object> parametresTaverne(Charte charte) {
         Map<String, Object> parametres = new HashMap<>();
         parametres.put(JRParameter.REPORT_LOCALE, Locale.FRANCE);
+        // La feuille de styles (.jrtx) que le rapport charge au remplissage, et transmet à ses sous-rapports
+        parametres.put("CHARTE", charte.emplacement());
         parametres.put("NOM_TAVERNE", NOM_TAVERNE);
         parametres.put("ADRESSE_TAVERNE", ADRESSE_TAVERNE);
         // Les rapports A4 reçoivent le logo déjà chargé ; le ticket, lui, le résout par son chemin

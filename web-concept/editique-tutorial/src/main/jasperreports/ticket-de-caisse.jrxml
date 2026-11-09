@@ -4,12 +4,16 @@
 	<!-- QR codes dessinés en image matricielle plutôt qu'en SVG (un rectangle par module) :
 	     en SVG, l'anticrénelage laisse des liserés blancs entre modules et gêne les lecteurs -->
 	<property name="net.sf.jasperreports.components.barcode4j.image.producer" value="image"/>
-	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.0"/>
+	<!-- Le rouleau thermique a sa propre déclinaison de la charte : tout en noir -->
+	<template><![CDATA[$P{CHARTE}]]></template>
 	<!-- Jeu de données secondaire, parcouru par le composant list du summary -->
 	<dataset name="Paiements">
 		<field name="mode" class="java.lang.String"/>
 		<field name="montant" class="java.math.BigDecimal"/>
 	</dataset>
+	<parameter name="CHARTE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["jasperreports/charte-thermique.jrtx"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="NOM_TAVERNE" class="java.lang.String"/>
 	<parameter name="ADRESSE_TAVERNE" class="java.lang.String"/>
 	<parameter name="NUMERO" class="java.lang.String"/>
@@ -32,15 +36,13 @@
 		<element kind="image" x="0" y="0" width="210" height="62" scaleImage="RetainShape" hImageAlign="Center" vImageAlign="Middle" usingCache="true">
 			<expression><![CDATA["logo-impression.jpg"]]></expression>
 		</element>
-		<element kind="textField" x="0" y="66" width="210" height="18" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle" textAdjust="StretchHeight">
+		<element kind="textField" x="0" y="66" width="210" height="18" style="Titre" hTextAlign="Center" vTextAlign="Middle" textAdjust="StretchHeight">
 			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
 		</element>
 		<element kind="textField" positionType="Float" x="0" y="84" width="210" height="12" hTextAlign="Center" textAdjust="StretchHeight">
 			<expression><![CDATA[$P{ADRESSE_TAVERNE}]]></expression>
 		</element>
-		<element kind="line" positionType="Float" x="0" y="102" width="210" height="1">
-			<pen lineWidth="0.75" lineStyle="Dashed"/>
-		</element>
+		<element kind="line" positionType="Float" x="0" y="102" width="210" height="1" style="Pointilles"/>
 		<element kind="textField" positionType="Float" x="0" y="108" width="210" height="12" textAdjust="StretchHeight">
 			<expression><![CDATA["Commande : " + $P{NUMERO}]]></expression>
 		</element>
@@ -53,18 +55,16 @@
 		<element kind="textField" positionType="Float" x="0" y="144" width="210" height="12" textAdjust="StretchHeight">
 			<expression><![CDATA["Date : " + ($P{DATE_COMMANDE} == null ? "" : java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").format($P{DATE_COMMANDE}))]]></expression>
 		</element>
-		<element kind="line" positionType="Float" x="0" y="162" width="210" height="1">
-			<pen lineWidth="0.75" lineStyle="Dashed"/>
-		</element>
+		<element kind="line" positionType="Float" x="0" y="162" width="210" height="1" style="Pointilles"/>
 	</title>
 	<columnHeader height="16">
-		<element kind="staticText" x="0" y="2" width="28" height="12" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="staticText" x="0" y="2" width="28" height="12" style="EnTete" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[Qté]]></text>
 		</element>
-		<element kind="staticText" x="34" y="2" width="106" height="12" bold="true" vTextAlign="Middle">
+		<element kind="staticText" x="34" y="2" width="106" height="12" style="EnTete" vTextAlign="Middle">
 			<text><![CDATA[Article]]></text>
 		</element>
-		<element kind="staticText" x="140" y="2" width="70" height="12" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="staticText" x="140" y="2" width="70" height="12" style="EnTete" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[Montant]]></text>
 		</element>
 	</columnHeader>
@@ -76,25 +76,21 @@
 			<element kind="textField" x="34" y="1" width="106" height="12" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{libelle}]]></expression>
 			</element>
-			<element kind="textField" x="140" y="1" width="70" height="12" pattern="#,##0.00 po" hTextAlign="Right" textAdjust="StretchHeight">
+			<element kind="textField" x="140" y="1" width="70" height="12" style="Montant" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{montant}]]></expression>
 			</element>
 		</band>
 	</detail>
 	<summary height="292">
-		<element kind="line" x="0" y="2" width="210" height="1">
-			<pen lineWidth="0.75" lineStyle="Dashed"/>
-		</element>
-		<element kind="staticText" x="0" y="8" width="90" height="16" fontSize="11.0" bold="true" vTextAlign="Middle">
+		<element kind="line" x="0" y="2" width="210" height="1" style="Pointilles"/>
+		<element kind="staticText" x="0" y="8" width="90" height="16" style="Total" vTextAlign="Middle">
 			<text><![CDATA[TOTAL]]></text>
 		</element>
-		<element kind="textField" x="90" y="8" width="120" height="16" fontSize="11.0" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" x="90" y="8" width="120" height="16" style="MontantTotal" vTextAlign="Middle">
 			<expression><![CDATA[$V{TOTAL}]]></expression>
 		</element>
-		<element kind="line" x="0" y="30" width="210" height="1">
-			<pen lineWidth="0.75" lineStyle="Dashed"/>
-		</element>
-		<element kind="staticText" x="0" y="34" width="210" height="12" bold="true" vTextAlign="Middle">
+		<element kind="line" x="0" y="30" width="210" height="1" style="Pointilles"/>
+		<element kind="staticText" x="0" y="34" width="210" height="12" style="EnTete" vTextAlign="Middle">
 			<text><![CDATA[Règlement :]]></text>
 		</element>
 		<!-- Composant list : une ligne par paiement, sans passer par un sous-rapport -->
@@ -107,35 +103,31 @@
 					<element kind="textField" x="8" y="0" width="132" height="12" textAdjust="StretchHeight">
 						<expression><![CDATA["• " + $F{mode}]]></expression>
 					</element>
-					<element kind="textField" x="140" y="0" width="70" height="12" pattern="#,##0.00 po" hTextAlign="Right">
+					<element kind="textField" x="140" y="0" width="70" height="12" style="Montant">
 						<expression><![CDATA[$F{montant}]]></expression>
 					</element>
 				</contents>
 			</component>
 		</element>
-		<element kind="line" positionType="Float" x="0" y="62" width="210" height="1">
-			<pen lineWidth="0.75" lineStyle="Dashed"/>
-		</element>
-		<element kind="staticText" positionType="Float" x="0" y="68" width="210" height="22" italic="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="line" positionType="Float" x="0" y="62" width="210" height="1" style="Pointilles"/>
+		<element kind="staticText" positionType="Float" x="0" y="68" width="210" height="22" style="Note" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Merci de votre visite, aventurier !]]></text>
 		</element>
-		<element kind="line" positionType="Float" x="0" y="96" width="210" height="1">
-			<pen lineWidth="0.75" lineStyle="Dashed"/>
-		</element>
-		<element kind="staticText" positionType="Float" x="0" y="102" width="210" height="12" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="line" positionType="Float" x="0" y="96" width="210" height="1" style="Pointilles"/>
+		<element kind="staticText" positionType="Float" x="0" y="102" width="210" height="12" style="EnTete" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Commande scannable]]></text>
 		</element>
 		<!-- Code 128 : le numéro de commande, encodé par Barcode4J.
 		     Le composant n'a pas d'alignement : le cadre est calé sur la largeur réelle du code,
 		     puis centré. « CMD-0042 » fait 112 modules (Barcode4J passe en jeu C pour « 0042 ») :
 		     112 modules de 1 pt + 2 zones de silence de 10 pt = 132 pt, posés à (210 - 132) / 2. -->
-		<element kind="component" positionType="Float" x="39" y="118" width="132" height="48">
+		<element kind="component" positionType="Float" x="39" y="118" width="132" height="48" style="Code">
 			<component kind="barcode4j:Code128" moduleWidth="1.0" textPosition="BOTTOM" quietZone="10.0">
 				<codeExpression><![CDATA[$P{CODE_COMMANDE}]]></codeExpression>
 			</component>
 		</element>
 		<!-- QR code : l'URL de suivi, encodée par ZXing via l'intégration JasperReports -->
-		<element kind="component" positionType="Float" x="55" y="172" width="100" height="100">
+		<element kind="component" positionType="Float" x="55" y="172" width="100" height="100" style="Code">
 			<component kind="barcode4j:QRCode" margin="2" errorCorrectionLevel="M">
 				<codeExpression><![CDATA[$P{URL_COMMANDE}]]></codeExpression>
 			</component>

@@ -43,3 +43,4 @@ Démonstration dans la Taverne avec :
 *   Une facture fournisseur A4 avec sous-rapports (passés en paramètre ou par chemin, avec paramètre et valeur de retour) et pagination.
 *   Un relevé mensuel des fournisseurs avec le composant `list`.
 *   L'export PDF et XLSX servi par une API REST.
+*   Une charte graphique commune en feuilles de styles `.jrtx` (charte de la taverne et sa déclinaison thermique), verrouillée par des tests.

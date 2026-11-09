@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Sous-rapport : lignes de facture (JasperReports 7) -->
 <jasperReport name="facture-lignes" language="java" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenNoDataType="AllSectionsNoDetail">
-	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.5"/>
+	<!-- Même charte que le maître, qui la transmet en paramètre -->
+	<template><![CDATA[$P{CHARTE}]]></template>
+	<parameter name="CHARTE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["jasperreports/charte-taverne.jrtx"]]></defaultValueExpression>
+	</parameter>
 	<field name="reference" class="java.lang.String"/>
 	<field name="designation" class="java.lang.String"/>
 	<field name="unite" class="java.lang.String"/>
@@ -9,34 +13,38 @@
 	<field name="prixUnitaireHt" class="java.math.BigDecimal"/>
 	<field name="tauxTva" class="java.math.BigDecimal"/>
 	<field name="montantHt" class="java.math.BigDecimal"/>
+	<!-- Lue par le style conditionnel « Zebre » de la charte : une ligne sur deux est ombrée -->
+	<variable name="LIGNE_PAIRE" class="java.lang.Boolean">
+		<expression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></expression>
+	</variable>
 	<columnHeader height="20">
-		<element kind="rectangle" x="0" y="0" width="555" height="20" backcolor="#EADFC0">
-			<pen lineWidth="0.5" lineColor="#5A4630"/>
-		</element>
-		<element kind="staticText" x="4" y="0" width="76" height="20" bold="true" vTextAlign="Middle">
+		<element kind="rectangle" x="0" y="0" width="555" height="20" style="Bandeau"/>
+		<element kind="staticText" x="4" y="0" width="76" height="20" style="EnTete" vTextAlign="Middle">
 			<text><![CDATA[Réf.]]></text>
 		</element>
-		<element kind="staticText" x="84" y="0" width="181" height="20" bold="true" vTextAlign="Middle">
+		<element kind="staticText" x="84" y="0" width="181" height="20" style="EnTete" vTextAlign="Middle">
 			<text><![CDATA[Désignation]]></text>
 		</element>
-		<element kind="staticText" x="265" y="0" width="35" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="staticText" x="265" y="0" width="35" height="20" style="EnTete" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[Qté]]></text>
 		</element>
-		<element kind="staticText" x="308" y="0" width="52" height="20" bold="true" vTextAlign="Middle">
+		<element kind="staticText" x="308" y="0" width="52" height="20" style="EnTete" vTextAlign="Middle">
 			<text><![CDATA[Unité]]></text>
 		</element>
-		<element kind="staticText" x="360" y="0" width="72" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="staticText" x="360" y="0" width="72" height="20" style="EnTete" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[PU HT]]></text>
 		</element>
-		<element kind="staticText" x="434" y="0" width="38" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="staticText" x="434" y="0" width="38" height="20" style="EnTete" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[TVA]]></text>
 		</element>
-		<element kind="staticText" x="474" y="0" width="77" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="staticText" x="474" y="0" width="77" height="20" style="EnTete" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[Montant HT]]></text>
 		</element>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Prevent">
+			<!-- Fond de la ligne, étiré sur la hauteur de la bande si une désignation passe à la ligne -->
+			<element kind="rectangle" stretchType="ContainerHeight" x="0" y="0" width="555" height="18" style="Zebre"/>
 			<element kind="textField" x="4" y="2" width="76" height="14" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{reference}]]></expression>
 			</element>
@@ -49,17 +57,14 @@
 			<element kind="textField" x="308" y="2" width="52" height="14" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{unite}]]></expression>
 			</element>
-			<element kind="textField" x="360" y="2" width="72" height="14" pattern="#,##0.00 po" hTextAlign="Right" textAdjust="StretchHeight">
+			<element kind="textField" x="360" y="2" width="72" height="14" style="Montant" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{prixUnitaireHt}]]></expression>
 			</element>
-			<element kind="textField" x="434" y="2" width="38" height="14" pattern="#,##0.## %" hTextAlign="Right" textAdjust="StretchHeight">
+			<element kind="textField" x="434" y="2" width="38" height="14" style="Taux" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{tauxTva}]]></expression>
 			</element>
-			<element kind="textField" x="474" y="2" width="77" height="14" pattern="#,##0.00 po" hTextAlign="Right" textAdjust="StretchHeight">
+			<element kind="textField" x="474" y="2" width="77" height="14" style="Montant" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{montantHt}]]></expression>
-			</element>
-			<element kind="line" positionType="Float" x="0" y="17" width="555" height="1" forecolor="#BFB59B">
-				<pen lineWidth="0.25" lineColor="#BFB59B"/>
 			</element>
 		</band>
 	</detail>

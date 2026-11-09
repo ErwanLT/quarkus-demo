@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Charte graphique de The Falling Whale : la seule source des polices, tailles, couleurs,
+	filets et formats de montant de tous les documents imprimés par la taverne.
+
+	Un .jrtx n'est pas compilé : l'extension le copie tel quel à côté des .jasper, et chaque
+	rapport le charge au remplissage, via son paramètre CHARTE. Changer une couleur ici
+	change donc tous les documents, sans recompiler un seul rapport.
+
+	Palette
+	  Encre           #2B2118   texte courant
+	  Sépia           #5A4630   étiquettes, filets, cadres
+	  Brou de noix    #4A3720   titres de document
+	  Parchemin       #EADFC0   bandeaux et encadrés
+	  Vélin           #FBF7EC   fond des cartes et étiquettes
+	  Vélin ombré     #F5EEDB   une ligne sur deux dans les tableaux
+	  Filet clair     #BFB59B   séparateurs discrets
+	  Noir            #000000   codes-barres et QR codes, toujours en noir pur
+-->
+<jasperTemplate>
+	<!-- Typographie -->
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#2B2118"/>
+	<style name="Petit" style="Base" fontSize="8.0"/>
+	<style name="Etiquette" style="Base" fontSize="8.0" forecolor="#5A4630" bold="true"/>
+	<style name="EnTete" style="Base" bold="true"/>
+	<style name="Note" style="Base" fontSize="7.5" forecolor="#5A4630" italic="true"/>
+	<style name="Lien" style="Note" fontSize="6.5"/>
+	<style name="Titre" style="Base" fontSize="14.0" bold="true"/>
+	<style name="TitreDocument" style="Base" fontSize="18.0" forecolor="#4A3720" bold="true"/>
+	<style name="Reference" style="Base" fontSize="11.0" bold="true"/>
+	<style name="Intitule" style="Base" fontSize="10.0" bold="true"/>
+	<style name="Total" style="Base" fontSize="11.0" bold="true"/>
+
+	<!-- Formats : le montant en pièces d'or s'écrit de la même façon sur tous les documents -->
+	<style name="Montant" style="Base" pattern="#,##0.00 po" hTextAlign="Right"/>
+	<style name="MontantFort" style="Montant" bold="true"/>
+	<style name="MontantTotal" style="Montant" fontSize="11.0" bold="true"/>
+	<style name="Taux" style="Base" pattern="#,##0.## %" hTextAlign="Right"/>
+
+	<!-- Fonds, cadres et filets -->
+	<style name="Bandeau" mode="Opaque" backcolor="#EADFC0">
+		<pen lineWidth="0.5" lineColor="#5A4630"/>
+	</style>
+	<style name="Encadre" style="Bandeau">
+		<pen lineWidth="1.0" lineColor="#5A4630"/>
+	</style>
+	<style name="Carte" mode="Opaque" backcolor="#FBF7EC">
+		<pen lineWidth="0.75" lineColor="#5A4630"/>
+	</style>
+	<style name="Filet" forecolor="#5A4630">
+		<pen lineWidth="1.5" lineColor="#5A4630"/>
+	</style>
+	<style name="FiletFin" forecolor="#5A4630">
+		<pen lineWidth="0.5" lineColor="#5A4630"/>
+	</style>
+	<style name="FiletLeger" forecolor="#BFB59B">
+		<pen lineWidth="0.25" lineColor="#BFB59B"/>
+	</style>
+
+	<!-- Une ligne sur deux ombrée. Un .jrtx n'est pas compilé : sa condition ne peut être
+	     qu'une simple référence ($P, $F ou $V). Le rapport qui utilise ce style déclare donc
+	     la variable booléenne LIGNE_PAIRE ; la charte décide de l'apparence, le rapport du moment. -->
+	<style name="Zebre" mode="Transparent">
+		<pen lineWidth="0.0"/>
+		<conditionalStyle mode="Opaque" backcolor="#F5EEDB">
+			<conditionExpression><![CDATA[$V{LIGNE_PAIRE}]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+
+	<!-- Codes-barres et QR codes : noir pur sur fond clair, pour tous les lecteurs -->
+	<style name="Code" forecolor="#000000"/>
+</jasperTemplate>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Déclinaison de la charte pour l'imprimante thermique du comptoir (rouleau 80 mm).
+
+	Une tête thermique ne connaît que le noir : on reprend la charte de la taverne
+	(codes-barres, formats de montant…), puis on redéfinit ce qui doit changer.
+	Un style redéfini ici remplace celui de même nom de la charte incluse.
+
+	Attention : redéfinir « Base » ne repeint pas les styles de la charte incluse.
+	Un style se rattache au parent de ce nom déclaré avant lui ; or les styles inclus
+	sont déclarés avant ceux-ci, et gardent donc le « Base » brun de la taverne.
+	Chaque style coloré qu'emploie le ticket est donc redéfini ici, et le test
+	« ticket en noir et blanc » veille à ce qu'aucun ne soit oublié.
+-->
+<jasperTemplate>
+	<!-- Chemin complet sur le classpath : depuis le classpath, un chemin relatif à ce fichier
+	     n'est pas résolu (« Byte data not found at: charte-taverne.jrtx ») -->
+	<template>jasperreports/charte-taverne.jrtx</template>
+
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.0" forecolor="#000000"/>
+	<style name="EnTete" style="Base" bold="true"/>
+	<style name="Etiquette" style="Base" bold="true"/>
+	<style name="Note" style="Base" italic="true"/>
+	<style name="Titre" style="Base" fontSize="11.0" bold="true"/>
+	<style name="Total" style="Base" fontSize="11.0" bold="true"/>
+	<style name="Montant" style="Base" pattern="#,##0.00 po" hTextAlign="Right"/>
+	<style name="MontantTotal" style="Montant" fontSize="11.0" bold="true"/>
+
+	<!-- Propre au rouleau : les pointillés qui séparent les blocs du ticket -->
+	<style name="Pointilles" forecolor="#000000">
+		<pen lineWidth="0.75" lineStyle="Dashed" lineColor="#000000"/>
+	</style>
+</jasperTemplate>

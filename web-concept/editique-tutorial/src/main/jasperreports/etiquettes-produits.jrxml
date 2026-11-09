@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Planche d'étiquettes produit : 3 colonnes x 4 rangées, code EAN-13 par produit (JasperReports 7) -->
 <jasperReport name="etiquettes-produits" language="java" pageWidth="595" pageHeight="842" columnCount="3" printOrder="Horizontal" columnWidth="185" columnSpacing="0" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" whenNoDataType="AllSectionsNoDetail">
-	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.5" forecolor="#2B2118"/>
+	<template><![CDATA[$P{CHARTE}]]></template>
+	<parameter name="CHARTE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["jasperreports/charte-taverne.jrtx"]]></defaultValueExpression>
+	</parameter>
 	<field name="reference" class="java.lang.String"/>
 	<field name="designation" class="java.lang.String"/>
 	<field name="prixUnitaire" class="java.math.BigDecimal"/>
@@ -9,26 +12,24 @@
 	<field name="ean13" class="java.lang.String"/>
 	<detail>
 		<band height="130" splitType="Prevent">
-			<element kind="rectangle" x="2" y="2" width="181" height="126" backcolor="#FBF7EC">
-				<pen lineWidth="0.75" lineColor="#5A4630"/>
-			</element>
-			<element kind="textField" x="6" y="5" width="173" height="24" fontSize="10.0" bold="true" textAdjust="StretchHeight">
+			<element kind="rectangle" x="2" y="2" width="181" height="126" style="Carte"/>
+			<element kind="textField" x="6" y="5" width="173" height="24" style="Intitule" textAdjust="StretchHeight">
 				<expression><![CDATA[$F{designation}]]></expression>
 			</element>
-			<element kind="textField" x="6" y="31" width="173" height="12" fontSize="8.0" forecolor="#5A4630">
+			<element kind="textField" x="6" y="31" width="173" height="12" style="Etiquette">
 				<expression><![CDATA["Réf. " + $F{reference}]]></expression>
 			</element>
 			<!-- Code EAN-13 : la clé de contrôle a été calculée par IdentificationService -->
 			<!-- 95 modules de 1,4 pt + 2 zones de silence de 15 pt (où s'imprime le 1er chiffre) = 163 pt -->
-			<element kind="component" x="11" y="44" width="163" height="56">
+			<element kind="component" x="11" y="44" width="163" height="56" style="Code">
 				<component kind="barcode4j:EAN13" evaluationTime="Band" moduleWidth="1.4" textPosition="BOTTOM" quietZone="15.0">
 					<codeExpression><![CDATA[$F{ean13}]]></codeExpression>
 				</component>
 			</element>
-			<element kind="textField" x="6" y="106" width="60" height="16" italic="true" vTextAlign="Middle">
+			<element kind="textField" x="6" y="106" width="60" height="16" style="Note" vTextAlign="Middle">
 				<expression><![CDATA["par " + $F{unite}]]></expression>
 			</element>
-			<element kind="textField" x="66" y="106" width="113" height="16" fontSize="10.0" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+			<element kind="textField" x="66" y="106" width="113" height="16" style="MontantTotal" vTextAlign="Middle">
 				<expression><![CDATA[$F{prixUnitaire}]]></expression>
 			</element>
 		</band>

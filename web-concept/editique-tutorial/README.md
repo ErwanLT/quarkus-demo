@@ -14,6 +14,8 @@ Ce module montre comment générer ces documents avec **JasperReports 7** dans Q
 | Étiquettes produits | A4, 3 colonnes remplies ligne par ligne (`printOrder="Horizontal"`) | Composant **`barcode4j:EAN13`**, code interne (préfixe 20) calculé côté Java (clé de contrôle) |
 | Cartes de table | A4, 2 × 3 | Composant **`barcode4j:QRCode`**, une URL de menu différente par table |
 
+Tous ces documents partagent une **charte graphique** commune, écrite une seule fois dans des feuilles de styles JasperReports (`.jrtx`) : voir [La charte graphique](#la-charte-graphique-jrtx).
+
 ### Sous-rapport ou composant list ?
 
 | Cas | Où | Comment |
@@ -223,6 +225,37 @@ Les URL encodées sont construites à partir de `taverne.url-publique` :
 taverne.url-publique=http://localhost:8080
 ```
 
+### La charte graphique (`.jrtx`)
+Aucun rapport ne choisit lui-même une police, une couleur, un trait ou un format de montant : tout vient de deux feuilles de styles placées à côté des `.jrxml`.
+
+| Fichier | Rôle |
+|---|---|
+| `charte-taverne.jrtx` | La charte de The Falling Whale : palette (encre, sépia, parchemin…), typographie (`Titre`, `Etiquette`, `Note`…), formats (`Montant` en `#,##0.00 po`, `Taux`), fonds et filets (`Bandeau`, `Carte`, `FiletLeger`…), `Code` en noir pur pour les codes-barres |
+| `charte-thermique.jrtx` | Sa déclinaison noir et blanc pour le rouleau du ticket : elle **inclut** la charte de la taverne et ne redéfinit que les styles qui changent |
+
+L'extension **copie** les `.jrtx` à côté des `.jasper`, sans les compiler (« Copying … charte-taverne.jrtx » dans les logs du build). Chaque rapport, sous-rapports compris, charge sa charte au remplissage à partir d'un paramètre :
+
+```xml
+<template><![CDATA[$P{CHARTE}]]></template>
+<parameter name="CHARTE" class="java.lang.String">
+	<defaultValueExpression><![CDATA["jasperreports/charte-taverne.jrtx"]]></defaultValueExpression>
+</parameter>
+...
+<element kind="textField" x="425" y="14" width="130" height="16" style="Montant">
+```
+
+L'enum `Charte` porte l'emplacement de chaque charte : `ImprimerieService` passe `THERMIQUE` au ticket et `TAVERNE` aux documents A4. Le maître de la facture transmet `CHARTE` à ses deux sous-rapports, qui ne voient pas ses styles.
+
+Comportements vérifiés avec JasperReports 7.1.0 :
+- un style déclaré dans le `.jrxml` l'emporte sur celui de même nom de la charte ; dans une charte, un style redéfini l'emporte sur celui de la charte incluse ;
+- le style `default="true"` de la charte devient le style par défaut du rapport ;
+- un `<template>` inclus dans un `.jrtx` chargé depuis le classpath doit porter son **chemin complet** (`jasperreports/charte-taverne.jrtx`) : un chemin relatif échoue (« Byte data not found ») ;
+- **redéfinir `Base` ne repeint pas les styles de la charte incluse** : un style se rattache au parent de ce nom déclaré *avant* lui. La charte thermique redéfinit donc chacun des styles colorés employés par le ticket ;
+- un `.jrtx` n'étant pas compilé, la condition d'un `conditionalStyle` ne peut y être qu'une **simple référence** (`$P{…}`, `$F{…}`, `$V{…}`). Le style `Zebre` lit `$V{LIGNE_PAIRE}`, une variable booléenne déclarée par `facture-lignes.jrxml` ; avec `$V{REPORT_COUNT} % 2 == 0` écrit dans la charte, le remplissage échoue (« is not a simple parameter/field/variable … reference ») ;
+- un nom de style mal orthographié passe la compilation et n'échoue qu'au remplissage (« Style not found »).
+
+Deux tests verrouillent la charte : `RapportsSousCharteTest` interdit toute mise en forme en dur dans les `.jrxml` et vérifie que chaque style employé existe ; `CharteGraphiqueTest` relit les couleurs réellement posées dans les PDF.
+
 ### Le modèle : des getters, pas des records
 `JRBeanCollectionDataSource` lit les champs selon les conventions JavaBean (`getLibelle()`...). Les classes du package `model` sont donc des POJO à getters ; les montants calculés (`getMontant()`, `getTotalTtc()`, `getRecapTva()`) sont exposés comme des champs à part entière.
 
@@ -237,4 +270,6 @@ JasperReports 7 a changé le format des `.jrxml` (`<element kind="textField">` a
 - `CommandeTest`, `FactureFournisseurTest`, `ReleveFournisseurTest` : calculs du modèle (totaux, récap TVA, regroupement par fournisseur).
 - `IdentificationServiceTest` : numéros de commande, clés EAN-13 (y compris un rejet de clé invalide), URLs de suivi et encodage des tables.
 - `ImprimerieServiceTest` : texte des PDF extrait avec **PDFBox** (règlements, paramètre et valeur de retour des sous-rapports, relevé), nombre de pages, signature `PK` du XLSX, et **décodage ZXing** des codes-barres/QR codes (Code 128, EAN-13, QR).
+- `RapportsSousCharteTest` (sans Quarkus, sur les sources) : aucun `<style>` local, aucun attribut `fontName`, `fontSize`, `forecolor`, `backcolor`, `bold`, `italic`, `pattern`… ni `<pen>` dans les `.jrxml` ; chaque rapport charge `$P{CHARTE}` ; chaque style employé existe dans sa charte.
+- `CharteGraphiqueTest` : couleurs relevées dans le flux de contenu des PDF (opérateurs `rg`/`RG`) ; les documents A4 restent dans la palette, le ticket est en noir et blanc, les lignes de facture sont zébrées.
 - `ImprimerieResourceTest` : content-type, `Content-Disposition` (`inline` / `attachment`), 404, nouvelles routes `/etiquettes` et `/tables/cartes`.

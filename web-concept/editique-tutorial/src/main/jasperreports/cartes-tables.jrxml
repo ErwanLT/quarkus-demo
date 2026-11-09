@@ -4,21 +4,24 @@
 	<!-- Les QR codes sont dessinés en image matricielle plutôt qu'en SVG (un rectangle par module) :
 	     en SVG, l'anticrénelage laisse des liserés blancs entre modules et gêne les lecteurs -->
 	<property name="net.sf.jasperreports.components.barcode4j.image.producer" value="image"/>
-	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#2B2118"/>
+	<template><![CDATA[$P{CHARTE}]]></template>
+	<parameter name="CHARTE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["jasperreports/charte-taverne.jrtx"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NOM_TAVERNE" class="java.lang.String"/>
 	<field name="nom" class="java.lang.String"/>
 	<field name="url" class="java.lang.String"/>
 	<detail>
 		<band height="240" splitType="Prevent">
-			<element kind="rectangle" x="2" y="2" width="273" height="236" backcolor="#FBF7EC">
-				<pen lineWidth="1.0" lineColor="#5A4630"/>
+			<element kind="rectangle" x="2" y="2" width="273" height="236" style="Carte"/>
+			<!-- Le nom de la taverne vient du Java, comme sur les autres documents -->
+			<element kind="textField" x="2" y="10" width="273" height="14" style="Etiquette" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$P{NOM_TAVERNE}.toUpperCase()]]></expression>
 			</element>
-			<element kind="staticText" x="2" y="10" width="273" height="14" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle" forecolor="#5A4630">
-				<text><![CDATA[THE FALLING WHALE]]></text>
-			</element>
-			<element kind="textField" x="2" y="28" width="273" height="26" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" x="2" y="28" width="273" height="26" style="Titre" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{nom}]]></expression>
 			</element>
-			<element kind="component" x="68" y="62" width="140" height="140" forecolor="#000000">
+			<element kind="component" x="68" y="62" width="140" height="140" style="Code">
 				<component kind="barcode4j:QRCode" evaluationTime="Band" margin="2" errorCorrectionLevel="M">
 					<codeExpression><![CDATA[$F{url}]]></codeExpression>
 				</component>
@@ -26,7 +29,7 @@
 			<element kind="staticText" x="2" y="206" width="273" height="14" hTextAlign="Center" vTextAlign="Middle">
 				<text><![CDATA[Scannez pour consulter le menu]]></text>
 			</element>
-			<element kind="textField" x="12" y="220" width="253" height="12" fontSize="6.5" italic="true" hTextAlign="Center" vTextAlign="Middle" forecolor="#5A4630">
+			<element kind="textField" x="12" y="220" width="253" height="12" style="Lien" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{url}]]></expression>
 			</element>
 		</band>

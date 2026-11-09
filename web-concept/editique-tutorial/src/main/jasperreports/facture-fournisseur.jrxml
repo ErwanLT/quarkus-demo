@@ -4,8 +4,11 @@
 	<!-- QR codes dessinés en image matricielle plutôt qu'en SVG (un rectangle par module) :
 	     en SVG, l'anticrénelage laisse des liserés blancs entre modules et gêne les lecteurs -->
 	<property name="net.sf.jasperreports.components.barcode4j.image.producer" value="image"/>
-	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#2B2118"/>
-	<style name="Etiquette" fontName="DejaVu Sans" fontSize="8.0" forecolor="#5A4630" bold="true"/>
+	<!-- Polices, couleurs, filets et formats viennent de la charte, chargée au remplissage -->
+	<template><![CDATA[$P{CHARTE}]]></template>
+	<parameter name="CHARTE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["jasperreports/charte-taverne.jrtx"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="NOM_TAVERNE" class="java.lang.String"/>
 	<parameter name="ADRESSE_TAVERNE" class="java.lang.String"/>
 	<parameter name="LOGO" class="byte[]"/>
@@ -27,28 +30,26 @@
 		<element kind="image" x="0" y="0" width="50" height="50" scaleImage="RetainShape" hImageAlign="Left" vImageAlign="Middle" usingCache="true">
 			<expression><![CDATA[$P{LOGO}]]></expression>
 		</element>
-		<element kind="textField" x="58" y="13" width="240" height="24" fontSize="14.0" bold="true" vTextAlign="Middle">
+		<element kind="textField" x="58" y="13" width="240" height="24" style="Titre" vTextAlign="Middle">
 			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
 		</element>
-		<element kind="staticText" x="305" y="0" width="190" height="30" fontSize="24.0" bold="true" hTextAlign="Right" vTextAlign="Middle" forecolor="#4A3720">
+		<element kind="staticText" x="305" y="0" width="190" height="30" style="TitreDocument" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[FACTURE]]></text>
 		</element>
-		<element kind="textField" x="305" y="32" width="190" height="16" fontSize="11.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" x="305" y="32" width="190" height="16" style="Reference" hTextAlign="Right" vTextAlign="Middle">
 			<expression><![CDATA["N° " + $F{numero}]]></expression>
 		</element>
 		<!-- QR code : accès à la page de suivi de la facture -->
-		<element kind="component" x="505" y="0" width="50" height="50">
+		<element kind="component" x="505" y="0" width="50" height="50" style="Code">
 			<component kind="barcode4j:QRCode" margin="1" errorCorrectionLevel="M">
 				<codeExpression><![CDATA[$P{URL_FACTURE}]]></codeExpression>
 			</component>
 		</element>
-		<element kind="line" x="0" y="54" width="555" height="1" forecolor="#5A4630">
-			<pen lineWidth="1.5" lineColor="#5A4630"/>
-		</element>
+		<element kind="line" x="0" y="54" width="555" height="1" style="Filet"/>
 		<element kind="staticText" x="0" y="64" width="270" height="12" style="Etiquette">
 			<text><![CDATA[FOURNISSEUR]]></text>
 		</element>
-		<element kind="textField" x="0" y="78" width="270" height="14" bold="true" textAdjust="StretchHeight">
+		<element kind="textField" x="0" y="78" width="270" height="14" style="EnTete" textAdjust="StretchHeight">
 			<expression><![CDATA[$F{fournisseur}.getNom()]]></expression>
 		</element>
 		<element kind="textField" positionType="Float" x="0" y="92" width="270" height="12" textAdjust="StretchHeight">
@@ -60,7 +61,7 @@
 		<element kind="staticText" x="285" y="64" width="270" height="12" style="Etiquette">
 			<text><![CDATA[CLIENT]]></text>
 		</element>
-		<element kind="textField" x="285" y="78" width="270" height="14" bold="true" textAdjust="StretchHeight">
+		<element kind="textField" x="285" y="78" width="270" height="14" style="EnTete" textAdjust="StretchHeight">
 			<expression><![CDATA[$P{NOM_TAVERNE}]]></expression>
 		</element>
 		<element kind="textField" positionType="Float" x="285" y="92" width="270" height="12" textAdjust="StretchHeight">
@@ -85,22 +86,24 @@
 				<!-- Cas 1 : sous-rapport déjà compilé, passé en paramètre par le Java -->
 				<expression><![CDATA[$P{SOUS_RAPPORT_LIGNES}]]></expression>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{lignes})]]></dataSourceExpression>
+				<!-- Un sous-rapport ne connaît pas les styles du maître : on lui transmet la charte -->
+				<parameter name="CHARTE">
+					<expression><![CDATA[$P{CHARTE}]]></expression>
+				</parameter>
 				<!-- Le sous-rapport renvoie son nombre de lignes au maître -->
 				<returnValue toVariable="NB_LIGNES" subreportVariable="REPORT_COUNT"/>
 			</element>
 		</band>
 	</detail>
 	<pageFooter height="24">
-		<element kind="line" x="0" y="2" width="555" height="1" forecolor="#5A4630">
-			<pen lineWidth="0.5" lineColor="#5A4630"/>
-		</element>
-		<element kind="textField" x="0" y="6" width="400" height="14" fontSize="8.0" vTextAlign="Middle">
+		<element kind="line" x="0" y="2" width="555" height="1" style="FiletFin"/>
+		<element kind="textField" x="0" y="6" width="400" height="14" style="Petit" vTextAlign="Middle">
 			<expression><![CDATA[$P{NOM_TAVERNE} + " — Facture " + $F{numero}]]></expression>
 		</element>
-		<element kind="textField" x="400" y="6" width="125" height="14" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" x="400" y="6" width="125" height="14" style="Petit" hTextAlign="Right" vTextAlign="Middle">
 			<expression><![CDATA["Page " + $V{PAGE_NUMBER}]]></expression>
 		</element>
-		<element kind="textField" x="525" y="6" width="30" height="14" fontSize="8.0" evaluationTime="Report" vTextAlign="Middle">
+		<element kind="textField" x="525" y="6" width="30" height="14" style="Petit" evaluationTime="Report" vTextAlign="Middle">
 			<expression><![CDATA[" / " + $V{PAGE_NUMBER}]]></expression>
 		</element>
 	</pageFooter>
@@ -109,9 +112,12 @@
 			<text><![CDATA[RÉCAPITULATIF DE TVA]]></text>
 		</element>
 		<element kind="subreport" x="0" y="28" width="270" height="20">
-			<!-- Cas 2 : sous-rapport résolu par son chemin sur le classpath, avec un paramètre transmis -->
+			<!-- Cas 2 : sous-rapport résolu par son chemin sur le classpath, avec des paramètres transmis -->
 			<expression><![CDATA["jasperreports/facture-recap-tva.jasper"]]></expression>
 			<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{recapTva})]]></dataSourceExpression>
+			<parameter name="CHARTE">
+				<expression><![CDATA[$P{CHARTE}]]></expression>
+			</parameter>
 			<parameter name="NUMERO_FACTURE">
 				<expression><![CDATA[$F{numero}]]></expression>
 			</parameter>
@@ -119,25 +125,23 @@
 		<element kind="staticText" x="305" y="14" width="120" height="16" vTextAlign="Middle">
 			<text><![CDATA[Total HT]]></text>
 		</element>
-		<element kind="textField" x="425" y="14" width="130" height="16" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" x="425" y="14" width="130" height="16" style="Montant" vTextAlign="Middle">
 			<expression><![CDATA[$F{totalHt}]]></expression>
 		</element>
 		<element kind="staticText" x="305" y="32" width="120" height="16" vTextAlign="Middle">
 			<text><![CDATA[Total TVA]]></text>
 		</element>
-		<element kind="textField" x="425" y="32" width="130" height="16" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" x="425" y="32" width="130" height="16" style="Montant" vTextAlign="Middle">
 			<expression><![CDATA[$F{totalTva}]]></expression>
 		</element>
-		<element kind="rectangle" x="305" y="54" width="250" height="24" backcolor="#EADFC0">
-			<pen lineWidth="1.0" lineColor="#5A4630"/>
-		</element>
-		<element kind="staticText" x="311" y="54" width="110" height="24" fontSize="11.0" bold="true" vTextAlign="Middle">
+		<element kind="rectangle" x="305" y="54" width="250" height="24" style="Encadre"/>
+		<element kind="staticText" x="311" y="54" width="110" height="24" style="Total" vTextAlign="Middle">
 			<text><![CDATA[Total TTC]]></text>
 		</element>
-		<element kind="textField" x="421" y="54" width="130" height="24" fontSize="11.0" bold="true" pattern="#,##0.00 po" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" x="421" y="54" width="130" height="24" style="MontantTotal" vTextAlign="Middle">
 			<expression><![CDATA[$F{totalTtc}]]></expression>
 		</element>
-		<element kind="textField" positionType="Float" x="0" y="54" width="270" height="14" fontSize="8.0" italic="true" vTextAlign="Middle">
+		<element kind="textField" positionType="Float" x="0" y="54" width="270" height="14" style="Note" vTextAlign="Middle">
 			<expression><![CDATA["Lignes facturées : " + $V{NB_LIGNES}]]></expression>
 		</element>
 	</summary>
