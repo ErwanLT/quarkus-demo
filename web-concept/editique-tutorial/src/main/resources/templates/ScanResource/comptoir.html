@@ -1,0 +1,13 @@
+{#include layout}
+{#titre}Comptoir de scan{/titre}
+<h1>Comptoir de scan</h1>
+<p class="table">Scannez un ticket, une étiquette ou tapez un numéro : la douchette fait le reste.</p>
+{#if raison}
+<p class="erreur">Code « {code} » : {raison}</p>
+{/if}
+<form action="/taverne/scan" method="get">
+  <input name="code" autofocus autocomplete="off" placeholder="CMD-0042 ou 2000000000015">
+  <button type="submit">Ouvrir</button>
+</form>
+<p class="pied">Les QR codes s'ouvrent seuls ; les codes-barres passent par ce comptoir.</p>
+{/include}

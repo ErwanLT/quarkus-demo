@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Ticket de caisse : rouleau thermique 80 mm, une seule page qui s'allonge (JasperReports 7) -->
 <jasperReport name="ticket-de-caisse" language="java" pageWidth="226" pageHeight="842" columnWidth="210" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" ignorePagination="true" whenNoDataType="AllSectionsNoDetail">
+	<!-- QR codes dessinés en image matricielle plutôt qu'en SVG (un rectangle par module) :
+	     en SVG, l'anticrénelage laisse des liserés blancs entre modules et gêne les lecteurs -->
+	<property name="net.sf.jasperreports.components.barcode4j.image.producer" value="image"/>
 	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="8.0"/>
 	<!-- Jeu de données secondaire, parcouru par le composant list du summary -->
 	<dataset name="Paiements">
@@ -122,14 +125,17 @@
 		<element kind="staticText" positionType="Float" x="0" y="102" width="210" height="12" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Commande scannable]]></text>
 		</element>
-		<!-- Code 128 : le numéro de commande, encodé par Barcode4J -->
-		<element kind="component" x="0" y="118" width="210" height="48">
-			<component kind="barcode4j:Code128" moduleWidth="0.4" textPosition="BOTTOM" quietZone="2.0">
+		<!-- Code 128 : le numéro de commande, encodé par Barcode4J.
+		     Le composant n'a pas d'alignement : le cadre est calé sur la largeur réelle du code,
+		     puis centré. « CMD-0042 » fait 112 modules (Barcode4J passe en jeu C pour « 0042 ») :
+		     112 modules de 1 pt + 2 zones de silence de 10 pt = 132 pt, posés à (210 - 132) / 2. -->
+		<element kind="component" positionType="Float" x="39" y="118" width="132" height="48">
+			<component kind="barcode4j:Code128" moduleWidth="1.0" textPosition="BOTTOM" quietZone="10.0">
 				<codeExpression><![CDATA[$P{CODE_COMMANDE}]]></codeExpression>
 			</component>
 		</element>
 		<!-- QR code : l'URL de suivi, encodée par ZXing via l'intégration JasperReports -->
-		<element kind="component" x="55" y="172" width="100" height="100">
+		<element kind="component" positionType="Float" x="55" y="172" width="100" height="100">
 			<component kind="barcode4j:QRCode" margin="2" errorCorrectionLevel="M">
 				<codeExpression><![CDATA[$P{URL_COMMANDE}]]></codeExpression>
 			</component>

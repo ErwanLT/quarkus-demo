@@ -37,16 +37,16 @@ class IdentificationServiceTest {
     @Test
     @DisplayName("La clé de contrôle EAN-13 est calculée à partir des 12 premiers chiffres")
     void cleEan13() {
-        assertEquals("3570000000012", identification.codeEan13("357000000001"));
-        assertEquals("3570000000029", identification.codeEan13("357000000002"));
+        assertEquals("2000000000015", identification.codeEan13("200000000001"));
+        assertEquals("2000000000022", identification.codeEan13("200000000002"));
         assertEquals("9780201379624", identification.codeEan13("978020137962"));
     }
 
     @Test
     @DisplayName("Un EAN-13 de base invalide est refusé")
     void ean13Invalide() {
-        assertThrows(IllegalArgumentException.class, () -> identification.codeEan13("35700000000"));
-        assertThrows(IllegalArgumentException.class, () -> identification.codeEan13("35700000000A"));
+        assertThrows(IllegalArgumentException.class, () -> identification.codeEan13("20000000000"));
+        assertThrows(IllegalArgumentException.class, () -> identification.codeEan13("20000000000A"));
         assertThrows(IllegalArgumentException.class, () -> identification.codeEan13(null));
     }
 
@@ -54,11 +54,11 @@ class IdentificationServiceTest {
     @DisplayName("L'étiquette reçoit l'EAN-13 complet, clé comprise")
     void etiquette() {
         Produit produit = new Produit("TON-ROUSSE", "Tonneau de rousse naine 50L",
-                new BigDecimal("180.00"), "tonneau", "357000000001");
+                new BigDecimal("180.00"), "tonneau", "200000000001");
 
         EtiquetteProduit etiquette = identification.etiquette(produit);
 
-        assertEquals("3570000000012", etiquette.getEan13());
+        assertEquals("2000000000015", etiquette.getEan13());
         assertEquals("TON-ROUSSE", etiquette.getReference());
     }
 

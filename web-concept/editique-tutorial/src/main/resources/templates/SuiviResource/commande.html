@@ -1,0 +1,11 @@
+{#include layout}
+{#titre}Suivi de commande{/titre}
+<h1>Commande {commande.numero}</h1>
+<p class="table">{commande.table} — servie par {commande.serveur} le {commande.date.format('dd/MM/yyyy HH:mm')}</p>
+<table><thead><tr><th>Article</th><th>Qté</th><th class="prix">Montant</th></tr></thead><tbody>
+{#for ligne in commande.lignes}
+<tr><td>{ligne.libelle}</td><td>{ligne.quantite}</td><td class="prix">{ligne.montant.po}</td></tr>
+{/for}
+</tbody><tfoot><tr><th colspan="2">Total</th><th class="prix">{commande.total.po}</th></tr></tfoot></table>
+<p><a href="/taverne/commandes/{commande.numero}/ticket">Télécharger le ticket de caisse (PDF)</a></p>
+{/include}

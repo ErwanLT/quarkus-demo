@@ -1,0 +1,10 @@
+{#include layout}
+{#titre}{produit.designation}{/titre}
+<h1>{produit.designation}</h1>
+<p class="table">Référence {produit.reference}</p>
+<table><tbody>
+<tr><th>Prix</th><td class="prix">{produit.prixUnitaire.po} / {produit.unite}</td></tr>
+<tr><th>EAN-13</th><td class="prix">{ean13}</td></tr>
+</tbody></table>
+<p><a href="/taverne/scan">Scanner un autre code</a></p>
+{/include}

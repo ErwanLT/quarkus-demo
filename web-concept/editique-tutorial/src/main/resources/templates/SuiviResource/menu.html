@@ -1,0 +1,13 @@
+{#include layout}
+{#titre}La carte{/titre}
+<h1>La carte de The Falling Whale</h1>
+{#if table}
+<p class="table">Carte de la {table}</p>
+{/if}
+<table><thead><tr><th>Produit</th><th>Référence</th><th class="prix">Prix</th></tr></thead><tbody>
+{#for produit in produits}
+<tr><td>{produit.designation}</td><td>{produit.reference}</td><td class="prix">{produit.prixUnitaire.po} / {produit.unite}</td></tr>
+{/for}
+</tbody></table>
+<p class="pied">Une chope à la main, un parchemin dans l'autre.</p>
+{/include}

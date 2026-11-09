@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Facture fournisseur A4 : rapport maître avec sous-rapports lignes et TVA (JasperReports 7) -->
 <jasperReport name="facture-fournisseur" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+	<!-- QR codes dessinés en image matricielle plutôt qu'en SVG (un rectangle par module) :
+	     en SVG, l'anticrénelage laisse des liserés blancs entre modules et gêne les lecteurs -->
+	<property name="net.sf.jasperreports.components.barcode4j.image.producer" value="image"/>
 	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#2B2118"/>
 	<style name="Etiquette" fontName="DejaVu Sans" fontSize="8.0" forecolor="#5A4630" bold="true"/>
 	<parameter name="NOM_TAVERNE" class="java.lang.String"/>
@@ -34,7 +37,7 @@
 			<expression><![CDATA["N° " + $F{numero}]]></expression>
 		</element>
 		<!-- QR code : accès à la page de suivi de la facture -->
-		<element kind="component" x="500" y="0" width="55" height="55">
+		<element kind="component" x="505" y="0" width="50" height="50">
 			<component kind="barcode4j:QRCode" margin="1" errorCorrectionLevel="M">
 				<codeExpression><![CDATA[$P{URL_FACTURE}]]></codeExpression>
 			</component>

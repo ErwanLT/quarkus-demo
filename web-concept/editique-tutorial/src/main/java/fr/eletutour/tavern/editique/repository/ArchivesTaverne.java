@@ -96,23 +96,25 @@ public class ArchivesTaverne {
                                 new LigneFacture("FRO-BLEU", "Bleu des cavernes", 3, "pièce",
                                         new BigDecimal("9.50"), TVA_REDUITE))));
 
+        // Préfixes 20 à 29 : réservés par GS1 aux codes internes (circulation restreinte),
+        // ils ne risquent pas de désigner le produit réel d'un autre fabricant
         this.produits = List.of(
                 new Produit("TON-ROUSSE", "Tonneau de rousse naine 50L",
-                        new BigDecimal("180.00"), "tonneau", "357000000001"),
+                        new BigDecimal("180.00"), "tonneau", "200000000001"),
                 new Produit("TON-BLONDE", "Tonneau de blonde des cimes 50L",
-                        new BigDecimal("165.00"), "tonneau", "357000000002"),
+                        new BigDecimal("165.00"), "tonneau", "200000000002"),
                 new Produit("HOU-SAC", "Sac de houblon des montagnes",
-                        new BigDecimal("22.50"), "sac", "357000000003"),
+                        new BigDecimal("22.50"), "sac", "200000000003"),
                 new Produit("FRO-MEULE", "Meule de tomme des collines",
-                        new BigDecimal("38.00"), "meule", "357000000004"),
+                        new BigDecimal("38.00"), "meule", "200000000004"),
                 new Produit("FRO-CHEVRE", "Crottin de chèvre affiné",
-                        new BigDecimal("2.40"), "pièce", "357000000005"),
+                        new BigDecimal("2.40"), "pièce", "200000000005"),
                 new Produit("FAR-BLE", "Farine de blé tendre T45",
-                        new BigDecimal("14.75"), "sac", "357000000006"),
+                        new BigDecimal("14.75"), "sac", "200000000006"),
                 new Produit("HYD-ELF", "Hydromel des Elfes",
-                        new BigDecimal("7.80"), "bouteille", "357000000007"),
+                        new BigDecimal("7.80"), "bouteille", "200000000007"),
                 new Produit("CHO-BDF", "Chope de Barbe-de-Fer",
-                        new BigDecimal("4.50"), "chope", "357000000008"));
+                        new BigDecimal("4.50"), "chope", "200000000008"));
 
         this.tables = List.of(
                 "Table du Dragon", "Coin du Barde", "Table du Nain",
@@ -154,6 +156,17 @@ public class ArchivesTaverne {
 
     public List<Produit> produits() {
         return produits;
+    }
+
+    public Optional<Produit> trouverProduit(String reference) {
+        return produits.stream().filter(p -> p.getReference().equals(reference)).findFirst();
+    }
+
+    /**
+     * Retrouve un produit à partir des 12 premiers chiffres de son EAN-13 (clé de contrôle exclue).
+     */
+    public Optional<Produit> trouverProduitParBaseEan(String base12) {
+        return produits.stream().filter(p -> p.getCodeEan13Base().equals(base12)).findFirst();
     }
 
     public List<String> tables() {

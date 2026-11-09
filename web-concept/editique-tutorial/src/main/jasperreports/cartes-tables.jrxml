@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Cartes de table : 2 colonnes x 3 rangées, un QR code vers le menu par table (JasperReports 7) -->
-<jasperReport name="cartes-tables" language="java" pageWidth="595" pageHeight="842" columnCount="2" columnWidth="277" columnSpacing="1" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" whenNoDataType="AllSectionsNoDetail">
+<jasperReport name="cartes-tables" language="java" pageWidth="595" pageHeight="842" columnCount="2" printOrder="Horizontal" columnWidth="277" columnSpacing="1" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" whenNoDataType="AllSectionsNoDetail">
+	<!-- Les QR codes sont dessinés en image matricielle plutôt qu'en SVG (un rectangle par module) :
+	     en SVG, l'anticrénelage laisse des liserés blancs entre modules et gêne les lecteurs -->
+	<property name="net.sf.jasperreports.components.barcode4j.image.producer" value="image"/>
 	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#2B2118"/>
 	<field name="nom" class="java.lang.String"/>
 	<field name="url" class="java.lang.String"/>

@@ -21,6 +21,10 @@
             <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-qute</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.quarkiverse.jasperreports</groupId>
             <artifactId>quarkus-jasperreports</artifactId>
             <version>${quarkus-jasperreports.version}</version>

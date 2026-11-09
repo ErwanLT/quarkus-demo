@@ -41,13 +41,6 @@ public class IdentificationService {
     }
 
     /**
-     * Ce qui part dans le Code 128 d'une étiquette : la référence interne du produit.
-     */
-    public String codeProduit(Produit produit) {
-        return produit.getReference();
-    }
-
-    /**
      * URL de suivi d'une commande, encodée dans le QR code du ticket.
      */
     public String urlCommande(Commande commande) {

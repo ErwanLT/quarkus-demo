@@ -22,6 +22,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.ss.usermodel.Cell;
@@ -136,6 +137,37 @@ class ImprimerieServiceTest {
                 }
             }
             return new ArrayList<>(trouves.values());
+        }
+    }
+
+    /**
+     * Décode un code par zone : la page rendue est découpée en {@code colonnes} x {@code rangees}
+     * tuiles, chacune lue séparément. Sur une planche de six QR codes, le lecteur multiple de ZXing
+     * peut en manquer un ; une tuile ne contient qu'un seul code, la lecture est alors fiable.
+     */
+    private static List<Result> decoderParZones(byte[] pdf, int page, int dpi, int colonnes, int rangees,
+                                                BarcodeFormat format) throws IOException {
+        try (PDDocument document = Loader.loadPDF(pdf)) {
+            BufferedImage image = new PDFRenderer(document).renderImageWithDPI(page - 1, dpi);
+            int largeur = image.getWidth() / colonnes;
+            int hauteur = image.getHeight() / rangees;
+            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
+            hints.put(DecodeHintType.POSSIBLE_FORMATS, List.of(format));
+            hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+            List<Result> resultats = new ArrayList<>();
+            for (int rangee = 0; rangee < rangees; rangee++) {
+                for (int colonne = 0; colonne < colonnes; colonne++) {
+                    BufferedImage tuile = image.getSubimage(colonne * largeur, rangee * hauteur, largeur, hauteur);
+                    BinaryBitmap bitmap = new BinaryBitmap(
+                            new HybridBinarizer(new BufferedImageLuminanceSource(tuile)));
+                    try {
+                        resultats.add(new MultiFormatReader().decode(bitmap, hints));
+                    } catch (com.google.zxing.NotFoundException ignored) {
+                        // Tuile sans code lisible : l'assertion appelante le signalera.
+                    }
+                }
+            }
+            return resultats;
         }
     }
 
@@ -353,18 +385,21 @@ class ImprimerieServiceTest {
     }
 
     /**
-     * Compte les images posées sur la première page d'un PDF.
+     * Compte les logos posés sur la première page d'un PDF. Les codes-barres étant eux aussi
+     * dessinés en images matricielles, on reconnaît le logo d'impression à ses dimensions (260 x 258 px).
      */
-    private static int imagesPremierePage(byte[] pdf) throws IOException {
+    private static int logosPremierePage(byte[] pdf) throws IOException {
         try (PDDocument document = Loader.loadPDF(pdf)) {
             PDResources ressources = document.getPage(0).getResources();
-            int images = 0;
+            int logos = 0;
             for (COSName nom : ressources.getXObjectNames()) {
-                if (ressources.isImageXObject(nom)) {
-                    images++;
+                if (ressources.isImageXObject(nom)
+                        && ressources.getXObject(nom) instanceof PDImageXObject image
+                        && image.getWidth() == 260 && image.getHeight() == 258) {
+                    logos++;
                 }
             }
-            return images;
+            return logos;
         }
     }
 
@@ -372,10 +407,10 @@ class ImprimerieServiceTest {
     @DisplayName("Le logo de The Falling Whale orne le ticket, la facture et le relevé")
     void logoSurChaqueDocument() throws IOException {
         // Ticket : image résolue par son chemin sur le classpath
-        assertEquals(1, imagesPremierePage(imprimerie.imprimerTicket(commande("CMD-0042"))));
+        assertEquals(1, logosPremierePage(imprimerie.imprimerTicket(commande("CMD-0042"))));
         // Facture et relevé : image transmise en paramètre par le service
-        assertEquals(1, imagesPremierePage(imprimerie.imprimerFacture(facture("FAC-BDF-2026-117"))));
-        assertEquals(1, imagesPremierePage(imprimerie.imprimerReleve(archives.releveFournisseurs(), "Octobre 2026")));
+        assertEquals(1, logosPremierePage(imprimerie.imprimerFacture(facture("FAC-BDF-2026-117"))));
+        assertEquals(1, logosPremierePage(imprimerie.imprimerReleve(archives.releveFournisseurs(), "Octobre 2026")));
     }
 
     @Test
@@ -430,7 +465,10 @@ class ImprimerieServiceTest {
     void qrCodesDesCartesTables() throws IOException {
         byte[] pdf = imprimerie.imprimerCartesTables(archives.tables());
 
-        List<Result> codes = decoderCodes(pdf, 1, BarcodeFormat.QR_CODE);
+        // Planche de 2 colonnes x 3 rangées : une carte, donc un QR code, par tuile.
+        // Lecture à 300 dpi, la résolution d'impression : c'est là que les QR dessinés
+        // en SVG (un rectangle par module) devenaient illisibles.
+        List<Result> codes = decoderParZones(pdf, 1, 300, 2, 3, BarcodeFormat.QR_CODE);
 
         for (String table : archives.tables()) {
             String url = "http://localhost:8080/taverne/menu?table="

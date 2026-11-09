@@ -1,0 +1,15 @@
+{#include layout}
+{#titre}Suivi de facture{/titre}
+<h1>Facture {facture.numero}</h1>
+<p class="table">{facture.fournisseur.nom} — échéance du {facture.dateEcheance.format('dd/MM/yyyy')}</p>
+<table><thead><tr><th>Référence</th><th>Désignation</th><th class="prix">Montant HT</th></tr></thead><tbody>
+{#for ligne in facture.lignes}
+<tr><td>{ligne.reference}</td><td>{ligne.designation}</td><td class="prix">{ligne.montantHt.po}</td></tr>
+{/for}
+</tbody><tfoot>
+<tr><th colspan="2">Total HT</th><th class="prix">{facture.totalHt.po}</th></tr>
+<tr><th colspan="2">TVA</th><th class="prix">{facture.totalTva.po}</th></tr>
+<tr><th colspan="2">Total TTC</th><th class="prix">{facture.totalTtc.po}</th></tr>
+</tfoot></table>
+<p><a href="/taverne/factures/{facture.numero}">Télécharger la facture (PDF)</a></p>
+{/include}

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests des pages HTML ciblées par les QR codes imprimés.
@@ -39,6 +40,18 @@ class SuiviResourceTest {
                 .body(containsString("Facture FAC-BDF-2026-117"),
                         containsString("Brasserie Barbe-de-Fer"),
                         containsString("Télécharger la facture"));
+    }
+
+    @Test
+    @DisplayName("Les montants de la facture suivent le format des PDF : séparateur de milliers français")
+    void montantsFormatesCommeLePdf() {
+        String page = RestAssured.given()
+                .when().get("/taverne/factures/FAC-BDF-2026-117/suivi")
+                .then().statusCode(200)
+                .extract().asString();
+        // Selon le formateur, le séparateur de milliers est U+202F ou U+00A0 : on normalise en espace simple.
+        String normalisee = page.replace('\u202f', ' ').replace('\u00a0', ' ');
+        assertTrue(normalisee.contains("1 378,69 po"), "Montant attendu absent de la page : " + normalisee);
     }
 
     @Test
