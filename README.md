@@ -54,13 +54,17 @@ Tutoriel sur l'annotation `@RateLimit` de SmallRye Fault Tolerance pour limiter 
 Tutoriel complet sur l'utilisation de GraphQL avec Quarkus.
 #### [GraphQL Serveur](web-concept/graphQL/graphql-tutorial)
 [Article](https://www.sfeir.dev/back/la-taverne-graphql-decouvrir-graphql-avec-quarkus/)  
-Exposition de données via MicroProfile GraphQL et gestion du registre des aventuriers.
+[Article - arts avancés du comptoir](https://www.sfeir.dev/back/la-taverne-graphql-maitriser-les-arts-avances-du-comptoir/)  
+Exposition de données via MicroProfile GraphQL et gestion du registre des aventuriers, puis pagination (offset et curseur), directives personnalisées et résolution du N+1 par batch.
 #### [GraphQL Client TypeSafe](web-concept/graphQL/graphql-client-tutorial)
 [Article](https://www.sfeir.dev/back/la-taverne-graphql-consommer-une-api-graphql-avec-quarkus/)  
 Consommation de l'API via SmallRye GraphQL TypeSafe Client.
 #### [GraphQL Client Advanced](web-concept/graphQL/graphql-client-advanced-tutorial)
 [Article](https://www.sfeir.dev/back/la-taverne-graphql-aller-plus-loin-avec-le-client-quarkus/)  
 Utilisation du Dynamic Client et du Generator SmallRye.
+#### [GraphQL Fédération](web-concept/graphQL/federation-tutorial)
+[Article](https://www.sfeir.dev/back/la-taverne-graphql-un-royaume-de-tavernes/)  
+Découpage du domaine en subgraphs Quarkus fédérés (`aventurier-service`, `quete-service`), composés et routés par Apollo Router.
 
 ### [i18n & l10n (Taverne DnD)](web-concept/i18n-tutorial)
 [Article](https://www.sfeir.dev/back/la-taverne-multilingue/)  
@@ -79,6 +83,7 @@ Tutoriel Mutiny avec le tavernier aux huit bras : `Uni` pour une chope servie pl
 Tutoriel sur l'intégration de **Vaadin Flow** pour construire des interfaces d'administration riches. Inclut une démonstration d'**intégration JavaScript personnalisée** (Leaflet pour les cartes, Chart.js pour les graphiques) pour s'affranchir des composants payants tout en gardant un thème médiéval immersif.
 
 ### [Éditique (L'imprimerie de la taverne)](web-concept/editique-tutorial)
+[Article](https://www.sfeir.dev/back/limprimerie-de-la-taverne-tickets-et-factures-avec-jasperreports-et-quarkus/)  
 Tutoriel sur la génération de documents avec **JasperReports 7** via l'extension Quarkiverse `quarkus-jasperreports` (rapports compilés au build) : ticket de caisse thermique 80 mm, facture fournisseur A4 et relevé mensuel des fournisseurs, avec sous-rapports (paramètres, valeur de retour), composant `list`, logo de la taverne, export PDF/XLSX et vérification des PDF avec PDFBox. Codes-barres et QR codes (Code 128, EAN-13, QR) sur les tickets, factures, étiquettes produits et cartes de table, avec pages de suivi Qute et relecture des codes par ZXing. Charte graphique commune en feuilles de styles `.jrtx` (palette, typographie, formats de montant, déclinaison thermique), verrouillée par des tests sur les sources et sur les couleurs des PDF.
 
 ## Operations (`operations`)
@@ -100,13 +105,16 @@ Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour st
 Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.
 
 ### [Command Line (Commis de course)](operations/command-line)
-[Article](https://www.sfeir.dev/back/donnez-vie-a-vos-cli-avec-quarkus/)  
+[Article](https://www.sfeir.dev/back/le-commis-de-course-creer-une-cli-interactive-avec-quarkus/)  
+[Article - donnez vie à vos CLI](https://www.sfeir.dev/back/donnez-vie-a-vos-cli-avec-quarkus/)  
 Tutoriel sur la creation d'une application Quarkus en ligne de commande avec Picocli et JLine3, sous forme de shell interactif pour lancer des missions de taverne.
 
 ### [Extension Quarkus personnalisée (Rune de la Taverne)](operations/quarkus-taverne-extension)
+[Article](https://www.sfeir.dev/back/quarkus-la-forge-aux-extensions/)  
 Tutoriel sur la création d'une extension Quarkus personnalisée (découpée en modules *runtime* et *deployment*) pour intercepter et loguer des méthodes annotées avec `@Taverne`.
 
 ### [La Taverne en Flammes (Résilience & reprise)](operations/la-taverne-en-flammes)
+[Article](https://www.sfeir.dev/back/la-taverne-en-flammes-un-manuel-de-resilience-operationnelle-pour-quarkus/)  
 Tutoriel sur la résilience opérationnelle : arrêt gracieux, sondes `@Liveness` / `@Readiness` pilotables à chaud,
 timeouts réactifs (Mutiny) et déclaratifs (`@Timeout`, `@Retry`, `@Fallback`), vidange des messages à l'arrêt,
 transactions JTA sous incident, runbook d'incident et post-mortem sans blâme. On met le feu à la taverne via l'API
@@ -129,6 +137,8 @@ Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements
 [Article](https://www.sfeir.dev/back/le-tableau-daffichage-de-la-salle-commune-sse-avec-quarkus/)  
 Tutoriel SSE avec RESTEasy Reactive et Mutiny pour diffuser les annonces du barman en temps reel vers les aventuriers connectes.
 #### [Corbeaux messagers (Kafka)](integration/messaging/kafka-tutorial)
+[Article](https://www.sfeir.dev/back/la-voliere-aux-corbeaux-messagers-introduction-a-kafka-dans-quarkus/)  
+[Article - Retry et Dead Letter Queue](https://www.sfeir.dev/back/le-filet-de-secours-de-la-voliere-retry-et-dead-letter-queue/)  
 Tutoriel d'intégration avec Apache Kafka (Redpanda) et SmallRye Reactive Messaging, incluant les mécanismes de tentatives (**Retry**) et de redirection vers la **Dead Letter Queue (DLQ)**.
 
 #### [L'Oracle au fond de la salle (LangChain4j)](integration/langchain4j-tutorial)
