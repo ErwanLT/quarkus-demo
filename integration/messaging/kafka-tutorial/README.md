@@ -51,7 +51,7 @@ docker exec -it $(docker ps -q --filter ancestor=redpandadata/redpanda) rpk topi
 ./mvnw test
 ```
 
-Le projet comporte deux tests :
-- `RavenMasterServiceTest` : Utilise le connecteur `smallrye-in-memory` pour vérifier le comportement d'envoi du maître corbeau sans dépendre d'un vrai broker Kafka.
-- `RavenRetryDlqTest` : Démarre un vrai broker Kafka de Dev Services via `KafkaIntegrationTestProfile`. Il envoie un message en erreur, valide le déclenchement des retries et vérifie la bonne réception du message dans le topic de DLQ.
+Les tests n'ont besoin ni de broker Kafka ni de Docker : les canaux passent par le connecteur `smallrye-in-memory`, ce qui leur permet de tourner tels quels en CI.
+- `RavenMasterServiceTest` : vérifie que le maître corbeau publie bien le message sur le canal sortant.
+- `RavenRetryDlqTest` : pose des corbeaux directement au colombier. Un message sain est acquitté (`ack`) ; un message en erreur est retenté puis rejeté (`nack`), ce qui déclenche, avec le vrai connecteur Kafka, l'envoi vers la DLQ. Le test vérifie aussi que la stratégie `dead-letter-queue` pointe bien sur `raven-roost-dlq`. Le routage vers la DLQ est assuré par le connecteur Kafka lui-même : on le constate en dev avec la commande `rpk` ci-dessus.
 

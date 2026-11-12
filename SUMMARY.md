@@ -13,6 +13,7 @@
     - JWT classique
     - JWT + JPA (login + generation de token)
 - Mise en cache (L'ardoise magique - `@CacheResult`, `@CacheInvalidate`)
+- Compilation native GraalVM/Mandrel (Le barde figé dans la pierre - reflexion, ressources, init build/run)
 
 ## Web Concept (`web-concept`)
 - Qute (templates, layout, formulaires, Panache)
@@ -50,7 +51,6 @@
 ## Core Concept
 - Validation
 - Configuration et profils
-- Quarkus Native (GraalVM)
 
 ## Database Access
 - Reactive SQL (R2DBC)

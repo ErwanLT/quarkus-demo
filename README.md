@@ -35,6 +35,11 @@ Démonstration de `quarkus-cache` avec `@CacheResult`, `@CacheInvalidate` et `@C
 Le tavernier lève les yeux vers son ardoise magique (le cache mémoire) plutôt que de redescendre
 à la cave consulter le grand livre à chaque commande d'un aventurier.
 
+### [Natif - Le barde figé dans la pierre](core-concept/native-tutorial)
+Compilation native avec GraalVM/Mandrel : `-Dnative`, build conteneurisé, `@RegisterForReflection`,
+`quarkus.native.resources.includes`, `--initialize-at-run-time` et `@QuarkusIntegrationTest`.
+La statue du barde chante en 30 ms, là où le barde de chair met 600 ms à s'accorder.
+
 ## Web Concept (`web-concept`)
 
 ### [Qute Tutorial](web-concept/qute-tutorial)

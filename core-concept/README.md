@@ -22,3 +22,9 @@ Exemple JWT pour proteger le livre de comptes et le coffre fort.
 Démonstration de `quarkus-cache` avec `@CacheResult`, `@CacheInvalidate` et `@CacheInvalidateAll`
 via la métaphore de l'ardoise du tavernier : lever les yeux vers l'ardoise plutôt que de
 descendre à la cave à chaque commande.
+
+## [Natif - Le barde figé dans la pierre](native-tutorial)
+Compilation native avec GraalVM/Mandrel et les trois pièges du monde fermé :
+réflexion (`@RegisterForReflection`), ressources (`quarkus.native.resources.includes`)
+et initialisation au build (`--initialize-at-run-time`). Tests rejoués sur le binaire
+avec `@QuarkusIntegrationTest`.

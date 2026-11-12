@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relecture — Les armoiries de la taverne</title>
+<style>
+:root {
+  --bg: #f7f7f5; --surface: #ffffff; --text: #1d1d1f; --muted: #5f6368; --border: #e2e2de;
+  --accent: #c8102e;
+  --ok: #1e7f4f; --ok-bg: #e6f4ec; --warn: #9a6200; --warn-bg: #fdf3e1;
+  --bad: #b3261e; --bad-bg: #fbe9e7; --info-bg: #eef2f8; --code-bg: #f1f1ee;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141416; --surface: #1d1d20; --text: #ececec; --muted: #a0a0a8; --border: #33333a;
+    --accent: #ff5468; --ok: #5fd39a; --ok-bg: #16301f; --warn: #f2b84b; --warn-bg: #33270f;
+    --bad: #ff8a80; --bad-bg: #3a1714; --info-bg: #1b2433; --code-bg: #26262b;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141416; --surface: #1d1d20; --text: #ececec; --muted: #a0a0a8; --border: #33333a;
+  --accent: #ff5468; --ok: #5fd39a; --ok-bg: #16301f; --warn: #f2b84b; --warn-bg: #33270f;
+  --bad: #ff8a80; --bad-bg: #3a1714; --info-bg: #1b2433; --code-bg: #26262b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 920px; margin: 0 auto; padding: 32px 16px 64px; }
+header { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 24px; }
+header .meta { flex: 1 1 360px; min-width: 0; }
+.kicker { color: var(--accent); font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+h1 { font-size: 26px; line-height: 1.25; margin: 6px 0 10px; overflow-wrap: anywhere; }
+h2 { font-size: 19px; margin: 0 0 14px; }
+h3 { font-size: 16px; margin: 18px 0 8px; }
+.sub { color: var(--muted); font-size: 14px; }
+.score { flex: 0 0 auto; text-align: center; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px 22px; }
+.score .n { font-size: 44px; font-weight: 700; line-height: 1; }
+.score .n small { font-size: 18px; color: var(--muted); font-weight: 500; }
+.score .label { margin-top: 8px; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; display: inline-block; }
+section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; overflow-wrap: anywhere; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.table-wrap { overflow-x: auto; }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.bloquant { background: var(--bad-bg); color: var(--bad); }
+.majeur { background: var(--warn-bg); color: var(--warn); }
+.mineur { background: var(--info-bg); color: var(--text); }
+.ok { background: var(--ok-bg); color: var(--ok); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 13px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--border); }
+.tag.primary { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.issue { border-left: 3px solid var(--border); padding: 4px 0 4px 14px; margin: 14px 0; }
+.issue.bloquant, .issue.majeur, .issue.mineur { background: none; color: inherit; }
+.issue.bloquant { border-color: var(--bad); } .issue.majeur { border-color: var(--warn); } .issue.mineur { border-color: var(--muted); }
+blockquote { margin: 6px 0; padding: 8px 12px; background: var(--code-bg); border-radius: 6px; font-size: 14px; }
+.diff { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.diff > div { padding: 10px 12px; border-radius: 8px; font-size: 14px; }
+.diff .avant { background: var(--bad-bg); } .diff .apres { background: var(--ok-bg); }
+.diff b { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 4px; }
+@media (max-width: 640px) { .diff { grid-template-columns: 1fr; } h1 { font-size: 22px; } }
+ul.check { list-style: none; padding: 0; margin: 0; }
+ul.check li { padding: 6px 0; border-bottom: 1px solid var(--border); }
+ul.check li::before { content: "☐  "; color: var(--muted); }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="meta">
+    <div class="kicker">Relecture sfeir.dev · 10 novembre 2026</div>
+    <h1>Les armoiries de la taverne : une charte graphique dans Jasper avec Quarkus</h1>
+    <div class="sub">Erwan Le Tutour · <code>armoiries-taverne-charte-graphique-jasperreports-jrtx-quarkus</code> · brouillon (marqueur « Bon pour relecture - Jasper 3 ») · ≈ 3 300 mots · ~15 min de lecture</div>
+  </div>
+  <div class="score">
+    <div class="n">8,5<small>/10</small></div>
+    <div class="label ok">Prêt à publier</div>
+  </div>
+</header>
+
+<section>
+  <h2>Verdict</h2>
+  <p>Article solide et très concret : chaque affirmation technique importante tient face au code du dépôt et aux sources de JasperReports 7.1.0 (le piège du <code>Base1</code> est exactement ce que fait <code>JRFillObjectFactory</code>). La métaphore de l'armorial court dans tout le texte sans jamais gêner la technique, et les « faux pas » racontés rendent l'article bien plus utile qu'une doc. Ce qui reste : deux chiffres à corriger, <strong>aucun lien interne</strong> alors que c'est le 3<sup>e</sup> épisode d'une série, des alt d'images manquants, et l'ordre de publication (l'épisode 2 est encore en brouillon). Environ 20 minutes de travail.</p>
+  <h3>Points bloquants</h3>
+  <ul><li>Aucun.</li></ul>
+  <h3>Grille de notation</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Critère</th><th>Note</th><th>Commentaire</th></tr>
+    <tr><td>Fond &amp; exactitude</td><td>2,5 / 3</td><td>Code conforme au dépôt, comportements JR vérifiés dans les sources. Deux décomptes inexacts (17 formats de montant, « deux autres tests ») et une formulation à préciser sur le titre « disparu ».</td></tr>
+    <tr><td>Clarté &amp; langue</td><td>2 / 2</td><td>Langue propre, ton homogène, jargon (<code>.jrtx</code>, style conditionnel, brisure) expliqué au fil du texte. Une seule phrase un peu bancale.</td></tr>
+    <tr><td>Structure &amp; lisibilité</td><td>2 / 2</td><td>Accroche narrative, progression problème → solution → pièges → tests → limites, conclusion « Pour la route » et ouverture sur les polices.</td></tr>
+    <tr><td>SEO &amp; métadonnées</td><td>1 / 1,5</td><td>Titre final à 74 caractères, alt manquant sur la couverture et sur les 3 captures du corps.</td></tr>
+    <tr><td>Liens &amp; maillage</td><td>0,5 / 1</td><td>Seul lien : le dépôt GitHub. Ni l'épisode 1 (publié) ni l'épisode 2 ne sont liés, alors que le texte y renvoie trois fois.</td></tr>
+    <tr><td>Conformité sfeir.dev</td><td>0,5 / 0,5</td><td>Tag primaire Back, tags cohérents avec les épisodes 1 et 2, aucun reliquat d'import.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Fiche article</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Auteur(s)</th><td>Erwan Le Tutour (<code>erwan</code>) · ≈ 209 articles publiés sur sfeir.dev</td></tr>
+    <tr><th>Tags</th><td><div class="tags">
+      <span class="tag primary">Back</span>
+      <span class="tag">Java</span>
+      <span class="tag">quarkus</span>
+      <span class="tag">jasper</span>
+      <span class="tag">reporting</span>
+    </div></td></tr>
+    <tr><th>Remarques tags</th><td>RAS : mêmes tags que l'épisode 1, ce qui regroupe la série sous <code>/tag/jasper/</code>.</td></tr>
+    <tr><th>Série</th><td>Épisode 3 de la série JasperReports. Épisode 1 « L'imprimerie de la taverne » publié le 6/11/2026 ; épisode 2 « Les sceaux de la taverne » encore en brouillon (« Bon pour relecture - Jasper 2 »). <strong>L'épisode 2 doit sortir avant celui-ci</strong> : l'accroche reprend « là où le précédent épisode l'avait laissée » et le texte cite ses QR codes et son <code>forecolor="#000000"</code>.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>SEO &amp; métadonnées</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Élément</th><th>État</th><th>Valeur / recommandation</th></tr>
+    <tr><td>Titre</td><td><span class="pill majeur">Long</span></td><td>Sans le marqueur : 74 caractères, coupé par Google vers 60. L'épisode 1 dit « JasperReports » dans son titre, celui-ci « Jasper » : proposition, « Les armoiries de la taverne : une charte JasperReports dans Quarkus » (67 car., mot-clé complet). Non bloquant.</td></tr>
+    <tr><td>Slug</td><td><span class="pill ok">OK</span></td><td><code>armoiries-taverne-charte-graphique-jasperreports-jrtx-quarkus</code> : sans marqueur, mots-clés présents. Peut rester tel quel.</td></tr>
+    <tr><td>Extrait</td><td><span class="pill ok">OK</span></td><td>≈ 220 caractères (&lt; 300). Sert de meta description : coupé vers 160, mais l'essentiel (« feuille de styles JasperReports (.jrtx) ») est dans la première moitié.</td></tr>
+    <tr><td>Meta title / description</td><td><span class="pill ok">Vides</span></td><td>Normal : Ghost reprend titre et extrait.</td></tr>
+    <tr><td>Image de couverture</td><td><span class="pill ok">Présente</span></td><td>« L'atelier du Scribe à la Baleine Échouée ».</td></tr>
+    <tr><td>Alt de la couverture</td><td><span class="pill majeur">Manquant</span></td><td>Proposition : « L'atelier du scribe de The Falling Whale, où l'on peint les armoiries de la taverne sur les documents ».</td></tr>
+    <tr><td>Alt des images du corps</td><td><span class="pill majeur">0 / 3</span></td><td>Les trois captures portent de l'information. Propositions :<br>• <code>image-17.png</code> : « Facture fournisseur avant et après la charte : titre ramené à 18 pt, lignes zébrées, texte des sous-rapports en brun »<br>• <code>image-18.png</code> : « Ticket de caisse en noir et blanc, étiquette produit et carte de table imprimés avec la même charte »<br>• <code>image-19.png</code> : « Lignes de la facture du meunier, une ligne sur deux ombrée par le style conditionnel Zebre »</td></tr>
+    <tr><td>Injection de code</td><td><span class="pill ok">OK</span></td><td>Mermaid 10 chargé depuis jsDelivr (200) pour le diagramme <code>Base</code> / <code>Base1</code>. À vérifier une fois en aperçu que le diagramme s'affiche bien.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Structure &amp; lisibilité</h2>
+  <p>Très bonne progression. L'accroche plante le problème en une image (le héraut qui compare les parchemins), puis l'inventaire chiffré donne le « pourquoi ». Chaque section technique se termine par une règle formulée simplement, et la section « Pour la route » les reprend : un lecteur pressé comprend l'article en lisant les intertitres et cette liste. La longueur est justifiée par les deux pièges de la brisure et le style conditionnel, qu'on ne trouve pas expliqués ailleurs.</p>
+  <h3>Plan</h3>
+  <ol>
+    <li>Sept rapports, sept peintres</li>
+    <li>L'armorial : un fichier <code>.jrtx</code></li>
+    <li>Accrocher l'armorial à chaque bannière <span class="sub">(h3 : Le Java choisit l'armorial · Les sous-rapports ne voient pas les armes du maître)</span></li>
+    <li>La brisure : décliner l'armorial pour le rouleau thermique <span class="sub">(h3 : Premier faux pas · Second faux pas)</span></li>
+    <li>Les émaux qui changent selon la ligne : les styles conditionnels</li>
+    <li>Le héraut veille : faire respecter la charte par des tests <span class="sub">(h3 : les sources · le parchemin imprimé · ce que le héraut ne voit pas)</span></li>
+    <li>Ce que l'armorial ne règle pas</li>
+    <li>Pour la route</li>
+    <li>Et si la taverne changeait de police ?</li>
+  </ol>
+  <p class="sub"><strong>Pistes facultatives</strong> (sans effet sur la note) : sfeir.dev met souvent une ou deux phrases clés en blockquote ; « l'armorial dit comment, le rapport dit quand » s'y prêterait bien.</p>
+</section>
+
+<section>
+  <h2>Erreurs &amp; passages peu clairs</h2>
+
+  <div class="issue majeur">
+    <span class="pill majeur">Majeur</span> <strong>Exactitude (chiffre)</strong> · <span class="sub">Sept rapports, sept peintres · L'armorial</span>
+    <blockquote>… 39 <code>bold="true"</code> et 17 formats de montant <code>pattern="#,##0.00 po"</code>, tous recopiés à la main.</blockquote>
+    <blockquote>… les 17 <code>pattern</code> recopiés disparaissent des rapports.</blockquote>
+    <div>Recompté dans les sept <code>.jrxml</code> du commit qui précède la charte (<code>ec8e9d6^</code>) : <strong>15</strong> <code>pattern="#,##0.00 po"</code> et <strong>2</strong> <code>pattern="#,##0.## %"</code> (les taux de TVA), soit 17 <code>pattern</code> au total. Les autres chiffres (9 <code>&lt;style&gt;</code>, 37 couleurs, 37 <code>fontSize</code>, 39 <code>bold</code>) sont exacts. Correction : « … 39 <code>bold="true"</code> et 17 formats (15 montants <code>pattern="#,##0.00 po"</code> et 2 taux), tous recopiés à la main ». La seconde phrase (« les 17 <code>pattern</code> ») devient alors juste, puisque <code>Taux</code> est aussi dans la charte.</div>
+  </div>
+
+  <div class="issue mineur">
+    <span class="pill mineur">Mineur</span> <strong>Exactitude (décompte)</strong> · <span class="sub">Le premier contrôle : les sources</span>
+    <blockquote>Deux autres tests de la même classe vérifient que chaque rapport (sous-rapports compris) charge <code>$P{CHARTE}</code>, et que <strong>chaque style employé existe</strong> dans sa charte.</blockquote>
+    <div><code>RapportsSousCharteTest</code> contient quatre tests : il y en a donc trois autres, le quatrième vérifiant que « la charte thermique reprend toute la charte de la taverne et n'en redéfinit qu'une partie ». Correction simple : « Deux autres tests de la même classe vérifient notamment que… ».</div>
+  </div>
+
+  <div class="issue mineur">
+    <span class="pill mineur">Mineur</span> <strong>Exactitude (à préciser)</strong> · <span class="sub">Ce que le héraut ne voit pas</span>
+    <blockquote>« RELEVÉ DES FOURNISSEURS » ne tenait plus sur une ligne dans son cadre, et JasperReports n'imprime pas ce qui déborde : le titre a <strong>disparu</strong> du PDF.</blockquote>
+    <div>Le cadre fait 30 pt de haut ; une ligne en DejaVu Sans 20 pt en demande environ 23. JasperReports imprime les lignes qui tiennent et coupe le reste : on s'attendrait donc à voir « RELEVÉ DES » seul, ce que le test de texte détecte aussi puisqu'il cherche le titre entier. Si tu as bien constaté un titre entièrement absent, garde la phrase ; sinon, « le titre a été <strong>tronqué</strong> à « RELEVÉ DES » » est plus exact. Je n'ai pas relancé le rendu pour le vérifier.</div>
+  </div>
+
+  <div class="issue mineur">
+    <span class="pill mineur">Mineur</span> <strong>Cohérence avec l'épisode 2</strong> · <span class="sub">L'armorial : un fichier .jrtx</span>
+    <blockquote>dans l'épisode précédent, on forçait le noir élément par élément avec <code>forecolor="#000000"</code>.</blockquote>
+    <div>L'épisode 2 présente le <code>forecolor="#000000"</code> comme une règle (« une rune doit avant tout être contrastée. On force le noir »), mais ton propre inventaire montre que le QR de la facture et l'EAN-13 étaient restés bruns. Le dire explicitement renforce l'argument plutôt que de laisser croire à une contradiction : « on forçait le noir élément par élément avec <code>forecolor="#000000"</code>… et la facture comme les étiquettes y avaient échappé ».</div>
+  </div>
+
+  <div class="issue mineur">
+    <span class="pill mineur">Mineur</span> <strong>Clarté</strong> · <span class="sub">La brisure</span>
+    <blockquote>Si vous vous demandez pourquoi cette brisure redéfinit autant de styles alors qu'elle devrait se contenter de <code>Base</code>, …</blockquote>
+    <div>« devrait » affirme ce que la suite réfute. « alors qu'elle <strong>semblerait pouvoir</strong> se contenter de <code>Base</code> » ou « alors qu'on attendrait qu'elle se contente de <code>Base</code> ».</div>
+  </div>
+</section>
+
+<section>
+  <h2>Réécritures proposées</h2>
+  <p>Aucune : le texte se lit bien et garde sa voix. Les seules corrections nécessaires sont ponctuelles et figurent dans la section précédente.</p>
+</section>
+
+<section>
+  <h2>Vérification des affirmations</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Affirmation</th><th>Verdict</th><th>Source / commentaire</th></tr>
+    <tr><td>Un style se rattache au parent de ce nom déjà rencontré ; les styles d'une charte incluse sont déclarés avant ceux qui l'incluent → <code>Base1</code></td><td><span class="pill ok">Vérifiée</span></td><td>Sources JR 7.1.0, <code>JRFillObjectFactory.setStyles</code> / <code>collectUsedStyles</code> (map <code>allStylesMap</code> remplie dans l'ordre) et <code>renameExistingStyle</code> (suffixe <code>1</code>, <code>2</code>…).</td></tr>
+    <tr><td>Un style du <code>.jrxml</code> l'emporte sur celui de même nom de la charte</td><td><span class="pill ok">Vérifiée</span></td><td>Même classe : le style externe existant est renommé quand un style de même nom arrive.</td></tr>
+    <tr><td>La charte compte 23 styles ; palette de 8 couleurs (encre, sépia, brou de noix, parchemin, vélin, vélin ombré, filet clair, noir)</td><td><span class="pill ok">Vérifiée</span></td><td><code>src/main/jasperreports/charte-taverne.jrtx</code> du dépôt.</td></tr>
+    <tr><td>Extraits <code>charte-taverne.jrtx</code>, <code>charte-thermique.jrtx</code>, style <code>Zebre</code>, variable <code>LIGNE_PAIRE</code>, enum <code>Charte</code></td><td><span class="pill ok">Vérifiée</span></td><td>Identiques au code du module <code>web-concept/editique-tutorial</code>.</td></tr>
+    <tr><td>Inventaire initial : 9 <code>&lt;style&gt;</code>, 37 couleurs, 37 <code>fontSize</code>, 39 <code>bold</code></td><td><span class="pill ok">Vérifiée</span></td><td>Recompté sur <code>ec8e9d6^</code>.</td></tr>
+    <tr><td>17 formats de montant <code>#,##0.00 po</code></td><td><span class="pill majeur">Imprécise</span></td><td>15 formats de montant + 2 formats de taux (voir Erreurs).</td></tr>
+    <tr><td>Sous-rapports en noir 8,5 pt ; deux gris <code>#BFB59B</code> / <code>#C8C0B0</code> ; titre 24 pt contre 18 pt</td><td><span class="pill ok">Vérifiée</span></td><td><code>facture-lignes.jrxml</code> (<code>Base</code> 8,5 pt sans couleur, donc noir), <code>facture-fournisseur.jrxml</code> (24 pt), <code>releve-fournisseurs.jrxml</code> (18 pt), sur <code>ec8e9d6^</code>.</td></tr>
+    <tr><td>Versions : JasperReports 7.1.0, <code>quarkus-jasperreports</code> 1.4.3</td><td><span class="pill ok">Vérifiée</span></td><td><code>pom.xml</code> du module et dépôt Maven local.</td></tr>
+    <tr><td>Une expression de <code>.jrtx</code> n'accepte qu'une simple référence <code>$P/$F/$V</code></td><td><span class="pill ok">Vérifiée</span></td><td>Cohérent avec le message d'erreur cité et avec le code final (<code>$V{LIGNE_PAIRE}</code>). Non recherché dans les sources.</td></tr>
+    <tr><td>« Deux autres tests » dans <code>RapportsSousCharteTest</code></td><td><span class="pill majeur">Imprécise</span></td><td>Trois autres tests (voir Erreurs).</td></tr>
+    <tr><td>Titre à 20 pt « disparu » du PDF</td><td><span class="pill majeur">À préciser</span></td><td>Cadre de 30 pt de haut : on attendrait une troncature à la première ligne. Non vérifié par un rendu.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Liens</h2>
+  <p class="sub">0 lien interne · 1 externe · 0 en erreur</p>
+  <div class="table-wrap"><table>
+    <tr><th>Lien</th><th>Type</th><th>HTTP</th><th>Remarque</th></tr>
+    <tr><td><a href="https://github.com/ErwanLT/quarkus-demo">GitHub - ErwanLT/quarkus-demo</a></td><td>externe (bookmark)</td><td><span class="pill ok">200</span></td><td>Dépôt du code. On pourrait viser directement le module <code>web-concept/editique-tutorial</code> pour éviter au lecteur de le chercher.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Maillage interne</h2>
+  <p class="sub">≈ 209 articles publiés de l'auteur analysés · 0 déjà lié dans l'article</p>
+  <h3>Poids des liens existants</h3>
+  <p>Aucun lien interne dans l'article : rien à évaluer.</p>
+
+  <h3>Liens à ajouter dans cet article</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Article cible</th><th>Où l'insérer</th><th>Ancre suggérée</th><th>Poids attendu</th><th>Pourquoi</th></tr>
+    <tr><td><a href="https://www.sfeir.dev/back/limprimerie-de-la-taverne-tickets-et-factures-avec-jasperreports-et-quarkus/">L'imprimerie de la taverne : tickets et factures avec JasperReports et Quarkus</a></td><td>« Le Java choisit l'armorial », phrase « On retrouve la règle d'or des deux premiers épisodes : le Java décide, le rapport dessine. »</td><td>« la règle d'or des deux premiers épisodes »</td><td><span class="pill ok">Fort</span></td><td>Épisode 1, publié, où la règle et le service d'impression sont introduits. C'est le prérequis de toute la série.</td></tr>
+    <tr><td><a href="https://www.sfeir.dev/back/maitrisez-votre-architecture-spring-boot-avec-archunit/">Maîtrisez votre architecture Spring Boot avec ArchUnit</a></td><td>« Le premier contrôle : les sources », fin de la phrase « … et refuse toute mise en forme en dur » : ajouter « , à la manière d'une règle ArchUnit pour le code ».</td><td>« une règle ArchUnit »</td><td><span class="pill ok">Fort</span></td><td>Même idée (une règle d'architecture vérifiée par un test sur les sources) : approfondissement naturel pour le lecteur qui découvre ce type de test.</td></tr>
+    <tr><td><a href="https://www.sfeir.dev/back/quarkus-la-forge-aux-extensions/">Quarkus : la forge aux extensions</a></td><td>« Accrocher l'armorial à chaque bannière », phrase « l'extension <code>quarkus-jasperreports</code> ramasse les <code>.jrtx</code> … »</td><td>« l'extension »</td><td><span class="pill majeur">Moyen</span></td><td>Explique ce qu'est une extension Quarkus et pourquoi elle agit au build, ce qui éclaire la compilation/copie des fichiers. Ancre courte, d'où « moyen » ; l'épisode 2 lie déjà cette page de la même façon.</td></tr>
+  </table></div>
+
+  <h3>Liens en attente de publication</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Article visé (brouillon)</th><th>Où l'insérer</th><th>Ancre prévue</th></tr>
+    <tr><td>Les sceaux de la taverne : codes-barres et QR codes avec Quarkus (Jasper 2)</td><td>Accroche, 4<sup>e</sup> paragraphe : « Cet article reprend l'imprimerie là où le précédent épisode l'avait laissée »</td><td>« le précédent épisode »… ou mieux « là où les sceaux l'avaient laissée » pour une ancre parlante</td></tr>
+    <tr><td>La Carte de la Taverne : l'architecture de The Falling Whale (« Ok pour publi »)</td><td>Accroche, 1<sup>er</sup> paragraphe, sur « <em>The Falling Whale</em> »</td><td>« The Falling Whale » (facultatif : utile si cet article sert de point d'entrée de la série taverne)</td></tr>
+  </table></div>
+  <p class="sub">L'URL définitive n'existe pas encore : liens à poser après la publication.</p>
+
+  <h3>Articles existants qui pourraient pointer vers celui-ci</h3>
+  <ul>
+    <li><a href="https://www.sfeir.dev/back/limprimerie-de-la-taverne-tickets-et-factures-avec-jasperreports-et-quarkus/">L'imprimerie de la taverne</a> — en fin d'article, une ligne « Suite de la série : les sceaux, puis la charte graphique », une fois les épisodes 2 et 3 publiés.</li>
+    <li>Les sceaux de la taverne (épisode 2, brouillon) — dans « Deux réglages à connaître », après « On force le noir » : « (on verra dans l'épisode suivant comment l'imposer à tous les sceaux d'un coup) », avec lien vers cet article après publication.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Checklist avant publication</h2>
+  <ul class="check">
+    <li>Corriger « 17 formats de montant <code>pattern="#,##0.00 po"</code> » en « 17 formats (15 montants <code>pattern="#,##0.00 po"</code> et 2 taux) ».</li>
+    <li>Remplacer « Deux autres tests de la même classe vérifient que… » par « … vérifient notamment que… ».</li>
+    <li>Vérifier le titre « disparu » à 20 pt et écrire « tronqué » si seule la fin manquait.</li>
+    <li>Ajouter « … et la facture comme les étiquettes y avaient échappé » après la phrase sur l'épisode précédent.</li>
+    <li>Remplacer « alors qu'elle devrait se contenter de <code>Base</code> » par « alors qu'elle semblerait pouvoir se contenter de <code>Base</code> ».</li>
+    <li>Ajouter les liens vers « L'imprimerie de la taverne » (règle d'or) et vers l'article ArchUnit ; facultativement vers « Quarkus : la forge aux extensions ».</li>
+    <li>Renseigner l'alt de la couverture et des trois captures (textes proposés dans la section SEO).</li>
+    <li>Vérifier en aperçu que le diagramme Mermaid s'affiche.</li>
+    <li>Publier l'épisode 2 « Les sceaux de la taverne » <strong>avant</strong> celui-ci, puis poser le lien « précédent épisode » dans l'accroche.</li>
+    <li>Retirer le marqueur : titre final « Les armoiries de la taverne : une charte JasperReports dans Quarkus », slug final <code>armoiries-taverne-charte-graphique-jasperreports-jrtx-quarkus</code> (inchangé).</li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>

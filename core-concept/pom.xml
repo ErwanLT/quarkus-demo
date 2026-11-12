@@ -24,6 +24,7 @@
         <module>security</module>
         <module>exception-handling-tutorial</module>
         <module>cache-tutorial</module>
+        <module>native-tutorial</module>
     </modules>
 
 </project>
