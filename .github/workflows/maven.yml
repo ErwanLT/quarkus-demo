@@ -29,13 +29,16 @@ jobs:
           - integration
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Set up JDK 21
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+        # Depuis la v6, le problem matcher Java est désactivé par défaut :
+        # on le réactive pour garder les annotations sur les pull requests.
+        problem-matcher: true
     - name: Build and run tests (${{ matrix.domain }})
       # -pl <domaine> -amd : sélectionne le POM d'agrégation du domaine puis,
       # par dépendance de parenté, tous ses modules. Le build natif GraalVM
@@ -48,13 +51,14 @@ jobs:
     timeout-minutes: 15
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Set up JDK 21
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+        problem-matcher: true
     - name: Build and test the detached extension
       # Cette arborescence n'a pas de parent vers le POM racine : elle doit
       # être construite séparément, avec ses propres tests (QuarkusUnitTest).
