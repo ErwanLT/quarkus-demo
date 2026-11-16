@@ -66,6 +66,7 @@ La plupart des tutoriels utilisent le port `8080` par défaut : on en lance donc
 | `8084` | `database-access/flyway-liquibase-tutorial` |
 | `8086` | `operations/la-taverne-en-flammes` |
 | `8087` | `integration/langchain4j-tutorial` (profil `dev`) |
+| `8088` | `integration/rest-client-tutorial` |
 | `9000` | `web-concept/graphQL/graphql-client-tutorial`, `graphql-client-advanced-tutorial` |
 
 ### Ce que la CI couvre — et ce qu'elle ne couvre pas
@@ -204,6 +205,10 @@ Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les pa
 Tutoriel comparatif sur les **migrations de schéma** : scripts Flyway et changeSets Liquibase sur deux bases H2, adoption d'une base existante (baseline / changelogSync), triptyque expand/backfill/contract et validation du schéma par Hibernate Panache.
 
 ## Integration (`integration`)
+
+### [Le coursier de la taverne (REST Client)](integration/rest-client-tutorial)
+*Article à venir.*  
+Client REST déclaratif (`@RegisterRestClient`, `configKey`, `@ClientHeaderParam`) et programmatique (`QuarkusRestClientBuilder`) : paramètres de chemin et de requête, en-têtes, timeouts, traduction des erreurs HTTP en `problem+json` et tests sans dépendance externe.
 
 ### [Messaging](integration/messaging)
 Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements.

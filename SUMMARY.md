@@ -42,6 +42,7 @@
 - Migrations de schéma (Flyway et Liquibase, baseline, expand/backfill/contract)
 
 ## Integration (`integration`)
+- REST Client (MicroProfile Rest Client) — Le coursier de la taverne
 - Messaging
   - Server-Sent Events (RESTEasy Reactive, Mutiny, flux `text/event-stream`)
   - Kafka (Volière aux corbeaux, Retry et Dead Letter Queue / DLQ)
@@ -62,7 +63,6 @@
 - Messaging avance (JMS)
 - gRPC
 - WebSockets
-- REST Client (MicroProfile Rest Client)
 
 ## Operations
 - Logs structures

@@ -20,6 +20,7 @@
     <modules>
         <module>messaging</module>
         <module>langchain4j-tutorial</module>
+        <module>rest-client-tutorial</module>
     </modules>
 
 </project>
