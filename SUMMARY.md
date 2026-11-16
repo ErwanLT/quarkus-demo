@@ -22,6 +22,7 @@
   - Serveur (MicroProfile GraphQL)
   - Client TypeSafe (SmallRye)
   - Client Dynamique & Generateur
+  - Fédération (subgraphs Quarkus, Apollo Router)
 - Internationalisation & Localisation (i18n/l10n)
 - Versioning d'API REST (path, parameter, header, media type)
 - Programmation reactive (Mutiny - `Uni`, `Multi`)

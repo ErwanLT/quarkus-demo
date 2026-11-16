@@ -25,11 +25,11 @@
         <module>federation-tutorial</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-graphql</artifactId>
-        </dependency>
-    </dependencies>
+    <!--
+      Pas de dépendance ici : ce POM n'est qu'un agrégateur. Les modules qui
+      exposent réellement un schéma GraphQL (graphql-tutorial et les deux
+      subgraphs de federation-tutorial) déclarent quarkus-smallrye-graphql ;
+      les clients se contentent de quarkus-smallrye-graphql-client.
+    -->
 
 </project>

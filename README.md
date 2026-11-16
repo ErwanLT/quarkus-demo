@@ -6,6 +6,78 @@
 
 Projet de démonstration des fonctionnalités et des intégrations possibles avec Quarkus.
 
+## Sommaire
+
+- [Démarrer ici](#démarrer-ici)
+- [Core Concept](#core-concept-core-concept)
+- [Web Concept](#web-concept-web-concept)
+- [Operations](#operations-operations)
+- [Database Access](#database-access-database-access)
+- [Integration](#integration-integration)
+
+## Démarrer ici
+
+### Prérequis
+
+| Outil | Version | Nécessaire pour |
+|---|---|---|
+| JDK | 21 | Tous les tutoriels |
+| Maven | — | Inutile : le wrapper `./mvnw` est fourni |
+| Docker | — | Kafka/Redpanda, la stack Prometheus/Grafana et Ollama (tutoriels LangChain4j) |
+
+### Construire et tester l'ensemble
+
+```bash
+git clone https://github.com/ErwanLT/quarkus-demo.git
+cd quarkus-demo
+./mvnw clean verify
+```
+
+Le build complet local prend quelques minutes : chaque module est une application Quarkus indépendante. En CI, les cinq domaines sont construits en parallèle.
+
+Le dossier `operations/quarkus-taverne-extension` est volontairement détaché du POM racine (une extension ne doit pas hériter des dépendances applicatives du mono-repo) : il se construit séparément, voir son [README](operations/quarkus-taverne-extension/README.md).
+
+### Lancer un tutoriel
+
+Chaque dossier de tutoriel est un module Maven du projet. Depuis la racine, en mode *live coding* :
+
+```bash
+./mvnw -pl web-concept/qute-tutorial quarkus:dev
+```
+
+Ou depuis le dossier du tutoriel, en pointant vers le wrapper de la racine (il n'y a pas de wrapper par module) :
+
+```bash
+cd web-concept/qute-tutorial
+../../mvnw quarkus:dev
+```
+
+L'application est ensuite disponible sur <http://localhost:8080> (ou sur le port dédié indiqué dans le README du tutoriel). La Dev UI Quarkus est sur `/q/dev-ui`.
+
+### Ports
+
+La plupart des tutoriels utilisent le port `8080` par défaut : on en lance donc **un seul à la fois**. Certains modules déclarent un port dédié pour pouvoir cohabiter :
+
+| Port | Tutoriel |
+|---|---|
+| `8081` | `web-concept/graphQL/federation-tutorial/aventurier-service` |
+| `8082` | `web-concept/graphQL/federation-tutorial/quete-service`, `web-concept/qute-tutorial` |
+| `8083` | `database-access/panache-tutorial` |
+| `8084` | `database-access/flyway-liquibase-tutorial` |
+| `8086` | `operations/la-taverne-en-flammes` |
+| `8087` | `integration/langchain4j-tutorial` (profil `dev`) |
+| `9000` | `web-concept/graphQL/graphql-client-tutorial`, `graphql-client-advanced-tutorial` |
+
+### Ce que la CI couvre — et ce qu'elle ne couvre pas
+
+Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode JVM** sur les cinq domaines, en parallèle. L'extension détachée `operations/quarkus-taverne-extension` a son propre job, car elle ne fait pas partie du reactor racine. Le build natif GraalVM/Mandrel n'est **pas** exécuté en CI (temps de build et image builder) : il se lance localement, par exemple pour le tutoriel natif :
+
+```bash
+./mvnw -pl core-concept/native-tutorial verify -Dnative
+```
+
+## Catalogue des tutoriels
+
 ## Core Concept (`core-concept`)
 
 ### [Bannière Quarkus](core-concept/banner-tutorial)
@@ -36,6 +108,7 @@ Le tavernier lève les yeux vers son ardoise magique (le cache mémoire) plutôt
 à la cave consulter le grand livre à chaque commande d'un aventurier.
 
 ### [Natif - Le barde figé dans la pierre](core-concept/native-tutorial)
+*Article à venir.*  
 Compilation native avec GraalVM/Mandrel : `-Dnative`, build conteneurisé, `@RegisterForReflection`,
 `quarkus.native.resources.includes`, `--initialize-at-run-time` et `@QuarkusIntegrationTest`.
 La statue du barde chante en 30 ms, là où le barde de chair met 600 ms à s'accorder.
@@ -127,6 +200,7 @@ et on observe chaque mécanisme réagir.
 Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les patterns Active Record et Repository via le Grimoire des Recettes de la Taverne.
 
 ### [Le registre des travaux (Flyway & Liquibase)](database-access/flyway-liquibase-tutorial)
+*Article à venir.*  
 Tutoriel comparatif sur les **migrations de schéma** : scripts Flyway et changeSets Liquibase sur deux bases H2, adoption d'une base existante (baseline / changelogSync), triptyque expand/backfill/contract et validation du schéma par Hibernate Panache.
 
 ## Integration (`integration`)

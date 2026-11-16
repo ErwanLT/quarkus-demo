@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!/.mvn/wrapper/maven-wrapper.jar
 *.war
 *.nar
 *.ear
@@ -23,9 +24,6 @@
 hs_err_pid*
 replay_pid*
 /.idea/
-/mvnw
-/mvnw.cmd
-/.mvn/
 /.quarkus/
 /target/
 /**/target/
