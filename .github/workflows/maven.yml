@@ -14,7 +14,8 @@ concurrency:
 jobs:
   build:
     name: ${{ matrix.domain }}
-    runs-on: ubuntu-latest
+    # Image épinglée : ubuntu-latest bascule vers Ubuntu 26.04 en novembre 2026.
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
 
     strategy:
@@ -47,7 +48,7 @@ jobs:
 
   extension:
     name: quarkus-taverne-extension
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
