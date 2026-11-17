@@ -15,6 +15,7 @@
     <modules>
         <module>panache-tutorial</module>
         <module>flyway-liquibase-tutorial</module>
+        <module>mongodb-tutorial</module>
     </modules>
 
 </project>

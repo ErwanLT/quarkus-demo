@@ -23,7 +23,7 @@ Projet de démonstration des fonctionnalités et des intégrations possibles ave
 |---|---|---|
 | JDK | 21 | Tous les tutoriels |
 | Maven | — | Inutile : le wrapper `./mvnw` est fourni |
-| Docker | — | Kafka/Redpanda, la stack Prometheus/Grafana et Ollama (tutoriels LangChain4j) |
+| Docker | — | MongoDB, Kafka/Redpanda, la stack Prometheus/Grafana et Ollama (tutoriels LangChain4j) |
 
 ### Construire et tester l'ensemble
 
@@ -64,6 +64,7 @@ La plupart des tutoriels utilisent le port `8080` par défaut : on en lance donc
 | `8082` | `web-concept/graphQL/federation-tutorial/quete-service`, `web-concept/qute-tutorial` |
 | `8083` | `database-access/panache-tutorial` |
 | `8084` | `database-access/flyway-liquibase-tutorial` |
+| `8085` | `database-access/mongodb-tutorial` |
 | `8086` | `operations/la-taverne-en-flammes` |
 | `8087` | `integration/langchain4j-tutorial` (profil `dev`) |
 | `8088` | `integration/rest-client-tutorial` |
@@ -203,6 +204,10 @@ Tutoriel sur l'accès aux données SQL avec Hibernate Panache, illustrant les pa
 ### [Le registre des travaux (Flyway & Liquibase)](database-access/flyway-liquibase-tutorial)
 *Article à venir.*  
 Tutoriel comparatif sur les **migrations de schéma** : scripts Flyway et changeSets Liquibase sur deux bases H2, adoption d'une base existante (baseline / changelogSync), triptyque expand/backfill/contract et validation du schéma par Hibernate Panache.
+
+### [Les archives de la Guilde (MongoDB)](database-access/mongodb-tutorial)
+*Article à venir.*  
+Persistance document avec **MongoDB et Panache** : un dossier d'aventurier par document, prouesses intégrées en sous-documents, requêtes à points sur un tableau imbriqué, pagination, index unique, pipeline d'agrégation et Dev Services (conteneur `mongo:7`).
 
 ## Integration (`integration`)
 

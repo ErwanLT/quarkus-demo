@@ -40,6 +40,7 @@
 ## Database Access (`database-access`)
 - Hibernate Panache (Active Record vs Repository)
 - Migrations de schéma (Flyway et Liquibase, baseline, expand/backfill/contract)
+- MongoDB (documents, sous-documents intégrés, requêtes à points, agrégation, Dev Services)
 
 ## Integration (`integration`)
 - REST Client (MicroProfile Rest Client) — Le coursier de la taverne
@@ -56,7 +57,6 @@
 
 ## Database Access
 - Reactive SQL (R2DBC)
-- MongoDB
 - Multi-tenancy
 
 ## Integration
