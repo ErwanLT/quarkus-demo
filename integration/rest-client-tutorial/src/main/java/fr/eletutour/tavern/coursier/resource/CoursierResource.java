@@ -38,8 +38,8 @@ public class CoursierResource {
 
     @GET
     @Path("/contrats")
-    public List<Contrat> contrats(@QueryParam("difficulte") Difficulte difficulte) {
-        return guilde.contrats(difficulte);
+    public List<Contrat> contrats(@QueryParam("difficulte") String difficulte) {
+        return guilde.contrats(Difficulte.depuis(difficulte));
     }
 
     @GET

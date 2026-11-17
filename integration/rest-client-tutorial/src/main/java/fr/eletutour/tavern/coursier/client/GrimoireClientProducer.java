@@ -1,12 +1,14 @@
 package fr.eletutour.tavern.coursier.client;
 
+import fr.eletutour.tavern.coursier.config.GrimoireConfig;
 import io.quarkus.rest.client.reactive.QuarkusRestClientBuilder;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import java.net.URI;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,16 +20,24 @@ import java.util.concurrent.TimeUnit;
 @ApplicationScoped
 public class GrimoireClientProducer {
 
-    @ConfigProperty(name = "taverne.grimoire.url")
-    URI baseUri;
+    @Inject
+    GrimoireConfig config;
 
     @Produces
     @Singleton
     GrimoireClient grimoireClient() {
         return QuarkusRestClientBuilder.newBuilder()
-                .baseUri(baseUri)
-                .connectTimeout(1, TimeUnit.SECONDS)
-                .readTimeout(2, TimeUnit.SECONDS)
+                .baseUri(config.url())
+                .connectTimeout(config.connectTimeout().toMillis(), TimeUnit.MILLISECONDS)
+                .readTimeout(config.readTimeout().toMillis(), TimeUnit.MILLISECONDS)
                 .build(GrimoireClient.class);
+    }
+
+    /**
+     * Ce que l'on construit soi-même, on le ferme soi-même : le pool de
+     * connexions du client est libéré à l'arrêt de l'application.
+     */
+    void fermer(@Disposes GrimoireClient client) throws IOException {
+        client.close();
     }
 }

@@ -1,6 +1,6 @@
 package fr.eletutour.tavern.coursier.client;
 
-import fr.eletutour.tavern.coursier.exception.ContratIntrouvableException;
+import fr.eletutour.tavern.coursier.exception.business.CoursierException;
 import fr.eletutour.tavern.coursier.model.Contrat;
 import fr.eletutour.tavern.coursier.model.ContratAccepte;
 import fr.eletutour.tavern.coursier.model.Difficulte;
@@ -16,6 +16,7 @@ import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Mandat du coursier auprès de la Guilde.
@@ -26,7 +27,8 @@ import java.util.List;
  */
 @Path("/guilde/contrats")
 @RegisterRestClient(configKey = "guilde")
-@ClientHeaderParam(name = "X-Taverne", value = "The Falling Whale")
+@ClientHeaderParam(name = "X-Taverne", value = "${taverne.nom}")
+@ClientHeaderParam(name = "X-Request-Id", value = "{numeroDeCourse}")
 public interface GuildeClient {
 
     @GET
@@ -41,15 +43,22 @@ public interface GuildeClient {
     ContratAccepte accepter(@PathParam("id") long id, @HeaderParam("X-Coursier") String coursier);
 
     /**
-     * Traduit le 404 HTTP de la Guilde en exception métier, avant même que
-     * le resource du coursier ne voie la réponse.
+     * Valeur calculée à chaque appel pour l'en-tête {@code X-Request-Id}.
+     */
+    default String numeroDeCourse() {
+        return UUID.randomUUID().toString();
+    }
+
+    /**
+     * Traduit les erreurs HTTP de la Guilde en exceptions métier, avant même
+     * que le resource du coursier ne voie la réponse. N'est appelé que pour
+     * les statuts 4xx et 5xx.
      */
     @ClientExceptionMapper
-    static ContratIntrouvableException versException(Response response) {
+    static CoursierException versException(Response response) {
         if (response.getStatus() == Response.Status.NOT_FOUND.getStatusCode()) {
-            return new ContratIntrouvableException(
-                    "La Guilde ne connaît pas ce contrat : il a peut-être déjà été retiré du tableau.");
+            return CoursierException.contratIntrouvable();
         }
-        return null;
+        return CoursierException.reponseInattendue("La Guilde", response.getStatus());
     }
 }

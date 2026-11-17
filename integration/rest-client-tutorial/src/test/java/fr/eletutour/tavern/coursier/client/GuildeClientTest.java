@@ -1,6 +1,7 @@
 package fr.eletutour.tavern.coursier.client;
 
-import fr.eletutour.tavern.coursier.exception.ContratIntrouvableException;
+import fr.eletutour.tavern.coursier.exception.business.CoursierError;
+import fr.eletutour.tavern.coursier.exception.business.CoursierException;
 import fr.eletutour.tavern.coursier.model.Contrat;
 import fr.eletutour.tavern.coursier.model.ContratAccepte;
 import fr.eletutour.tavern.coursier.model.Difficulte;
@@ -11,10 +12,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 class GuildeClientTest {
@@ -24,7 +27,7 @@ class GuildeClientTest {
     GuildeClient guilde;
 
     @Test
-    @DisplayName("Le client déclaratif récupère le tableau des contrats")
+    @DisplayName("Le client déclaratif récupère le tableau des contrats (preuve que le sceau X-Taverne est envoyé)")
     void listeLesContrats() {
         List<Contrat> contrats = guilde.contrats(null);
 
@@ -53,11 +56,33 @@ class GuildeClientTest {
     }
 
     @Test
-    @DisplayName("Un contrat inconnu devient une exception métier")
-    void contratInconnuDevientUneExceptionMetier() {
-        ContratIntrouvableException exception =
-                assertThrows(ContratIntrouvableException.class, () -> guilde.contrat(99));
+    @DisplayName("L'en-tête calculé X-Request-Id revient comme bordereau, différent à chaque course")
+    void chaqueCourseALeSonBordereau() {
+        ContratAccepte premiere = guilde.accepter(1, "Brune la rôdeuse");
+        ContratAccepte seconde = guilde.accepter(1, "Brune la rôdeuse");
 
-        assertTrue(exception.getMessage().contains("Guilde"));
+        assertDoesNotThrow(() -> UUID.fromString(premiere.bordereau()));
+        assertDoesNotThrow(() -> UUID.fromString(seconde.bordereau()));
+        assertNotEquals(premiere.bordereau(), seconde.bordereau());
+    }
+
+    @Test
+    @DisplayName("Un 404 de la Guilde devient l'erreur métier CONTRAT_INTROUVABLE")
+    void contratInconnuDevientUneExceptionMetier() {
+        CoursierException exception =
+                assertThrows(CoursierException.class, () -> guilde.contrat(99));
+
+        assertEquals(CoursierError.CONTRAT_INTROUVABLE, exception.getError());
+    }
+
+    @Test
+    @DisplayName("Un 500 de la Guilde devient REPONSE_INATTENDUE avec le statut distant")
+    void erreurDistanteDevientReponseInattendue() {
+        CoursierException exception =
+                assertThrows(CoursierException.class, () -> guilde.contrat(13));
+
+        assertEquals(CoursierError.REPONSE_INATTENDUE, exception.getError());
+        assertEquals(500, exception.getDetails().get("statutDistant"));
+        assertEquals("La Guilde", exception.getDetails().get("service"));
     }
 }

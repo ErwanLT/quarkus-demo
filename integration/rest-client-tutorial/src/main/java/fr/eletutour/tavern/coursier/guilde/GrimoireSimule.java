@@ -1,6 +1,6 @@
 package fr.eletutour.tavern.coursier.guilde;
 
-import fr.eletutour.tavern.coursier.model.Probleme;
+import fr.eletutour.tavern.coursier.exception.model.Probleme;
 import fr.eletutour.tavern.coursier.model.Recette;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
