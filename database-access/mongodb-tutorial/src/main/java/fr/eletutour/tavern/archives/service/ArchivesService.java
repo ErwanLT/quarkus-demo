@@ -3,10 +3,9 @@ package fr.eletutour.tavern.archives.service;
 import fr.eletutour.tavern.archives.dto.CreationDossier;
 import fr.eletutour.tavern.archives.dto.DossierDto;
 import fr.eletutour.tavern.archives.dto.NouvelleProuesse;
+import fr.eletutour.tavern.archives.dto.PageDossiers;
 import fr.eletutour.tavern.archives.dto.StatistiquesClasse;
-import fr.eletutour.tavern.archives.exception.DossierIntrouvableException;
-import fr.eletutour.tavern.archives.exception.IdentifiantInvalideException;
-import fr.eletutour.tavern.archives.exception.NomDejaPrisException;
+import fr.eletutour.tavern.archives.exception.business.ArchivesException;
 import fr.eletutour.tavern.archives.model.ClasseAventurier;
 import fr.eletutour.tavern.archives.model.DossierAventurier;
 import fr.eletutour.tavern.archives.model.Prouesse;
@@ -24,10 +23,13 @@ public class ArchivesService {
     @Inject
     DossierAventurierRepository repository;
 
-    public List<DossierDto> lister(ClasseAventurier classe, Rang rang, int page, int taille) {
-        return repository.chercher(classe, rang, page, taille).stream()
+    public PageDossiers lister(ClasseAventurier classe, Rang rang, int page, int taille) {
+        List<DossierDto> elements = repository.chercher(classe, rang, page, taille).stream()
                 .map(DossierDto::depuis)
                 .toList();
+        long total = repository.compter(classe, rang);
+        long nombreDePages = (total + taille - 1) / taille;
+        return new PageDossiers(elements, page, taille, total, nombreDePages);
     }
 
     public DossierDto trouver(String id) {
@@ -36,8 +38,7 @@ public class ArchivesService {
 
     public DossierDto creer(CreationDossier creation) {
         if (repository.parNom(creation.nom()).isPresent()) {
-            throw new NomDejaPrisException(
-                    "Un dossier au nom de " + creation.nom() + " existe déjà dans les archives.");
+            throw ArchivesException.nomDejaPris(creation.nom());
         }
 
         DossierAventurier dossier = new DossierAventurier();
@@ -63,16 +64,14 @@ public class ArchivesService {
 
     private DossierAventurier entite(String id) {
         return repository.findByIdOptional(identifiant(id))
-                .orElseThrow(() -> new DossierIntrouvableException(
-                        "Aucun dossier ne porte l'identifiant " + id + "."));
+                .orElseThrow(() -> ArchivesException.dossierIntrouvable(id));
     }
 
     private ObjectId identifiant(String id) {
         try {
             return new ObjectId(id);
         } catch (IllegalArgumentException exception) {
-            throw new IdentifiantInvalideException(
-                    "L'identifiant " + id + " n'est pas un ObjectId MongoDB valide.");
+            throw ArchivesException.identifiantInvalide(id);
         }
     }
 }

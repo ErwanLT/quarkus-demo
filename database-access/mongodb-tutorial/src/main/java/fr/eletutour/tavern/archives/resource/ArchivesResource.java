@@ -3,11 +3,15 @@ package fr.eletutour.tavern.archives.resource;
 import fr.eletutour.tavern.archives.dto.CreationDossier;
 import fr.eletutour.tavern.archives.dto.DossierDto;
 import fr.eletutour.tavern.archives.dto.NouvelleProuesse;
+import fr.eletutour.tavern.archives.dto.PageDossiers;
 import fr.eletutour.tavern.archives.dto.StatistiquesClasse;
 import fr.eletutour.tavern.archives.model.ClasseAventurier;
 import fr.eletutour.tavern.archives.model.Rang;
 import fr.eletutour.tavern.archives.service.ArchivesService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -30,11 +34,11 @@ public class ArchivesResource {
     ArchivesService service;
 
     @GET
-    public List<DossierDto> lister(
+    public PageDossiers lister(
             @QueryParam("classe") ClasseAventurier classe,
             @QueryParam("rang") Rang rang,
-            @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("taille") @DefaultValue("10") int taille) {
+            @QueryParam("page") @DefaultValue("0") @Min(0) int page,
+            @QueryParam("taille") @DefaultValue("10") @Min(1) @Max(100) int taille) {
         return service.lister(classe, rang, page, taille);
     }
 
@@ -52,7 +56,7 @@ public class ArchivesResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response creer(CreationDossier creation) {
+    public Response creer(@Valid CreationDossier creation) {
         DossierDto dossier = service.creer(creation);
         return Response.created(URI.create("/archives/aventuriers/" + dossier.id()))
                 .entity(dossier)
@@ -62,7 +66,7 @@ public class ArchivesResource {
     @POST
     @Path("/{id}/prouesses")
     @Consumes(MediaType.APPLICATION_JSON)
-    public DossierDto ajouterProuesse(@PathParam("id") String id, NouvelleProuesse prouesse) {
+    public DossierDto ajouterProuesse(@PathParam("id") String id, @Valid NouvelleProuesse prouesse) {
         return service.ajouterProuesse(id, prouesse);
     }
 }
