@@ -9,6 +9,7 @@ Projet de démonstration des fonctionnalités et des intégrations possibles ave
 ## Sommaire
 
 - [Démarrer ici](#démarrer-ici)
+- [Le fil rouge : The Falling Whale](#le-fil-rouge--the-falling-whale)
 - [Core Concept](#core-concept-core-concept)
 - [Web Concept](#web-concept-web-concept)
 - [Operations](#operations-operations)
@@ -86,6 +87,10 @@ Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode
 ```bash
 ./mvnw -pl core-concept/native-tutorial verify -Dnative
 ```
+
+## Le fil rouge : The Falling Whale
+
+Goblin ne pouvait pas se contenter d'un module dans ce projet : il lui fallait un répo dédié — [The Falling Whale](https://github.com/ErwanLT/quarkus-goblin-demo).
 
 ## Catalogue des tutoriels
 
