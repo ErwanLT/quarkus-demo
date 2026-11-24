@@ -33,6 +33,7 @@
 - Observabilite (metrics, tracing, log correlation)
 - Tests de charge (Gatling Java DSL)
 - Batch processing (brassage nocturne multi-bieres)
+- Scheduling (`@Scheduled`, every/cron, bloquant/non bloquant, cluster Quartz, pont vers le batch)
 - Command line (Picocli, JLine3, shell interactif)
 - Extension Quarkus personnalisée (intercepteur `@Taverne` avec modules runtime/deployment)
 - Resilience et reprise (arret gracieux, sondes de sante, timeouts, drain, JTA, runbook, post-mortem)

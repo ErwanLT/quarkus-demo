@@ -18,6 +18,11 @@ Tutoriel d'introduction aux tests de charge avec l'API Java de Gatling, avec le 
 ## [Batch processing - brassage de nuit](batch-processing-tutorial)
 Simulation d'une journee de consommation puis reappro automatique des stocks la nuit via Quarkus Scheduler.
 
+## [Scheduler - les corvees de la taverne](scheduler-tutorial)
+Suite du tutoriel batch centree sur `@Scheduled` : corvees periodiques (`every` / cron), taches bloquantes
+et non bloquantes, horodatages prevu / reel, `concurrentExecution = SKIP`, pilotage via l'API `Scheduler`,
+cluster et verrou distribue, et declenchement du job batch a 3 h 00. Port 8089, aucun service externe requis.
+
 ## [Command line - commis de course](command-line)
 Application Quarkus en ligne de commande avec Picocli et JLine3.
 Le commis expose un shell interactif, complete les missions au clavier et execute des commandes injectables comme `exporter-dettes`, `reassort-urgent` ou `purger-grimoire`.

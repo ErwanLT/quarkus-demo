@@ -35,6 +35,14 @@ cd quarkus-demo
 
 Le build complet local prend quelques minutes : chaque module est une application Quarkus indépendante. En CI, les cinq domaines sont construits en parallèle.
 
+Pour reproduire cette matrix en local et gagner du temps, le script `build-parallel.sh` lance les cinq domaines **et** l'extension détachée en parallèle :
+
+```bash
+./build-parallel.sh
+```
+
+Chaque build écrit dans `target/build-local-logs/<domaine>.log`, les résultats s'affichent au fur et à mesure, et le script renvoie un code d'erreur si un domaine échoue. Il reprend la même commande que le workflow CI (`./mvnw -pl <domaine> -amd clean verify`), avec une différence indispensable en local : chaque domaine reçoit un port de test distinct (`8091` à `8095`), car les `@QuarkusTest` utilisent tous le port `8081` par défaut et se le disputeraient sinon. En CI, chaque domaine dispose de sa propre machine. Prévoir suffisamment de mémoire : six builds Quarkus tournent en même temps.
+
 Le dossier `operations/quarkus-taverne-extension` est volontairement détaché du POM racine (une extension ne doit pas hériter des dépendances applicatives du mono-repo) : il se construit séparément, voir son [README](operations/quarkus-taverne-extension/README.md).
 
 ### Lancer un tutoriel
@@ -68,6 +76,7 @@ La plupart des tutoriels utilisent le port `8080` par défaut : on en lance donc
 | `8086` | `operations/la-taverne-en-flammes` |
 | `8087` | `integration/langchain4j-tutorial` (profil `dev`) |
 | `8088` | `integration/rest-client-tutorial` |
+| `8089` | `operations/scheduler-tutorial` |
 | `9000` | `web-concept/graphQL/graphql-client-tutorial`, `graphql-client-advanced-tutorial` |
 
 ### Ce que la CI couvre — et ce qu'elle ne couvre pas
@@ -178,6 +187,12 @@ Tutoriel sur la mise en place de tests de charge avec Gatling (Java DSL) pour st
 ### [Batch Processing (Brassage de nuit)](operations/batch-processing-tutorial)
 [Article](https://www.sfeir.dev/back/la-taverne-nocturne-traiter-les-flux-avec-quarkus-batch/)  
 Tutoriel sur le batch processing avec Quarkus Scheduler pour brasser automatiquement la nuit les bieres consommees en journee.
+
+### [Les corvées de la Taverne Nocturne (Scheduler)](operations/scheduler-tutorial)
+*Article à venir.*  
+Suite du tutoriel batch centrée sur `@Scheduled` (`quarkus-scheduler`) : complémentarité Batch vs Scheduler,
+`every` vs cron, exécution bloquante et non bloquante, `ScheduledExecution`, `concurrentExecution = SKIP`,
+pilotage via l'API `Scheduler`, cluster et verrou distribué, et le pont qui réveille le job batch à 3 h 00.
 
 ### [Command Line (Commis de course)](operations/command-line)
 [Article](https://www.sfeir.dev/back/le-commis-de-course-creer-une-cli-interactive-avec-quarkus/)  
