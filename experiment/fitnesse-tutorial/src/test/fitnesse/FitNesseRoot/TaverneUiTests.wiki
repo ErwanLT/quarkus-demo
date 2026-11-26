@@ -12,7 +12,7 @@ Test
 | entrer | Bilbon | dans | input#nom |
 | cliquer | button#saluer |
 | verifier | p#message | vaut | Bienvenue à la taverne, Bilbon ! |
-| entrer | Bilbon | dans | input#nom |
+| entrer | Frodon | dans | input#nom |
 | cliquer | button#saluer |
 | verifier | p#message | vaut | Bienvenue à la taverne, Bilbon ! |
 | fermer |
