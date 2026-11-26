@@ -31,13 +31,13 @@ cd web-concept/reactive-programming-tutorial
 2. Demander une pinte future avec `Uni` :
 
 ```bash
-curl "http://localhost:8080/taverne/reactif/pression/Gimli?durationMs=300"
+curl "http://localhost:8117/taverne/reactif/pression/Gimli?durationMs=300"
 ```
 
 3. Prouver que le tavernier ne bloque jamais un bras pour un seul client, en chronométrant trois chopes servies en même temps :
 
 ```bash
-time curl "http://localhost:8080/taverne/reactif/pression/simultanee?aventuriers=Gimli,Legolas,Frodon&durationMs=500"
+time curl "http://localhost:8117/taverne/reactif/pression/simultanee?aventuriers=Gimli,Legolas,Frodon&durationMs=500"
 ```
 
 Le temps mesuré tourne autour de 500 ms, pas de 1500 ms : les trois `Uni` sont assemblés avec `Uni.join().all(...)` et progressent en parallèle plutôt qu'à la suite.
@@ -45,7 +45,7 @@ Le temps mesuré tourne autour de 500 ms, pas de 1500 ms : les trois `Uni` sont 
 4. Observer un flux continu de clients avec `Multi` :
 
 ```bash
-curl -N "http://localhost:8080/taverne/reactif/clients?count=5&intervalMs=250"
+curl -N "http://localhost:8117/taverne/reactif/clients?count=5&intervalMs=250"
 ```
 
 Interrompre la commande avec `Ctrl+C` avant la fin déclenche `onCancellation()` côté service : le tavernier arrête simplement de servir ce client, il ne reste pas figé en attente d'un flux que plus personne n'écoute.
@@ -53,7 +53,7 @@ Interrompre la commande avec `Ctrl+C` avant la fin déclenche `onCancellation()`
 5. Lire le même flux collecté en JSON :
 
 ```bash
-curl "http://localhost:8080/taverne/reactif/tournee?count=3&intervalMs=50"
+curl "http://localhost:8117/taverne/reactif/tournee?count=3&intervalMs=50"
 ```
 
 ## Ce qu'il faut retenir

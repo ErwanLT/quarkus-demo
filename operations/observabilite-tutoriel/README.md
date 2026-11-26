@@ -31,17 +31,17 @@ http://localhost:16686
 
 - Metriques :
 ```bash
-curl -s http://localhost:8080/q/metrics
+curl -s http://localhost:8120/q/metrics
 ```
 
 - Health :
 ```bash
-curl -s http://localhost:8080/q/health
+curl -s http://localhost:8120/q/health
 ```
 
 - Appel applicatif (genere metrics + trace + log) :
 ```bash
-curl -s "http://localhost:8080/tavern/order?drink=stout"
+curl -s "http://localhost:8120/tavern/order?drink=stout"
 ```
 
 ## Metriques metier (approche factorisee)

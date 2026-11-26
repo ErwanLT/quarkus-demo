@@ -33,12 +33,12 @@ Par defaut: execution a 02:00.
 
 - Consulter les stocks :
 ```bash
-curl -s http://localhost:8080/tavern/brewery/stocks
+curl -s http://localhost:8119/tavern/brewery/stocks
 ```
 
 - Enregistrer la consommation de journee :
 ```bash
-curl -s -X POST http://localhost:8080/tavern/brewery/day-consumptions \
+curl -s -X POST http://localhost:8119/tavern/brewery/day-consumptions \
   -H 'Content-Type: application/json' \
   -d '{
     "orders": {
@@ -51,18 +51,18 @@ curl -s -X POST http://localhost:8080/tavern/brewery/day-consumptions \
 
 - Lancer le lot de brassage nocturne :
 ```bash
-curl -s -X POST http://localhost:8080/tavern/brewery/nightly-batches
+curl -s -X POST http://localhost:8119/tavern/brewery/nightly-batches
 ```
 
 - Reinitialiser la simulation (idempotent) :
 ```bash
-curl -s -X PUT http://localhost:8080/tavern/brewery/stocks/reset
+curl -s -X PUT http://localhost:8119/tavern/brewery/stocks/reset
 ```
 
 ## OpenAPI
 
-- Swagger UI: http://localhost:8080/q/swagger-ui
-- Spec JSON: http://localhost:8080/q/openapi
+- Swagger UI: http://localhost:8119/q/swagger-ui
+- Spec JSON: http://localhost:8119/q/openapi
 
 ## Tests
 

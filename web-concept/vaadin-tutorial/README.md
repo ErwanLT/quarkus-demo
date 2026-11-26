@@ -8,7 +8,7 @@ Ce sous-module montre une integration Vaadin Flow dans Quarkus avec un decoupage
 ./mvnw -pl web-concept/vaadin-tutorial quarkus:dev
 ```
 
-Puis ouvrir `http://localhost:8080/`.
+Puis ouvrir `http://localhost:8118/`.
 
 ## Points cles
 

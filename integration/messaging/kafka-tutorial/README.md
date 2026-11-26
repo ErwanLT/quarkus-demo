@@ -19,7 +19,7 @@ Quarkus Dev Services demarre automatiquement un broker Kafka pour le mode dev, r
 ## Depecher un corbeau
 
 ```bash
-curl -X POST http://localhost:8080/ravens \
+curl -X POST http://localhost:8123/ravens \
   -H "Content-Type: application/json" \
   -d '{"sender": "Tavernier", "content": "La biere est arrivee"}'
 ```
@@ -31,7 +31,7 @@ Le log du colombier (`RavenRoostListener`) doit afficher la reception du message
 Pour tester le mécanisme de retry et de Dead Letter Queue (DLQ), vous pouvez envoyer un message contenant le mot `"erreur"` ou `"fail"` :
 
 ```bash
-curl -X POST http://localhost:8080/ravens \
+curl -X POST http://localhost:8123/ravens \
   -H "Content-Type: application/json" \
   -d '{"sender": "Tavernier", "content": "Ce message contient une erreur fatale"}'
 ```

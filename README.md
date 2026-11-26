@@ -61,16 +61,16 @@ cd web-concept/qute-tutorial
 ../../mvnw quarkus:dev
 ```
 
-L'application est ensuite disponible sur <http://localhost:8080> (ou sur le port dédié indiqué dans le README du tutoriel). La Dev UI Quarkus est sur `/q/dev-ui`.
+L'application est ensuite disponible sur le port dédié du tutoriel (voir le tableau ci-dessous). La Dev UI Quarkus est sur `/q/dev-ui`.
 
 ### Ports
 
-La plupart des tutoriels utilisent le port `8080` par défaut : on en lance donc **un seul à la fois**. Certains modules déclarent un port dédié pour pouvoir cohabiter :
+Chaque tutoriel déclare son propre port (`quarkus.http.port`) : on peut donc en lancer plusieurs en même temps. Les ports `8091` à `8095` restent réservés aux `@QuarkusTest` de `build-parallel.sh`.
 
 | Port | Tutoriel |
 |---|---|
 | `8081` | `web-concept/graphQL/federation-tutorial/aventurier-service` |
-| `8082` | `web-concept/graphQL/federation-tutorial/quete-service`, `web-concept/qute-tutorial` |
+| `8082` | `web-concept/graphQL/federation-tutorial/quete-service` |
 | `8083` | `database-access/panache-tutorial` |
 | `8084` | `database-access/flyway-liquibase-tutorial` |
 | `8085` | `database-access/mongodb-tutorial` |
@@ -78,7 +78,44 @@ La plupart des tutoriels utilisent le port `8080` par défaut : on en lance donc
 | `8087` | `integration/langchain4j-tutorial` (profil `dev`) |
 | `8088` | `integration/rest-client-tutorial` |
 | `8089` | `operations/scheduler-tutorial` |
-| `9000` | `web-concept/graphQL/graphql-client-tutorial`, `graphql-client-advanced-tutorial` |
+| `8101` | `core-concept/banner-tutorial` |
+| `8102` | `core-concept/cache-tutorial` |
+| `8103` | `core-concept/doc-tutorial` |
+| `8104` | `core-concept/exception-handling-tutorial` |
+| `8105` | `core-concept/native-tutorial` |
+| `8106` | `core-concept/security/basic-auth/basic-auth-tutorial` |
+| `8107` | `core-concept/security/basic-auth/basic-auth-jdbc-tutorial` |
+| `8108` | `core-concept/security/basic-auth/basic-auth-jpa-tutorial` |
+| `8109` | `core-concept/security/jwt/jwt-tutorial` |
+| `8110` | `core-concept/security/jwt/jwt-jpa-tutorial` |
+| `8111` | `web-concept/api-versioning-tutorial` |
+| `8112` | `web-concept/editique-tutorial` |
+| `8113` | `web-concept/graphQL/graphql-tutorial` (appelé par les deux clients GraphQL) |
+| `8114` | `web-concept/i18n-tutorial` |
+| `8115` | `web-concept/qute-tutorial` |
+| `8116` | `web-concept/rate-limiting-tutorial` (cible du `load-testing-tutorial`) |
+| `8117` | `web-concept/reactive-programming-tutorial` |
+| `8118` | `web-concept/vaadin-tutorial` |
+| `8119` | `operations/batch-processing-tutorial` |
+| `8120` | `operations/observabilite-tutoriel` |
+| `8121` | `operations/observabilite-advanced-tutorial` |
+| `8122` | `operations/quarkus-taverne-extension/integration-tests` |
+| `8123` | `integration/messaging/kafka-tutorial` |
+| `8124` | `integration/messaging/sse-tutorial` |
+| `9000` | `web-concept/graphQL/graphql-client-tutorial` |
+| `9001` | `web-concept/graphQL/graphql-client-advanced-tutorial` |
+
+### Collection Postman
+
+Le dossier [`postman/`](postman) contient une collection prête à importer dans Postman : un dossier par domaine, un sous-dossier par tutoriel, chaque endpoint REST/GraphQL avec ses cas d'erreur pédagogiques (401/403, 404, 422, 429…).
+
+Tout est variabilisé au niveau de la collection (onglet *Variables*) :
+
+- `baseUrl` : l'hôte commun (`http://localhost` par défaut) ;
+- `port_<module>` : le port de chaque tutoriel (ex. `port_panache`, `port_la_taverne_en_flammes`), alignés sur le tableau ci-dessus ;
+- `<module>_*` : identifiants de démo, ids, paramètres, en-têtes (`i18n_lang`, `api_versioning_version`…), tokens JWT.
+
+Les ids créés (POST) et les tokens JWT (login `jwt-jpa-tutorial`) sont capturés automatiquement par des scripts de test et réinjectés dans les requêtes suivantes.
 
 ### Ce que la CI couvre — et ce qu'elle ne couvre pas
 

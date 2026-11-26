@@ -26,7 +26,7 @@ public class IdentificationService {
 
     @Inject
     public IdentificationService(
-            @ConfigProperty(name = "taverne.url-publique", defaultValue = "http://localhost:8080")
+            @ConfigProperty(name = "taverne.url-publique", defaultValue = "http://localhost:8112")
             String urlPublique) {
         this.urlPublique = urlPublique.endsWith("/")
                 ? urlPublique.substring(0, urlPublique.length() - 1)

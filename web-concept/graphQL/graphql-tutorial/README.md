@@ -50,4 +50,4 @@ mutation {
 ```bash
 ./mvnw quarkus:dev -pl graphql-tutorial
 ```
-L'interface **GraphQL UI** sera accessible sur `http://localhost:8080/q/graphql-ui`.
+L'interface **GraphQL UI** sera accessible sur `http://localhost:8113/q/graphql-ui`.

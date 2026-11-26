@@ -16,7 +16,7 @@ import io.gatling.javaapi.http.*;
 public class TavernLoadTest extends Simulation {
 
     // --- Configuration ---
-    private static final String BASE_URL = "http://localhost:8080";
+    private static final String BASE_URL = "http://localhost:8116";
     private static final String PATH_COMMANDE = "/taverne/commande";
     private static final String PATH_CAVE = "/taverne/cave";
     private static final String PATH_PLAT = "/taverne/plat-du-jour";

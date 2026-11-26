@@ -30,13 +30,13 @@ Depuis la racine du projet :
 Dans un premier terminal, ouvrir le flux :
 
 ```bash
-curl -N http://localhost:8080/taverne/panneau
+curl -N http://localhost:8124/taverne/panneau
 ```
 
 Dans un second terminal, publier une annonce :
 
 ```bash
-curl -X POST http://localhost:8080/taverne/crier \
+curl -X POST http://localhost:8124/taverne/crier \
   -H "Content-Type: application/json" \
   -d '{"message":"Tournee generale dans la salle commune !"}'
 ```

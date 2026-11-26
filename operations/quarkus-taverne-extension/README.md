@@ -54,10 +54,10 @@ cd operations/quarkus-taverne-extension/integration-tests
 ../../../mvnw quarkus:dev
 ```
 
-L'application écoute sur <http://localhost:8080>. L'endpoint de test :
+L'application écoute sur <http://localhost:8122>. L'endpoint de test :
 
 ```bash
-curl http://localhost:8080/quete
+curl http://localhost:8122/quete
 # Le héros trouve un coffre. Il contient... un README.
 ```
 

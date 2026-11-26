@@ -23,7 +23,7 @@ public interface TaverneClientApi {
 ### Configuration
 La configuration se fait dans le fichier `application.properties` :
 ```properties
-quarkus.smallrye-graphql-client.taverne.url=http://localhost:8080/graphql
+quarkus.smallrye-graphql-client.taverne.url=http://localhost:8113/graphql
 ```
 
 ### Utilisation
@@ -35,7 +35,7 @@ TaverneClientApi taverneClient;
 
 ## Lancer le module
 
-1. Assurez-vous que le serveur (`graphql-tutorial`) est lancé sur le port 8080.
+1. Assurez-vous que le serveur (`graphql-tutorial`) est lancé sur le port 8113.
 2. Lancez ce client :
 ```bash
 ./mvnw quarkus:dev -pl graphql-client-tutorial

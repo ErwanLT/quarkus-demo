@@ -42,32 +42,32 @@ cd web-concept/editique-tutorial
 2. Récupérer les documents :
 ```bash
 # Ticket de caisse (affiché dans le navigateur)
-curl -o ticket.pdf http://localhost:8080/taverne/commandes/CMD-0042/ticket
+curl -o ticket.pdf http://localhost:8112/taverne/commandes/CMD-0042/ticket
 
 # Liste des factures fournisseurs
-curl http://localhost:8080/taverne/factures
+curl http://localhost:8112/taverne/factures
 
 # Facture du brasseur nain (PDF), puis en tableur
-curl -o facture.pdf http://localhost:8080/taverne/factures/FAC-BDF-2026-117
-curl -o facture.xlsx "http://localhost:8080/taverne/factures/FAC-BDF-2026-117?format=xlsx"
+curl -o facture.pdf http://localhost:8112/taverne/factures/FAC-BDF-2026-117
+curl -o facture.xlsx "http://localhost:8112/taverne/factures/FAC-BDF-2026-117?format=xlsx"
 
 # Facture de 40 lignes du meunier : pagination sur 2 pages
-curl -o meunerie.pdf http://localhost:8080/taverne/factures/FAC-MVD-2026-031
+curl -o meunerie.pdf http://localhost:8112/taverne/factures/FAC-MVD-2026-031
 
 # Relevé mensuel de tous les fournisseurs
-curl -o releve.pdf http://localhost:8080/taverne/fournisseurs/releve
+curl -o releve.pdf http://localhost:8112/taverne/fournisseurs/releve
 
 # Planche d'étiquettes produits (EAN-13) et cartes de table (QR codes)
-curl -o etiquettes.pdf http://localhost:8080/taverne/etiquettes
-curl -o cartes.pdf http://localhost:8080/taverne/tables/cartes
+curl -o etiquettes.pdf http://localhost:8112/taverne/etiquettes
+curl -o cartes.pdf http://localhost:8112/taverne/tables/cartes
 ```
 
 Les QR codes imprimés pointent vers des pages HTML de suivi :
 
 ```bash
-open http://localhost:8080/taverne/commandes/CMD-0042/suivi
-open http://localhost:8080/taverne/factures/FAC-BDF-2026-117/suivi
-open "http://localhost:8080/taverne/menu?table=Table%20du%20Dragon"
+open http://localhost:8112/taverne/commandes/CMD-0042/suivi
+open http://localhost:8112/taverne/factures/FAC-BDF-2026-117/suivi
+open "http://localhost:8112/taverne/menu?table=Table%20du%20Dragon"
 ```
 
 ### Le comptoir de scan (codes-barres)
@@ -76,12 +76,12 @@ Un QR code contient une URL : le téléphone l'ouvre tout seul. Un **Code 128** 
 
 ```bash
 # Page avec un champ de saisie : une douchette USB y tape le code puis Entrée
-open http://localhost:8080/taverne/scan
+open http://localhost:8112/taverne/scan
 
 # URL modèle pour les applis de scan capables d'ouvrir « http://…/taverne/scan/%s »
-curl -i http://localhost:8080/taverne/scan/CMD-0042        # 303 -> suivi de la commande
-curl -i http://localhost:8080/taverne/scan/2000000000015   # 303 -> fiche du Tonneau de rousse naine
-curl -i http://localhost:8080/taverne/scan/2000000000016   # 404 : clé de contrôle invalide
+curl -i http://localhost:8112/taverne/scan/CMD-0042        # 303 -> suivi de la commande
+curl -i http://localhost:8112/taverne/scan/2000000000015   # 303 -> fiche du Tonneau de rousse naine
+curl -i http://localhost:8112/taverne/scan/2000000000016   # 404 : clé de contrôle invalide
 ```
 
 `ComptoirDeScan` reconnaît les numéros de commande, les numéros de facture et les EAN-13. Pour un EAN-13, il **vérifie la clé de contrôle** avant de chercher le produit : un chiffre mal lu est refusé plutôt que d'ouvrir le mauvais produit. Un code reconnu redirige en `303 See Other` vers sa page ; un code inconnu reste au comptoir, avec un 404 et la raison du refus.
@@ -90,7 +90,7 @@ Avec un téléphone, une appli de scan généraliste (ou Google Lens) lit le cod
 
 ### Scanner les QR codes depuis un téléphone
 
-Un QR code contient une URL, pas une adresse magique. Par défaut elle vaut `http://localhost:8080/...` : sur un téléphone, `localhost` désigne **le téléphone lui-même**, pas le PC. Le navigateur affiche donc une page vide ou une erreur.
+Un QR code contient une URL, pas une adresse magique. Par défaut elle vaut `http://localhost:8112/...` : sur un téléphone, `localhost` désigne **le téléphone lui-même**, pas le PC. Le navigateur affiche donc une page vide ou une erreur.
 
 1. Trouvez l'IP LAN du PC :
    - macOS : `ipconfig getifaddr en0`
@@ -98,21 +98,21 @@ Un QR code contient une URL, pas une adresse magique. Par défaut elle vaut `htt
    - Windows : `ipconfig`
 2. Relancez Quarkus en donnant cette base d'URL :
    ```bash
-   TAVERNE_URL_PUBLIQUE=http://192.168.1.42:8080 ../../mvnw quarkus:dev
+   TAVERNE_URL_PUBLIQUE=http://192.168.1.42:8112 ../../mvnw quarkus:dev
    ```
    ou modifiez `taverne.url-publique` dans `application.properties`.
-3. Vérifiez depuis le téléphone que `http://192.168.1.42:8080/taverne/factures` répond. Sinon : même Wi-Fi (pas un réseau invité), pare-feu autorisant le port 8080, et Quarkus à l'écoute sur `0.0.0.0`. En mode dev, Quarkus n'écoute que sur `localhost` par défaut : `application.properties` l'ouvre au réseau local avec `%dev.quarkus.http.host=0.0.0.0` (en prod, c'est déjà le défaut).
+3. Vérifiez depuis le téléphone que `http://192.168.1.42:8112/taverne/factures` répond. Sinon : même Wi-Fi (pas un réseau invité), pare-feu autorisant le port 8112, et Quarkus à l'écoute sur `0.0.0.0`. En mode dev, Quarkus n'écoute que sur `localhost` par défaut : `application.properties` l'ouvre au réseau local avec `%dev.quarkus.http.host=0.0.0.0` (en prod, c'est déjà le défaut).
 4. Régénérez les PDF : les QR déjà imprimés encodent l'ancienne URL.
    ```bash
-   curl -o ticket.pdf http://192.168.1.42:8080/taverne/commandes/CMD-0042/ticket
-   curl -o etiquettes.pdf http://192.168.1.42:8080/taverne/etiquettes
-   curl -o cartes.pdf http://192.168.1.42:8080/taverne/tables/cartes
+   curl -o ticket.pdf http://192.168.1.42:8112/taverne/commandes/CMD-0042/ticket
+   curl -o etiquettes.pdf http://192.168.1.42:8112/taverne/etiquettes
+   curl -o cartes.pdf http://192.168.1.42:8112/taverne/tables/cartes
    ```
 5. Scannez avec l'appareil photo : le QR ouvre la page de suivi ou le menu.
 
 > Les PDF d'exemple livrés à la racine encodent `localhost` : ils fonctionnent sur le PC, pas depuis le téléphone. Régénérez-les avec votre IP LAN pour tester sur mobile.
 
-**Astuce Android** : en USB, `adb reverse tcp:8080 tcp:8080` fait pointer `localhost:8080` du téléphone vers le PC. Les QR encodant `localhost` fonctionnent alors sans changer la configuration. Sur macOS, `http://nom-du-mac.local:8080` peut aussi fonctionner grâce à Bonjour, mais l'IP reste plus fiable.
+**Astuce Android** : en USB, `adb reverse tcp:8112 tcp:8112` fait pointer `localhost:8112` du téléphone vers le PC. Les QR encodant `localhost` fonctionnent alors sans changer la configuration. Sur macOS, `http://nom-du-mac.local:8112` peut aussi fonctionner grâce à Bonjour, mais l'IP reste plus fiable.
 
 Des exemples déjà générés sont disponibles à la racine du module (`ticket-CMD-0042.pdf`, `facture-FAC-BDF-2026-117.pdf`, `releve-fournisseurs.pdf`, `etiquettes-produits.pdf`, `cartes-tables.pdf`).
 
@@ -222,7 +222,7 @@ Les pages HTML ciblées par les QR codes (suivi de commande, suivi de facture, m
 Les URL encodées sont construites à partir de `taverne.url-publique` :
 
 ```properties
-taverne.url-publique=http://localhost:8080
+taverne.url-publique=http://localhost:8112
 ```
 
 ### La charte graphique (`.jrtx`)

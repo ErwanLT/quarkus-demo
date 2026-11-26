@@ -21,11 +21,11 @@ Ce module montre comment securiser la reserve de nourriture et de biere d'une ta
 ## Tests rapides
 
 ```bash
-curl -u keeper:keeper123 http://localhost:8080/api/tavern/pantry
+curl -u keeper:keeper123 http://localhost:8106/api/tavern/pantry
 ```
 
 ```bash
-curl -u supplier:supplier123 http://localhost:8080/api/tavern/cellar
+curl -u supplier:supplier123 http://localhost:8106/api/tavern/cellar
 ```
 
 Swagger UI est accessible sans authentification, mais l'execution des endpoints demandera une authentification Basic Auth.

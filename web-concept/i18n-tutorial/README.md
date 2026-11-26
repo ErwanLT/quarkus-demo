@@ -36,10 +36,10 @@ Le tutoriel combine :
 2. Tester la langue via `Accept-Language` :
 
 ```bash
-curl -H "Accept-Language: en-US" "http://localhost:8080/taverne/salutations?nom=Thorin"
-curl -H "Accept-Language: de-DE" "http://localhost:8080/taverne/commandes" -X POST
-curl -H "Accept-Language: la-LA" "http://localhost:8080/taverne/tarifs?article=potio&montant=3.5"
-curl -H "Accept-Language: fr-FR" "http://localhost:8080/taverne/affluence?nombre=0"
+curl -H "Accept-Language: en-US" "http://localhost:8114/taverne/salutations?nom=Thorin"
+curl -H "Accept-Language: de-DE" "http://localhost:8114/taverne/commandes" -X POST
+curl -H "Accept-Language: la-LA" "http://localhost:8114/taverne/tarifs?article=potio&montant=3.5"
+curl -H "Accept-Language: fr-FR" "http://localhost:8114/taverne/affluence?nombre=0"
 ```
 
 ## Tests

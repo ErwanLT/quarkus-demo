@@ -30,22 +30,22 @@ docker compose up -d
 
 - Metrics Quarkus :
 ```bash
-curl -s http://localhost:8080/q/metrics
+curl -s http://localhost:8121/q/metrics
 ```
 
 - Health Quarkus :
 ```bash
-curl -s http://localhost:8080/q/health
+curl -s http://localhost:8121/q/health
 ```
 
 - Commande nominale :
 ```bash
-curl -s "http://localhost:8080/advanced-tavern/order?drink=stout"
+curl -s "http://localhost:8121/advanced-tavern/order?drink=stout"
 ```
 
 - Commande lente (pour tester l'alerte de latence) :
 ```bash
-curl -s "http://localhost:8080/advanced-tavern/order?drink=dragonfire"
+curl -s "http://localhost:8121/advanced-tavern/order?drink=dragonfire"
 ```
 
 ## Dashboard Grafana
@@ -67,11 +67,11 @@ Alertes configurees :
 
 1. Generer du trafic nominal :
 ```bash
-for i in {1..20}; do curl -s "http://localhost:8080/advanced-tavern/order?drink=stout" > /dev/null; done
+for i in {1..20}; do curl -s "http://localhost:8121/advanced-tavern/order?drink=stout" > /dev/null; done
 ```
 2. Generer du trafic lent :
 ```bash
-for i in {1..25}; do curl -s "http://localhost:8080/advanced-tavern/order?drink=dragonfire" > /dev/null; done
+for i in {1..25}; do curl -s "http://localhost:8121/advanced-tavern/order?drink=dragonfire" > /dev/null; done
 ```
 3. Verifier les alertes :
 - Prometheus > Alerts : http://localhost:9090/alerts
@@ -85,5 +85,5 @@ for i in {1..25}; do curl -s "http://localhost:8080/advanced-tavern/order?drink=
 
 ## Notes
 
-- Prometheus scrape l'application sur `host.docker.internal:8080/q/metrics`.
+- Prometheus scrape l'application sur `host.docker.internal:8121/q/metrics`.
 - Sur Linux, l'entree `host.docker.internal` est mappee via `extra_hosts: host-gateway` dans le compose.

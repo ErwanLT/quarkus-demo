@@ -431,7 +431,7 @@ class ImprimerieServiceTest {
 
         assertContientCode(codes, BarcodeFormat.CODE_128, "CMD-0042");
         assertContientCode(codes, BarcodeFormat.QR_CODE,
-                "http://localhost:8080/taverne/commandes/CMD-0042/suivi");
+                "http://localhost:8112/taverne/commandes/CMD-0042/suivi");
     }
 
     @Test
@@ -442,7 +442,7 @@ class ImprimerieServiceTest {
         List<Result> codes = decoderCodes(pdf, 1, BarcodeFormat.QR_CODE);
 
         assertContientCode(codes, BarcodeFormat.QR_CODE,
-                "http://localhost:8080/taverne/factures/FAC-BDF-2026-117/suivi");
+                "http://localhost:8112/taverne/factures/FAC-BDF-2026-117/suivi");
     }
 
     @Test
@@ -471,7 +471,7 @@ class ImprimerieServiceTest {
         List<Result> codes = decoderParZones(pdf, 1, 300, 2, 3, BarcodeFormat.QR_CODE);
 
         for (String table : archives.tables()) {
-            String url = "http://localhost:8080/taverne/menu?table="
+            String url = "http://localhost:8112/taverne/menu?table="
                     + table.replace(" ", "%20");
             assertContientCode(codes, BarcodeFormat.QR_CODE, url);
         }

@@ -24,17 +24,17 @@ Le formulaire de réservation utilise `@RestForm` pour capturer les entrées uti
 
 ## Utilisation
 
-L'application est configurée pour démarrer sur le port **8082**.
+L'application est configurée pour démarrer sur le port **8115**.
 
 1.  Lancez le mode développement :
     ```bash
     ./mvnw quarkus:dev
     ```
 2.  **Se balader dans la taverne** :
-    *   **Accueil** : [http://localhost:8082/tavern-web](http://localhost:8082/tavern-web)
-    *   **Boissons** : [http://localhost:8082/tavern-web/drinks](http://localhost:8082/tavern-web/drinks)
-    *   **Dormir** : [http://localhost:8082/tavern-web/booking](http://localhost:8082/tavern-web/booking)
-    *   **Registre (Admin)** : [http://localhost:8082/tavern-web/admin](http://localhost:8082/tavern-web/admin)
+    *   **Accueil** : [http://localhost:8115/tavern-web](http://localhost:8115/tavern-web)
+    *   **Boissons** : [http://localhost:8115/tavern-web/drinks](http://localhost:8115/tavern-web/drinks)
+    *   **Dormir** : [http://localhost:8115/tavern-web/booking](http://localhost:8115/tavern-web/booking)
+    *   **Registre (Admin)** : [http://localhost:8115/tavern-web/admin](http://localhost:8115/tavern-web/admin)
 
 ## À retenir pour H2G2
 *   Le prix du **Pan Galactic Gargle Blaster** est impérativement de **42 PO**.

@@ -26,8 +26,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
  *
  * <p>Exemple d'appel :</p>
  * <pre>
- *   curl -H "Accept-Language: en-US" -X POST http://localhost:8080/taverne/commandes
- *   curl -H "Accept-Language: de-DE" http://localhost:8080/taverne/salutations?nom=Thorin
+ *   curl -H "Accept-Language: en-US" -X POST http://localhost:8114/taverne/commandes
+ *   curl -H "Accept-Language: de-DE" http://localhost:8114/taverne/salutations?nom=Thorin
  * </pre>
  */
 @Path("/taverne")

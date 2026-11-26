@@ -20,7 +20,7 @@ cd web-concept/rate-limiting-tutorial
 2. Exécuter des appels HTTP (par exemple avec `curl`) :
 ```bash
 # Lancer 4 appels rapides d'affilée :
-for i in {1..4}; do curl -X POST http://localhost:8080/taverne/commande; echo ""; done
+for i in {1..4}; do curl -X POST http://localhost:8116/taverne/commande; echo ""; done
 ```
 
 Tu observeras que la 4ème commande te retourne un joli message d'erreur !

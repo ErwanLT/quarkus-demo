@@ -107,22 +107,22 @@ cache-tutorial/
 ./mvnw quarkus:dev -pl core-concept/cache-tutorial
 
 # Premier appel : cache miss → ~200 ms (descente à la cave)
-curl http://localhost:8080/menu/lundi
+curl http://localhost:8102/menu/lundi
 
 # Deuxième appel : cache hit → < 1 ms (ardoise consultée)
-curl http://localhost:8080/menu/lundi
+curl http://localhost:8102/menu/lundi
 
 # Effacer lundi de l'ardoise
-curl -X DELETE http://localhost:8080/menu/lundi
+curl -X DELETE http://localhost:8102/menu/lundi
 
 # Premier appel après invalidation : cache miss à nouveau
-curl http://localhost:8080/menu/lundi
+curl http://localhost:8102/menu/lundi
 
 # Effacer toute l'ardoise
-curl -X DELETE http://localhost:8080/menu
+curl -X DELETE http://localhost:8102/menu
 ```
 
-L'interface **Swagger UI** est disponible sur : http://localhost:8080/q/swagger-ui
+L'interface **Swagger UI** est disponible sur : http://localhost:8102/q/swagger-ui
 
 ## Lancer les tests
 

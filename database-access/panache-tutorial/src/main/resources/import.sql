@@ -11,6 +11,9 @@ ALTER SEQUENCE Ingredient_SEQ RESTART WITH 5;
 INSERT INTO Recipe (id, title, description) VALUES (1, 'Hydromel de l''Elfe', 'Une boisson rafraîchissante et légèrement magique.');
 INSERT INTO Recipe (id, title, description) VALUES (2, 'Ragoût de Basilic', 'Un plat consistant pour les guerriers fatigués.');
 
+-- Ajustement de l'identité (Recipe est en IDENTITY : les ids insérés à la main ne la font pas avancer)
+ALTER TABLE Recipe ALTER COLUMN id RESTART WITH 3;
+
 -- Liaison Recettes / Ingrédients (utilisation de la JoinTable explicite)
 INSERT INTO RECIPE_INGREDIENT (recipe_id, ingredient_id) VALUES (1, 2);
 INSERT INTO RECIPE_INGREDIENT (recipe_id, ingredient_id) VALUES (1, 3);

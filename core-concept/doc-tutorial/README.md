@@ -9,8 +9,8 @@ Ce tutoriel montre comment exposer et documenter des APIs REST dans l'univers d'
 
 ## Documentation
 
-- OpenAPI JSON : `http://localhost:8080/openapi`
-- Swagger UI : `http://localhost:8080/q/swagger-ui`
+- OpenAPI JSON : `http://localhost:8103/openapi`
+- Swagger UI : `http://localhost:8103/q/swagger-ui`
 
 ## Configuration cle
 
@@ -28,11 +28,11 @@ quarkus.swagger-ui.always-include=true
 Exemples rapides :
 
 ```bash
-curl "http://localhost:8080/api/tavern/greeting?name=Elora"
+curl "http://localhost:8103/api/tavern/greeting?name=Elora"
 ```
 
 ```bash
-curl -X POST http://localhost:8080/api/tavern/order \
+curl -X POST http://localhost:8103/api/tavern/order \
   -H "Content-Type: application/json" \
   -d '{"item":"Healing Potion","quantity":2}'
 ```

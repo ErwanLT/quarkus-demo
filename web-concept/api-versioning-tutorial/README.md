@@ -49,8 +49,8 @@ Le controleur reste volontairement fin : il traduit HTTP vers le cas d'usage, ta
 ### 1. Version dans le path
 
 ```bash
-curl http://localhost:8080/taverne/versioning/path/v1/menu
-curl http://localhost:8080/taverne/versioning/path/v2/menu
+curl http://localhost:8111/taverne/versioning/path/v1/menu
+curl http://localhost:8111/taverne/versioning/path/v2/menu
 ```
 
 Lisible, facile a router et tres explicite dans les logs. C'est souvent le choix le plus simple pour des APIs publiques.
@@ -58,8 +58,8 @@ Lisible, facile a router et tres explicite dans les logs. C'est souvent le choix
 ### 2. Version dans un parameter
 
 ```bash
-curl "http://localhost:8080/taverne/versioning/parameter/menu?version=1"
-curl "http://localhost:8080/taverne/versioning/parameter/menu?version=2"
+curl "http://localhost:8111/taverne/versioning/parameter/menu?version=1"
+curl "http://localhost:8111/taverne/versioning/parameter/menu?version=2"
 ```
 
 Pratique pour des tests ou des APIs internes, mais la version est moins visible dans certaines couches d'infrastructure.
@@ -67,8 +67,8 @@ Pratique pour des tests ou des APIs internes, mais la version est moins visible 
 ### 3. Version dans un header
 
 ```bash
-curl -H "X-Api-Version: 1" http://localhost:8080/taverne/versioning/header/menu
-curl -H "X-Api-Version: 2" http://localhost:8080/taverne/versioning/header/menu
+curl -H "X-Api-Version: 1" http://localhost:8111/taverne/versioning/header/menu
+curl -H "X-Api-Version: 2" http://localhost:8111/taverne/versioning/header/menu
 ```
 
 L'URL reste stable et le contrat evolue via metadata HTTP. C'est propre, mais il faut que les clients, proxies et outils de debug pensent bien a transmettre le header.
@@ -76,8 +76,8 @@ L'URL reste stable et le contrat evolue via metadata HTTP. C'est propre, mais il
 ### 4. Content negotiation avec media type
 
 ```bash
-curl -H "Accept: application/vnd.tavern.menu.v1+json" http://localhost:8080/taverne/versioning/negotiation/menu
-curl -H "Accept: application/vnd.tavern.menu.v2+json" http://localhost:8080/taverne/versioning/negotiation/menu
+curl -H "Accept: application/vnd.tavern.menu.v1+json" http://localhost:8111/taverne/versioning/negotiation/menu
+curl -H "Accept: application/vnd.tavern.menu.v2+json" http://localhost:8111/taverne/versioning/negotiation/menu
 ```
 
 Ici, la version fait partie du contrat de representation. C'est tres REST, notamment quand une meme ressource peut avoir plusieurs representations.
@@ -87,7 +87,7 @@ Ici, la version fait partie du contrat de representation. C'est tres REST, notam
 Une version inconnue retourne **HTTP 400 Bad Request** avec un corps `application/problem+json` :
 
 ```bash
-curl "http://localhost:8080/taverne/versioning/parameter/menu?version=dragon"
+curl "http://localhost:8111/taverne/versioning/parameter/menu?version=dragon"
 ```
 
 ```json

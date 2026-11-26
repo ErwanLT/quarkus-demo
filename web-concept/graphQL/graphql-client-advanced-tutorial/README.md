@@ -54,11 +54,11 @@ Le générateur s'occupe de créer les classes nécessaires lors de la compilati
 
 ## Lancer le module
 
-1. Assurez-vous que le serveur (`graphql-tutorial`) est lancé sur le port 8080.
+1. Assurez-vous que le serveur (`graphql-tutorial`) est lancé sur le port 8113.
 2. Lancez ce client :
 ```bash
 ./mvnw quarkus:dev -pl graphql-client-advanced-tutorial
 ```
-Le client tourne sur le port **9000** par défaut.
+Le client tourne sur le port **9001** par défaut.
 
-Testez l'appel dynamique : `http://localhost:9000/tavern/dynamic`
+Testez l'appel dynamique : `http://localhost:9001/tavern/dynamic`

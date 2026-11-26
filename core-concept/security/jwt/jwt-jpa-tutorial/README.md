@@ -22,19 +22,19 @@ Ce module montre comment securiser le **livre de comptes** et le **coffre fort**
 ## Tests rapides
 
 ```bash
-TOKEN=$(curl -s -X POST http://localhost:8080/api/tavern/auth/login \
+TOKEN=$(curl -s -X POST http://localhost:8110/api/tavern/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"elora","password":"ledger123"}' | jq -r .token)
 
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/api/tavern/ledger
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8110/api/tavern/ledger
 ```
 
 ```bash
-TOKEN=$(curl -s -X POST http://localhost:8080/api/tavern/auth/login \
+TOKEN=$(curl -s -X POST http://localhost:8110/api/tavern/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"borin","password":"vault123"}' | jq -r .token)
 
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/api/tavern/vault
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8110/api/tavern/vault
 ```
 
 Notes:
