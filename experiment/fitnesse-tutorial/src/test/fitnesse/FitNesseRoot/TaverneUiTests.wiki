@@ -1,0 +1,18 @@
+---
+Test
+---
+!define TEST_SYSTEM {slim}
+!path target/test-classes
+!path target/classes
+!path target/fitnesse/lib/*
+
+!| script | fr.eletutour.fitnesse.TaverneUiFixture |
+| ouvrir | http://localhost:8126/taverne.html |
+| check | titre | La Taverne |
+| entrer | Bilbon | dans | input#nom |
+| cliquer | button#saluer |
+| verifier | p#message | vaut | Bienvenue à la taverne, Bilbon ! |
+| entrer | Bilbon | dans | input#nom |
+| cliquer | button#saluer |
+| verifier | p#message | vaut | Bienvenue à la taverne, Frodon ! |
+| fermer |

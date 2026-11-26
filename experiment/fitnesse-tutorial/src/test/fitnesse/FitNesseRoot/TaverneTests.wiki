@@ -1,0 +1,13 @@
+---
+Test
+---
+!define TEST_SYSTEM {slim}
+!path target/test-classes
+!path target/classes
+!path target/fitnesse/lib/*
+
+|fr.eletutour.fitnesse.GreetingFixture|
+|nom|accueil?|
+|Bilbon|Bienvenue à la taverne, Bilbon !|
+|Frodon|Bienvenue à la taverne, Frodon !|
+||Bienvenue à la taverne, voyageur !|

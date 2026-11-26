@@ -39,3 +39,8 @@ replay_pid*
 /web-concept/graphQL/federation-tutorial/router/supergraph.graphql
 /web-concept/graphQL/federation-tutorial/router/quete.graphql
 /web-concept/graphQL/federation-tutorial/router/aventurier.graphql
+
+# FitNesse : les pages .wiki sont suivies, mais pas leurs artefacts générés
+/experiment/fitnesse-tutorial/src/test/fitnesse/FitNesseRoot/files/
+/experiment/fitnesse-tutorial/src/test/fitnesse/FitNesseRoot/RerunLastFailures_*.wiki
+/experiment/fitnesse-tutorial/src/test/fitnesse/FitNesseRoot/RecentChanges.wiki

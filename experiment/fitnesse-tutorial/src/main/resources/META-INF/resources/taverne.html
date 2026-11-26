@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>La Taverne</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        input { padding: .4rem; }
+        button { padding: .4rem 1rem; margin-left: .5rem; }
+        #message { font-weight: bold; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+<h1>Bienvenue à la taverne</h1>
+<label for="nom">Votre nom</label>
+<input id="nom" type="text" placeholder="Bilbon">
+<button id="saluer" type="button">Saluer</button>
+<p id="message"></p>
+<script>
+    document.getElementById('saluer').addEventListener('click', () => {
+        const nom = document.getElementById('nom').value.trim();
+        document.getElementById('message').textContent =
+            'Bienvenue à la taverne, ' + (nom || 'voyageur') + ' !';
+    });
+</script>
+</body>
+</html>
