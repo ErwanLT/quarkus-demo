@@ -4,6 +4,7 @@
 - Customisation banniere (Quarkus)
 - Documentation d'API REST (OpenAPI)
 - Gestion centralisée des exceptions (RFC 9457 / ProblemDetail)
+- Validation (annotations standard, enum, contrainte custom de classe, violations en problem+json)
 - Securite
   - Basic Auth
     - Utilisateurs embarques (embedded)
@@ -53,7 +54,6 @@
 # Sujets non encore traites (Roadmap)
 
 ## Core Concept
-- Validation
 - Configuration et profils
 
 ## Database Access

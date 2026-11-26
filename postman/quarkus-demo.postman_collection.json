@@ -481,6 +481,534 @@
           ]
         },
         {
+          "name": "validation-tutorial",
+          "description": "Port 8125. Lancer : ./mvnw quarkus:dev -pl core-concept/validation-tutorial. Aucun prérequis, pas d'auth. Réservations de chambres : annotations standard (dont @NotBlank sur le courriel), enum TypeChambre pour les valeurs fermées, contrainte custom de classe @SejourCoherent, chevauchement des périodes et contrôle atomique côté service, erreurs au format Problem (400 / 409 / 500). Les dates sont calculées par un script pré-request.",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const dans = (jours) => { const d = new Date(); d.setUTCDate(d.getUTCDate() + jours); return d.toISOString().slice(0, 10); };",
+                  "pm.collectionVariables.set('validation_arrivee', dans(10));",
+                  "pm.collectionVariables.set('validation_depart', dans(12));",
+                  "pm.collectionVariables.set('validation_depart_long', dans(18));",
+                  "pm.collectionVariables.set('validation_arrivee_conflit', dans(20));",
+                  "pm.collectionVariables.set('validation_depart_conflit', dans(21));",
+                  "pm.collectionVariables.set('validation_arrivee_sejour', dans(24));",
+                  "pm.collectionVariables.set('validation_depart_sejour', dans(26));",
+                  "pm.collectionVariables.set('validation_arrivee_chevauche', dans(25));",
+                  "pm.collectionVariables.set('validation_depart_chevauche', dans(27));",
+                  "pm.collectionVariables.set('validation_depart_contigu', dans(28));"
+                ]
+              }
+            }
+          ],
+          "item": [
+            {
+              "name": "Chambres du registre",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}:{{port_validation}}/validation/chambres",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "port": "{{port_validation}}",
+                  "path": [
+                    "validation",
+                    "chambres"
+                  ]
+                },
+                "description": "200 : DORTOIR, SUITE, PLACARD."
+              },
+              "response": []
+            },
+            {
+              "name": "Réserver une chambre",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "port": "{{port_validation}}",
+                  "path": [
+                    "validation",
+                    "reservations"
+                  ]
+                },
+                "description": "201 avec la réservation créée (champ reference = RES-xxxx).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aventurier\": \"{{validation_aventurier}}\",\n  \"courriel\": \"{{validation_courriel}}\",\n  \"chambre\": \"{{validation_chambre}}\",\n  \"arrivee\": \"{{validation_arrivee}}\",\n  \"depart\": \"{{validation_depart}}\",\n  \"aventuriers\": {{validation_aventuriers}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"statut 201\", function () { pm.response.to.have.status(201); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Annotations standard invalides (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "port": "{{port_validation}}",
+                  "path": [
+                    "validation",
+                    "reservations"
+                  ]
+                },
+                "description": "Nom vide, courriel invalide, arrivée passée et 9 aventuriers : 400 problem+json avec les codes NotBlank, Size, Email, FutureOrPresent et Max.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aventurier\": \"\",\n  \"courriel\": \"pas-un-courriel\",\n  \"chambre\": \"PLACARD\",\n  \"arrivee\": \"2020-01-01\",\n  \"depart\": \"{{validation_depart}}\",\n  \"aventuriers\": 9\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"statut 400 et violations\", function () { pm.response.to.have.status(400); pm.expect(pm.response.json().additional.violations).to.be.above(0); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Courriel vide (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "port": "{{port_validation}}",
+                  "path": [
+                    "validation",
+                    "reservations"
+                  ]
+                },
+                "description": "@Email accepte une chaîne vide : @NotBlank est nécessaire pour rejeter un courriel absent ou vide (code NotBlank, champ courriel).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aventurier\": \"Merlin\",\n  \"courriel\": \"\",\n  \"chambre\": \"SUITE\",\n  \"arrivee\": \"{{validation_arrivee}}\",\n  \"depart\": \"{{validation_depart}}\",\n  \"aventuriers\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"courriel vide rejeté\", function () { pm.response.to.have.status(400); pm.expect(pm.response.json().additional.errors.map(e => e.code)).to.include('NotBlank'); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Chambre inconnue, enum (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "port": "{{port_validation}}",
+                  "path": [
+                    "validation",
+                    "reservations"
+                  ]
+                },
+                "description": "L'enum TypeChambre refuse AUBERGE pendant la désérialisation : 400 problem+json avec errors[].field = chambre et code TypeChambreInconnu.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aventurier\": \"Frodon\",\n  \"courriel\": \"frodon@combe.fr\",\n  \"chambre\": \"AUBERGE\",\n  \"arrivee\": \"{{validation_arrivee}}\",\n  \"depart\": \"{{validation_depart}}\",\n  \"aventuriers\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"code TypeChambreInconnu\", function () { pm.response.to.have.status(400); pm.expect(pm.response.json().additional.errors.map(e => e.code)).to.include('TypeChambreInconnu'); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Séjour de 8 nuits, contrainte de classe (400)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "port": "{{port_validation}}",
+                  "path": [
+                    "validation",
+                    "reservations"
+                  ]
+                },
+                "description": "@SejourCoherent compare arrivee et depart : violation rattachée au champ depart, code SejourCoherent.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aventurier\": \"Sam\",\n  \"courriel\": \"sam@combe.fr\",\n  \"chambre\": \"DORTOIR\",\n  \"arrivee\": \"{{validation_arrivee}}\",\n  \"depart\": \"{{validation_depart_long}}\",\n  \"aventuriers\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"code SejourCoherent\", function () { pm.response.to.have.status(400); pm.expect(pm.response.json().additional.errors.map(e => e.code)).to.include('SejourCoherent'); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Conflit métier",
+              "item": [
+                {
+                  "name": "Réserver la chambre (première fois)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "port": "{{port_validation}}",
+                      "path": [
+                        "validation",
+                        "reservations"
+                      ]
+                    },
+                    "description": "201 : la validation passe, la règle métier accepte.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"aventurier\": \"Gandalf\",\n  \"courriel\": \"gandalf@combe.fr\",\n  \"chambre\": \"PLACARD\",\n  \"arrivee\": \"{{validation_arrivee_conflit}}\",\n  \"depart\": \"{{validation_depart_conflit}}\",\n  \"aventuriers\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": [],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"statut 201\", function () { pm.response.to.have.status(201); });"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "Réserver la même chambre (409)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "port": "{{port_validation}}",
+                      "path": [
+                        "validation",
+                        "reservations"
+                      ]
+                    },
+                    "description": "409 : BusinessExceptionMapper, type urn:problem:tavern:CHAMBRE_DEJA_RESERVEE.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"aventurier\": \"Gandalf\",\n  \"courriel\": \"gandalf@combe.fr\",\n  \"chambre\": \"PLACARD\",\n  \"arrivee\": \"{{validation_arrivee_conflit}}\",\n  \"depart\": \"{{validation_depart_conflit}}\",\n  \"aventuriers\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": [],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"statut 409 et type Problem\", function () { pm.response.to.have.status(409); pm.expect(pm.response.json().type).to.eql('urn:problem:tavern:CHAMBRE_DEJA_RESERVEE'); });"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Chevauchement des séjours",
+              "description": "La règle métier refuse deux séjours qui se chevauchent (409), mais accepte une arrivée le jour du départ précédent (intervalles semi-ouverts). À exécuter dans l'ordre.",
+              "item": [
+                {
+                  "name": "1. Réserver un séjour de référence",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "port": "{{port_validation}}",
+                      "path": [
+                        "validation",
+                        "reservations"
+                      ]
+                    },
+                    "description": "201 : DORTOIR du {{validation_arrivee_sejour}} au {{validation_depart_sejour}}.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"aventurier\": \"Aragorn\",\n  \"courriel\": \"aragorn@combe.fr\",\n  \"chambre\": \"DORTOIR\",\n  \"arrivee\": \"{{validation_arrivee_sejour}}\",\n  \"depart\": \"{{validation_depart_sejour}}\",\n  \"aventuriers\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": [],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"statut 201\", function () { pm.response.to.have.status(201); });"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "2. Séjour qui chevauche (409)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "port": "{{port_validation}}",
+                      "path": [
+                        "validation",
+                        "reservations"
+                      ]
+                    },
+                    "description": "409 : arrivee.isBefore(departExistant) && arriveeExistante.isBefore(depart) détecte le chevauchement, même si la date d'arrivée est différente.",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"aventurier\": \"Legolas\",\n  \"courriel\": \"legolas@combe.fr\",\n  \"chambre\": \"DORTOIR\",\n  \"arrivee\": \"{{validation_arrivee_chevauche}}\",\n  \"depart\": \"{{validation_depart_chevauche}}\",\n  \"aventuriers\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": [],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"statut 409\", function () { pm.response.to.have.status(409); pm.expect(pm.response.json().additional.code).to.eql('CHAMBRE_DEJA_RESERVEE'); });"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "3. Séjour contigu accepté (201)",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}:{{port_validation}}/validation/reservations",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "port": "{{port_validation}}",
+                      "path": [
+                        "validation",
+                        "reservations"
+                      ]
+                    },
+                    "description": "201 : une arrivée le jour du départ du séjour précédent ne chevauche pas (intervalles semi-ouverts).",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"aventurier\": \"Gimli\",\n  \"courriel\": \"gimli@combe.fr\",\n  \"chambre\": \"DORTOIR\",\n  \"arrivee\": \"{{validation_depart_sejour}}\",\n  \"depart\": \"{{validation_depart_contigu}}\",\n  \"aventuriers\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "response": [],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"statut 201\", function () { pm.response.to.have.status(201); });"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Déclencher une erreur inattendue (500)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}:{{port_validation}}/validation/erreur",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "port": "{{port_validation}}",
+                  "path": [
+                    "validation",
+                    "erreur"
+                  ]
+                },
+                "description": "500 sans trace de pile, via GlobalExceptionMapper."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
           "name": "native-tutorial",
           "description": "Port 8105. Lancer : ./mvnw quarkus:dev -pl core-concept/native-tutorial (ou binaire natif : ./mvnw package -Dnative -pl core-concept/native-tutorial). Pas d'auth, pas de smallrye-openapi dans le pom (pas de dossier Outils). Les 3 écueils natifs : réflexion, ressources, init au build.",
           "item": [
@@ -7416,6 +7944,96 @@
       "value": "8124",
       "type": "string",
       "description": "Port dédié du module (quarkus.http.port)"
+    },
+    {
+      "key": "port_validation",
+      "value": "8125",
+      "type": "string",
+      "description": "Port dédié du module (quarkus.http.port)"
+    },
+    {
+      "key": "validation_aventurier",
+      "value": "Bilbon",
+      "type": "string",
+      "description": "Nom de l'aventurier qui réserve"
+    },
+    {
+      "key": "validation_courriel",
+      "value": "bilbon@combe.fr",
+      "type": "string",
+      "description": "Courriel valide de l'aventurier"
+    },
+    {
+      "key": "validation_chambre",
+      "value": "SUITE",
+      "type": "string",
+      "description": "Type de chambre : DORTOIR, SUITE ou PLACARD (Tout autre = 400)"
+    },
+    {
+      "key": "validation_aventuriers",
+      "value": "2",
+      "type": "string",
+      "description": "Nombre d'aventuriers (1 à 4)"
+    },
+    {
+      "key": "validation_arrivee",
+      "value": "",
+      "type": "string",
+      "description": "Date d'arrivée ISO, calculée par le script du dossier (aujourd'hui + 10 jours)"
+    },
+    {
+      "key": "validation_depart",
+      "value": "",
+      "type": "string",
+      "description": "Date de départ ISO, calculée par le script du dossier (aujourd'hui + 12 jours)"
+    },
+    {
+      "key": "validation_depart_long",
+      "value": "",
+      "type": "string",
+      "description": "Départ 8 nuits après l'arrivée, pour déclencher @SejourCoherent"
+    },
+    {
+      "key": "validation_arrivee_conflit",
+      "value": "",
+      "type": "string",
+      "description": "Arrivée du scénario de conflit, calculée par le script du dossier"
+    },
+    {
+      "key": "validation_depart_conflit",
+      "value": "",
+      "type": "string",
+      "description": "Départ du scénario de conflit, calculé par le script du dossier"
+    },
+    {
+      "key": "validation_arrivee_sejour",
+      "value": "",
+      "type": "string",
+      "description": "Arrivée du séjour de référence, calculée par le script du dossier"
+    },
+    {
+      "key": "validation_depart_sejour",
+      "value": "",
+      "type": "string",
+      "description": "Départ du séjour de référence, calculé par le script du dossier"
+    },
+    {
+      "key": "validation_arrivee_chevauche",
+      "value": "",
+      "type": "string",
+      "description": "Arrivée pendant le séjour de référence, calculée par le script du dossier"
+    },
+    {
+      "key": "validation_depart_chevauche",
+      "value": "",
+      "type": "string",
+      "description": "Départ après celui du séjour de référence, calculé par le script du dossier"
+    },
+    {
+      "key": "validation_depart_contigu",
+      "value": "",
+      "type": "string",
+      "description": "Départ du séjour contigu, calculé par le script du dossier"
     },
     {
       "key": "cache_jour",

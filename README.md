@@ -97,6 +97,7 @@ Chaque tutoriel déclare son propre port (`quarkus.http.port`) : on peut donc en
 | `8117` | `web-concept/reactive-programming-tutorial` |
 | `8118` | `web-concept/vaadin-tutorial` |
 | `8119` | `operations/batch-processing-tutorial` |
+| `8125` | `core-concept/validation-tutorial` |
 | `8120` | `operations/observabilite-tutoriel` |
 | `8121` | `operations/observabilite-advanced-tutorial` |
 | `8122` | `operations/quarkus-taverne-extension/integration-tests` |
@@ -144,6 +145,10 @@ Tutoriel OpenAPI et Swagger UI avec une API de taverne médiévale.
 ### [Gestion d'exceptions](core-concept/exception-handling-tutorial)
 [Article](https://www.sfeir.dev/back/cartographier-les-pieges-dun-donjon-industrialiser-la-gestion-des-erreurs-avec-quarkus/)  
 Approche industrialisée de la gestion des erreurs avec Quarkus via des `ExceptionMapper` et le modèle `Problem`.
+
+### [Validation (Le registre des réservations)](core-concept/validation-tutorial)
+*Article à venir.*  
+Validation avec Hibernate Validator : annotations standard, enum pour les valeurs fermées, contrainte custom de classe, et restitution des violations dans le format `problem+json` du tutoriel gestion d'erreurs.
 
 ### [Security](core-concept/security)
 Tutoriels de securite pour proteger les ressources sensibles de la taverne.
