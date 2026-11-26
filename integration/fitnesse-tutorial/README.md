@@ -29,6 +29,12 @@ Le code de sortie de `FitNesseMain -c <page>` ne reflète pas les échecs d'asse
 ./mvnw -B -f integration/fitnesse-tutorial/pom.xml test
 ```
 
+Depuis le reactor, avec le profil qui l'exclut de la CI par défaut :
+
+```bash
+./mvnw -B -Pfitnesse -pl integration -amd verify
+```
+
 Pour consulter le wiki dans un navigateur :
 
 ```bash
@@ -41,4 +47,4 @@ Ouvrir ensuite `http://localhost:8127/FrontPage` et choisir une des cinq pages, 
 
 Le second scénario de `TaverneUiTests.wiki` est volontairement en échec (`entrer Frodon` alors que l'attendu reste `Bienvenue à la taverne, Bilbon !`) : la cellule devient rouge avec le message `Attendu : ... | Obtenu : ...`, la capture est intégrée au wiki et le PNG apparaît dans `src/test/fitnesse/FitNesseRoot/files/screenshots/` (répertoire ignoré par Git). Remettre la saisie à `Bilbon` — ou corriger l'attendu en `Frodon` — rend le test vert.
 
-Ce module fait partie du domaine `integration` : il est lancé par `./mvnw -pl integration -amd verify`, comme les autres tutoriels du domaine.
+Ce module fait partie du domaine `integration` mais, comme `operations/load-testing-tutorial`, il est hors du build par défaut : il faut activer le profil `-Pfitnesse` pour le lancer via `./mvnw -Pfitnesse -pl integration -amd verify`. En local, `./mvnw -B -f integration/fitnesse-tutorial/pom.xml test` suffit.

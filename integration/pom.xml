@@ -21,7 +21,15 @@
         <module>messaging</module>
         <module>langchain4j-tutorial</module>
         <module>rest-client-tutorial</module>
-        <module>fitnesse-tutorial</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>fitnesse</id>
+            <modules>
+                <module>fitnesse-tutorial</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>

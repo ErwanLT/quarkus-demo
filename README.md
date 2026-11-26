@@ -122,7 +122,7 @@ Les ids créés (POST) et les tokens JWT (login `jwt-jpa-tutorial`) sont captur�
 
 ### Ce que la CI couvre — et ce qu'elle ne couvre pas
 
-Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode JVM** sur les cinq domaines, en parallèle. Le domaine `integration` inclut `fitnesse-tutorial` : son test JUnit lance FitNesse et Chrome headless dans une JVM séparée et vérifie les cinq pages wiki. L'extension détachée `operations/quarkus-taverne-extension` a son propre job, car elle ne fait pas partie du reactor racine. Le build natif GraalVM/Mandrel n'est **pas** exécuté en CI (temps de build et image builder) : il se lance localement, par exemple pour le tutoriel natif :
+Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode JVM** sur les cinq domaines, en parallèle. Comme `operations/load-testing-tutorial` avec `-Pload-testing`, `integration/fitnesse-tutorial` est exclu du build par défaut : il faut activer `-Pfitnesse` pour l'inclure (son test JUnit lance FitNesse et Chrome headless dans une JVM séparée et vérifie les cinq pages wiki). L'extension détachée `operations/quarkus-taverne-extension` a son propre job, car elle ne fait pas partie du reactor racine. Le build natif GraalVM/Mandrel n'est **pas** exécuté en CI (temps de build et image builder) : il se lance localement, par exemple pour le tutoriel natif :
 
 ```bash
 ./mvnw -pl core-concept/native-tutorial verify -Dnative
@@ -281,7 +281,7 @@ Client REST déclaratif (`@RegisterRestClient`, `configKey`, `@ClientHeaderParam
 
 ### [FitNesse](integration/fitnesse-tutorial)
 *Article à venir.*  
-Tests d'acceptation avec FitNesse/Slim : tables de décision appelant un endpoint REST, scénario réutilisé avec `!define`, règles métier, contrat HTTP d'un POST et test E2E d'IHM pilotant Chrome avec capture d'écran en cas d'échec. Les pages sont des fichiers `.wiki` modifiables depuis l'interface FitNesse et suivis par Git.
+Tests d'acceptation avec FitNesse/Slim : tables de décision appelant un endpoint REST, scénario réutilisé avec `!define`, règles métier, contrat HTTP d'un POST et test E2E d'IHM pilotant Chrome avec capture d'écran en cas d'échec. Les pages sont des fichiers `.wiki` modifiables depuis l'interface FitNesse et suivis par Git. (Nécessite le profil `-Pfitnesse`).
 
 ### [Messaging](integration/messaging)
 Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements.
