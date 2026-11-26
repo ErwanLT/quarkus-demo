@@ -46,6 +46,7 @@
 
 ## Integration (`integration`)
 - REST Client (MicroProfile Rest Client) — Le coursier de la taverne
+- FitNesse (tables Slim, scénarios réutilisables, règles métier, contrat HTTP, E2E Selenium et captures d'écran)
 - Messaging
   - Server-Sent Events (RESTEasy Reactive, Mutiny, flux `text/event-stream`)
   - Kafka (Volière aux corbeaux, Retry et Dead Letter Queue / DLQ)

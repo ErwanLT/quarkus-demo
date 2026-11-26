@@ -98,6 +98,8 @@ Chaque tutoriel déclare son propre port (`quarkus.http.port`) : on peut donc en
 | `8118` | `web-concept/vaadin-tutorial` |
 | `8119` | `operations/batch-processing-tutorial` |
 | `8125` | `core-concept/validation-tutorial` |
+| `8126` | `integration/fitnesse-tutorial` (application testée) |
+| `8127` | `integration/fitnesse-tutorial` (wiki FitNesse, serveur Slim sur `8130`) |
 | `8120` | `operations/observabilite-tutoriel` |
 | `8121` | `operations/observabilite-advanced-tutorial` |
 | `8122` | `operations/quarkus-taverne-extension/integration-tests` |
@@ -120,7 +122,7 @@ Les ids créés (POST) et les tokens JWT (login `jwt-jpa-tutorial`) sont captur�
 
 ### Ce que la CI couvre — et ce qu'elle ne couvre pas
 
-Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode JVM** sur les cinq domaines, en parallèle. L'extension détachée `operations/quarkus-taverne-extension` a son propre job, car elle ne fait pas partie du reactor racine. Le build natif GraalVM/Mandrel n'est **pas** exécuté en CI (temps de build et image builder) : il se lance localement, par exemple pour le tutoriel natif :
+Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode JVM** sur les cinq domaines, en parallèle. Le domaine `integration` inclut `fitnesse-tutorial` : son test JUnit lance FitNesse et Chrome headless dans une JVM séparée et vérifie les cinq pages wiki. L'extension détachée `operations/quarkus-taverne-extension` a son propre job, car elle ne fait pas partie du reactor racine. Le build natif GraalVM/Mandrel n'est **pas** exécuté en CI (temps de build et image builder) : il se lance localement, par exemple pour le tutoriel natif :
 
 ```bash
 ./mvnw -pl core-concept/native-tutorial verify -Dnative
@@ -276,6 +278,10 @@ Persistance document avec **MongoDB et Panache** : un dossier d'aventurier par d
 ### [Le coursier de la taverne (REST Client)](integration/rest-client-tutorial)
 *Article à venir.*  
 Client REST déclaratif (`@RegisterRestClient`, `configKey`, `@ClientHeaderParam`) et programmatique (`QuarkusRestClientBuilder`) : paramètres de chemin et de requête, en-têtes, timeouts, traduction des erreurs HTTP en `problem+json` et tests sans dépendance externe.
+
+### [FitNesse](integration/fitnesse-tutorial)
+*Article à venir.*  
+Tests d'acceptation avec FitNesse/Slim : tables de décision appelant un endpoint REST, scénario réutilisé avec `!define`, règles métier, contrat HTTP d'un POST et test E2E d'IHM pilotant Chrome avec capture d'écran en cas d'échec. Les pages sont des fichiers `.wiki` modifiables depuis l'interface FitNesse et suivis par Git.
 
 ### [Messaging](integration/messaging)
 Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements.

@@ -2,7 +2,7 @@
 
 > *Article à venir.*
 
-Expérimentation FitNesse : cinq pages wiki Slim montrent autant d'usages — appel REST, E2E IHM avec capture d'écran, règles métier en table de décision, scénario réutilisé avec `!define`, et contrat HTTP d'un POST. L'objectif n'est pas de remplacer les tests JUnit, mais de montrer comment un test d'acceptation lisible par un non-développeur peut piloter le même système.
+Tutoriel FitNesse : cinq pages wiki Slim montrent autant d'usages — appel REST, E2E IHM avec capture d'écran, règles métier en table de décision, scénario réutilisé avec `!define`, et contrat HTTP d'un POST. L'objectif n'est pas de remplacer les tests JUnit, mais de montrer comment un test d'acceptation lisible par un non-développeur peut piloter le même système.
 
 ## Périmètre
 
@@ -15,7 +15,7 @@ Expérimentation FitNesse : cinq pages wiki Slim montrent autant d'usages — ap
 - `InteractionAwareFixture` intercepte les exceptions Slim : en cas d'échec, la cellule rouge contient le message, un lien vers le PNG et la capture encodée en base64 ;
 - exécution en CI via un test JUnit qui lance FitNesse dans une JVM séparée et vérifie les compteurs `right`/`wrong`/`exceptions` des cinq pages.
 
-Les pages sont stockées au format `.wiki` de FitNesse : `src/test/fitnesse/FitNesseRoot/_root.wiki`, `FrontPage.wiki`, `SetUp.wiki` et les cinq pages de test. Le bouton **Test** vient de l'en-tête YAML `---\nTest\n---\n` ; il n'y a ni `content.txt`, ni `properties.xml`, ni répertoire par page. FitNesse est lancé directement sur `src/test/fitnesse` avec `-DOmittingUpdates=true` : les pages sont donc la source de vérité, et une modification faite dans l'interface est écrite dans le `.wiki` suivi par Git. Seuls les artefacts générés sont ignorés : `FitNesseRoot/files/` (historique, captures), `RerunLastFailures_*.wiki` et `RecentChanges.wiki` (page que FitNesse recrée à chaque édition via l'UI). Le classpath Selenium reste fourni au serveur Slim par `!path target/fitnesse/lib/*` (jars copiés par `maven-dependency-plugin`). Les ports `8127` (wiki) et `8130` (Slim) sont réservés à cette expérience. Selenium Manager découvre Chrome automatiquement : aucun `chromedriver` à installer.
+Les pages sont stockées au format `.wiki` de FitNesse : `src/test/fitnesse/FitNesseRoot/_root.wiki`, `FrontPage.wiki`, `SetUp.wiki` et les cinq pages de test. Le bouton **Test** vient de l'en-tête YAML `---\nTest\n---\n` ; il n'y a ni `content.txt`, ni `properties.xml`, ni répertoire par page. FitNesse est lancé directement sur `src/test/fitnesse` avec `-DOmittingUpdates=true` : les pages sont donc la source de vérité, et une modification faite dans l'interface est écrite dans le `.wiki` suivi par Git. Seuls les artefacts générés sont ignorés : `FitNesseRoot/files/` (historique, captures), `RerunLastFailures_*.wiki` et `RecentChanges.wiki` (page que FitNesse recrée à chaque édition via l'UI). Le classpath Selenium reste fourni au serveur Slim par `!path target/fitnesse/lib/*` (jars copiés par `maven-dependency-plugin`). Les ports `8127` (wiki) et `8130` (Slim) sont réservés à ce tutoriel. Selenium Manager découvre Chrome automatiquement : aucun `chromedriver` à installer.
 
 ## Pourquoi une JVM séparée ?
 
@@ -26,19 +26,19 @@ Le code de sortie de `FitNesseMain -c <page>` ne reflète pas les échecs d'asse
 ## Lancer le tutoriel
 
 ```bash
-./mvnw -B -f experiment/fitnesse-tutorial/pom.xml test
+./mvnw -B -f integration/fitnesse-tutorial/pom.xml test
 ```
 
 Pour consulter le wiki dans un navigateur :
 
 ```bash
-./mvnw -B -q -f experiment/fitnesse-tutorial/pom.xml dependency:build-classpath -Dmdep.outputFile=target/cp.txt
-cd experiment/fitnesse-tutorial
+./mvnw -B -q -f integration/fitnesse-tutorial/pom.xml dependency:build-classpath -Dmdep.outputFile=target/cp.txt
+cd integration/fitnesse-tutorial
 java -cp "$(cat target/cp.txt)" -Dslim.port=8130 -DOmittingUpdates=true fitnesseMain.FitNesseMain -p 8127 -d src/test/fitnesse
 ```
 
 Ouvrir ensuite `http://localhost:8127/FrontPage` et choisir une des cinq pages, puis cliquer sur **Test**. L'application Quarkus doit être démarrée séparément (`quarkus:dev`) pour que les fixtures puissent l'appeler. Les liens **Edit** / **Save** de FitNesse modifient directement les `.wiki` de `src/test/fitnesse/FitNesseRoot/` : `git diff` montre immédiatement les changements de scénario. Les fichiers `aFile.txt`, `bFile.txt`, `partition.txt` venaient des suites d'acceptation intégrées à FitNesse quand on cliquait sur **Test** depuis la racine : avec `-DOmittingUpdates=true` ils ne sont plus générés et ceux qui traînaient ont été supprimés.
 
-Pour voir la capture d'écran, modifier temporairement `Bilbon` en `Frodon` dans la ligne `verifier` de `TaverneUiTests.wiki` puis relancer le test Maven : la cellule concernée devient rouge avec le message `Attendu : ... | Obtenu : ...`, la capture est intégrée au wiki et le fichier PNG apparaît dans `src/test/fitnesse/FitNesseRoot/files/screenshots/` (répertoire ignoré par Git).
+Le second scénario de `TaverneUiTests.wiki` est volontairement en échec (`entrer Frodon` alors que l'attendu reste `Bienvenue à la taverne, Bilbon !`) : la cellule devient rouge avec le message `Attendu : ... | Obtenu : ...`, la capture est intégrée au wiki et le PNG apparaît dans `src/test/fitnesse/FitNesseRoot/files/screenshots/` (répertoire ignoré par Git). Remettre la saisie à `Bilbon` — ou corriger l'attendu en `Frodon` — rend le test vert.
 
-Ce module n'est pas enregistré dans le build racine : l'expérimentation reste isolée sur sa branche.
+Ce module fait partie du domaine `integration` : il est lancé par `./mvnw -pl integration -amd verify`, comme les autres tutoriels du domaine.
