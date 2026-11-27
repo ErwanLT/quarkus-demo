@@ -122,7 +122,7 @@ Les ids créés (POST) et les tokens JWT (login `jwt-jpa-tutorial`) sont captur�
 
 ### Ce que la CI couvre — et ce qu'elle ne couvre pas
 
-Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode JVM** sur les cinq domaines, en parallèle. Comme `operations/load-testing-tutorial` avec `-Pload-testing`, `integration/fitnesse-tutorial` est exclu du build par défaut : il faut activer `-Pfitnesse` pour l'inclure (son test JUnit lance FitNesse et Chrome headless dans une JVM séparée et vérifie les cinq pages wiki). L'extension détachée `operations/quarkus-taverne-extension` a son propre job, car elle ne fait pas partie du reactor racine. Le build natif GraalVM/Mandrel n'est **pas** exécuté en CI (temps de build et image builder) : il se lance localement, par exemple pour le tutoriel natif :
+Le workflow GitHub Actions exécute `./mvnw -pl <domaine> -amd verify` en **mode JVM** sur les cinq domaines, en parallèle. Comme `operations/load-testing-tutorial` avec `-Pload-testing`, `integration/fitnesse-tutorial` est exclu du build par défaut : il faut activer `-Pfitnesse` pour l'inclure (son test JUnit lance FitNesse et Chrome headless dans une JVM séparée, vérifie que la suite wiki est verte et que la page d'échec volontaire produit bien sa capture d'écran). L'extension détachée `operations/quarkus-taverne-extension` a son propre job, car elle ne fait pas partie du reactor racine. Le build natif GraalVM/Mandrel n'est **pas** exécuté en CI (temps de build et image builder) : il se lance localement, par exemple pour le tutoriel natif :
 
 ```bash
 ./mvnw -pl core-concept/native-tutorial verify -Dnative
@@ -281,7 +281,7 @@ Client REST déclaratif (`@RegisterRestClient`, `configKey`, `@ClientHeaderParam
 
 ### [FitNesse](integration/fitnesse-tutorial)
 *Article à venir.*  
-Tests d'acceptation avec FitNesse/Slim : tables de décision appelant un endpoint REST, scénario réutilisé avec `!define`, règles métier, contrat HTTP d'un POST et test E2E d'IHM pilotant Chrome avec capture d'écran en cas d'échec. Les pages sont des fichiers `.wiki` modifiables depuis l'interface FitNesse et suivis par Git. (Nécessite le profil `-Pfitnesse`).
+Tests d'acceptation avec FitNesse/Slim, écrits comme un cahier de règles de la taverne : suite hiérarchique (SuiteSetUp, SetUp, bibliothèque de scénarios), tables de décision sur l'API et sur le code métier, tables de requête (complète, partielle, ordonnée), contrat HTTP en table de script avec symboles, parcours Chrome piloté par des scénarios métier, et une page d'échec volontaire avec capture d'écran, isolée par un tag. Les pages sont des fichiers `.wiki` modifiables depuis l'interface FitNesse et suivis par Git. (Nécessite le profil `-Pfitnesse`).
 
 ### [Messaging](integration/messaging)
 Tutoriels d'integration autour des echanges asynchrones et des flux d'evenements.

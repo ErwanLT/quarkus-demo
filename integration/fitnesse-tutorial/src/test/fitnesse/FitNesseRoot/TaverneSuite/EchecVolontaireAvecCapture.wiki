@@ -1,0 +1,30 @@
+---
+Test
+Help: Démonstration d'une page rouge — échec d'assertion et exception avec capture d'écran
+Suites: demo-echec
+---
+!1 Échec volontaire : à quoi ressemble une promesse non tenue
+
+!style_fail[Cette page est rouge exprès.] Elle montre ce que voit le tavernier quand une règle n'est plus respectée, et les deux formes que prend un échec dans FitNesse. Elle porte l'étiquette '''demo-echec''' : la [[suite][<TaverneSuite]] peut l'exclure avec !-?suite&excludeSuiteFilter=demo-echec-!.
+
+!2 Premier cas : la valeur n'est pas celle attendue
+Une simple comparaison (!style_code[!-check-!]) qui échoue : la cellule devient rouge et affiche côte à côte ce qui était '''attendu''' et ce qui a été '''obtenu'''. Le reste de la table continue de s'exécuter.
+
+| script | comptoir des reservations |
+| le membre de la guilde | Bilbon | reserve la chambre | DORTOIR | pour | 2 | nuits |
+| note | La spécification promet 30 pièces, le calcul en donne 32 : quelqu'un a changé la remise ? |
+| check | prix | 30 |
+| check | statut | 201 |
+
+!2 Second cas : l'écran ne montre pas ce qu'il devrait
+Le voyageur s'appelle Frodon, mais la spécification attend qu'on salue Bilbon. La vérification lève une exception : la fixture du navigateur l'intercepte, '''prend une capture d'écran''' et l'intègre directement dans la cellule, avec un lien vers le fichier PNG.
+
+| script | navigateur de la taverne |
+| ouvrir la taverne |
+| le voyageur Frodon se présente |
+| la taverne doit répondre Bienvenue à la taverne, Bilbon ! |
+| fermer |
+
+!3 Pour remettre la page au vert
+ * premier cas : corriger l'attendu en !style_code[!-32-!], ou la règle dans la [[grille tarifaire][<TaverneSuite.GrilleTarifaire]] si c'est elle qui a raison ;
+ * second cas : saluer !style_code[!-Bilbon-!], ou attendre !style_code[!-Bienvenue à la taverne, Frodon !-!].

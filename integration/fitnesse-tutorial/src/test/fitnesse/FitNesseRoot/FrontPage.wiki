@@ -1,7 +1,26 @@
-# Taverne — wiki FitNesse
+!1 The Falling Whale — cahier d'acceptation
 
-- [[TaverneTests][TaverneTests]]
-- [[TaverneUiTests][TaverneUiTests]]
-- [[ReglesTarifTests][ReglesTarifTests]]
-- [[ScenarioTests][ScenarioTests]]
-- [[ApiContratTests][ApiContratTests]]
+Bienvenue dans le wiki de la taverne. Ici, les règles de la maison ne sont pas rangées dans un classeur que personne n'ouvre : elles sont '''écrites en tables''' et '''vérifiées à chaque passage''' contre l'application réelle. Une cellule verte, c'est une règle que la taverne respecte ; une cellule rouge, c'est une promesse non tenue.
+
+!2 Par où commencer ?
+
+ * [[La suite de la taverne][.TaverneSuite]] : toutes les spécifications, une page par sujet. Le bouton '''Suite''' les exécute d'un coup.
+ * Chaque page se lit comme un document métier ; les détails techniques sont repliés dans des encadrés « Pour les développeurs ».
+
+!2 Ce que montre chaque page
+
+|'''Page'''|'''Sujet métier'''|'''Ce que FitNesse y démontre'''|
+|[[Accueil des voyageurs][.TaverneSuite.AccueilDesVoyageurs]]|Saluer chaque voyageur par son nom|table de décision, variables !-!define-!, expressions régulières, colonne commentaire|
+|[[Grille tarifaire][.TaverneSuite.GrilleTarifaire]]|Le prix d'une nuitée et ses remises|table de décision branchée sur le code métier sans HTTP, intervalles !-<_<-!|
+|[[Carte du jour][.TaverneSuite.CarteDuJour]]|Ce qu'on sert ce soir|tables de requête : complète, partielle (subset) et ordonnée|
+|[[Réservation au comptoir][.TaverneSuite.ReservationAuComptoir]]|Le contrat de l'API de réservation|table de script : phrases métier, symboles !-$numero-!, ensure / reject, check not, show, note|
+|[[Parcours en salle][.TaverneSuite.ParcoursEnSalle]]|Un client réel dans le navigateur|scénarios réutilisables, table de décision pilotant un scénario, Selenium, capture à la demande|
+|[[Échec volontaire avec capture][.TaverneSuite.EchecVolontaireAvecCapture]]|À quoi ressemble une promesse non tenue|échec d'assertion vs exception, capture d'écran intégrée, tags de suite|
+
+!2 Les pages techniques de la suite
+
+Elles ne sont pas des tests mais s'appliquent automatiquement à toutes les pages filles :
+
+ * [[SuiteSetUp][.TaverneSuite.SuiteSetUp]] — exécutée une seule fois avant la suite : on vérifie que la taverne est ouverte.
+ * [[SetUp][.TaverneSuite.SetUp]] — exécutée avant chaque page : le registre est remis à zéro pour que chaque page soit indépendante.
+ * [[ScenarioLibrary][.TaverneSuite.ScenarioLibrary]] — le vocabulaire métier du navigateur, partagé par toutes les pages.

@@ -1,0 +1,50 @@
+---
+Test
+Help: Un client réel dans le navigateur — scénarios réutilisables pilotant Chrome
+---
+!1 Un soir en salle, vu par le client
+
+Les autres pages parlent à l'API. Celle-ci fait entrer un vrai client par la porte : un navigateur Chrome (sans fenêtre) ouvre le site de la taverne, tape au clavier, clique, et lit l'écran. Toutes les phrases utilisées ici sont définies une fois pour toutes dans la [[bibliothèque de scénarios][<TaverneSuite.ScenarioLibrary]].
+
+| script | navigateur de la taverne |
+| ouvrir la taverne |
+
+!2 Être salué en entrant
+| script |
+| le voyageur Bilbon se présente |
+| la taverne doit répondre Bienvenue à la taverne, Bilbon ! |
+| le voyageur Frodon se présente |
+| la taverne doit répondre Bienvenue à la taverne, Frodon ! |
+
+!2 Lire la carte et les chambres
+| script |
+| la carte doit proposer 8 plats |
+| le prix affiché pour Hydromel du nain doit être 4 pièces d'or |
+| le prix affiché pour Cuissot de griffon rôti doit être 25 pièces d'or |
+| il doit rester 6 lits libres en DORTOIR |
+| il doit rester 1 lit libre en SUITE |
+
+!2 Réserver en ligne
+Chaque ligne de cette table est un '''parcours complet''' dans le navigateur : choisir la chambre, la durée, cocher la carte de membre, taper son nom, lire le devis, cliquer sur « Réserver » et lire la réponse. La table de décision appelle le scénario « réservation en ligne » ; ses colonnes !style_code[!-devis?-!] et !style_code[!-confirmation?-!] sont les sorties du scénario.
+
+| réservation en ligne |
+| # le client | nom | chambre | nuits | membre | devis? | confirmation? |
+| un hobbit prudent | Bilbon | DORTOIR | 2 | non | Total : 40 pièces d'or | Réservation n°1 confirmée pour Bilbon : le dortoir des compagnons, 2 nuits, 40 pièces d'or |
+| un mage qui s'installe | Gandalf | SUITE | 3 | oui | Total : 194 pièces d'or (au lieu de 270, remise membre -20 % puis long séjour -10 %) | Réservation n°2 confirmée pour Gandalf : la suite du seigneur, 3 nuits, 194 pièces d'or |
+| arrivé trop tard | Saroumane | SUITE | 1 | non | Total : 90 pièces d'or | La suite du seigneur est complète |
+| oublie de se présenter | | PLACARD | 1 | non | Total : 15 pièces d'or | Le nom est obligatoire |
+
+!2 L'écran se met à jour après les réservations
+| script |
+| il doit rester 5 lits libres en DORTOIR |
+| il doit rester complet en SUITE |
+| show | capture d'ecran |
+| fermer |
+
+La ligne !style_code[!-show-!] ci-dessus joint une '''capture d'écran''' au compte rendu, même quand tout est vert : pratique pour garder une trace visuelle de ce que le client voyait à ce moment-là.
+
+!*** Pour les développeurs
+ * La fixture !style_code[!-NavigateurDeLaTaverne-!] ne connaît que des gestes techniques (saisir, cliquer, lire un texte) ; le vocabulaire métier vit dans la page !-ScenarioLibrary-!.
+ * Avant de lire l'écran, elle attend que la page n'ait plus d'appel réseau en cours (attribut !-data-chargements-! du !-<body>-!) : pas de pause arbitraire, pas de test instable.
+ * Chrome est trouvé par Selenium Manager : aucun !-chromedriver-! à installer.
+***!

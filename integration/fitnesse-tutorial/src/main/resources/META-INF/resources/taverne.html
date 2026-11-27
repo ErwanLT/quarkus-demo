@@ -2,26 +2,404 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>La Taverne</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Falling Whale — Taverne</title>
     <style>
-        body { font-family: sans-serif; margin: 2rem; }
-        input { padding: .4rem; }
-        button { padding: .4rem 1rem; margin-left: .5rem; }
-        #message { font-weight: bold; margin-top: 1rem; }
+        :root {
+            --parchemin: #f4e4c1;
+            --parchemin-sombre: #e6cf9c;
+            --encre: #3b2414;
+            --encre-douce: #6b4a2f;
+            --bois: #5a3416;
+            --bois-sombre: #3a210d;
+            --or: #c8962c;
+            --or-clair: #e8c063;
+            --braise: #a8361d;
+            --mousse: #4f6b2a;
+            --ombre: rgba(40, 20, 5, .35);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--encre);
+            font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            font-size: 17px;
+            line-height: 1.5;
+            background:
+                radial-gradient(ellipse at top, rgba(255, 190, 90, .18), transparent 60%),
+                repeating-linear-gradient(90deg, var(--bois-sombre) 0 118px, #42260f 118px 120px),
+                var(--bois-sombre);
+        }
+
+        header {
+            text-align: center;
+            padding: 2.2rem 1rem 1.6rem;
+            color: var(--parchemin);
+            text-shadow: 0 2px 6px rgba(0, 0, 0, .6);
+        }
+
+        .enseigne {
+            display: inline-block;
+            padding: 1rem 2.4rem 1.1rem;
+            border: 4px double var(--or);
+            border-radius: 10px;
+            background: linear-gradient(180deg, #6d4120, var(--bois));
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .55), inset 0 0 18px rgba(0, 0, 0, .45);
+        }
+
+        .enseigne svg { width: 76px; height: 76px; display: block; margin: 0 auto .3rem; }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-variant: small-caps;
+            letter-spacing: .08em;
+            color: var(--or-clair);
+        }
+
+        .devise { margin: .2rem 0 0; font-style: italic; color: var(--parchemin-sombre); }
+
+        main {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-areas: "accueil" "reservation" "chambres" "carte";
+            align-items: start;
+            gap: 1.4rem;
+        }
+
+        @media (min-width: 720px) {
+            main {
+                grid-template-columns: 1fr 1fr;
+                grid-template-areas: "accueil chambres" "reservation carte";
+            }
+        }
+
+        @media (min-width: 1100px) {
+            main {
+                grid-template-columns: 1fr 1.15fr 1fr;
+                grid-template-areas: "accueil carte reservation" "chambres carte reservation";
+            }
+        }
+
+        #zone-accueil { grid-area: accueil; }
+        #zone-chambres { grid-area: chambres; }
+        #zone-carte { grid-area: carte; }
+        #zone-reservation { grid-area: reservation; }
+
+        .parchemin {
+            position: relative;
+            padding: 1.4rem 1.5rem 1.5rem;
+            background:
+                radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, .45), transparent 55%),
+                radial-gradient(ellipse at 100% 100%, rgba(120, 70, 20, .18), transparent 60%),
+                var(--parchemin);
+            border-radius: 6px;
+            box-shadow: 0 8px 22px var(--ombre), inset 0 0 40px rgba(140, 90, 30, .25);
+        }
+
+        h2 {
+            margin: 0 0 .9rem;
+            font-variant: small-caps;
+            letter-spacing: .05em;
+            color: var(--bois);
+            border-bottom: 2px solid var(--or);
+            padding-bottom: .3rem;
+        }
+
+        h2::before { content: "❦ "; color: var(--or); }
+
+        label { display: block; font-weight: bold; margin: .6rem 0 .25rem; color: var(--encre-douce); }
+
+        input[type=text], input[type=number], select {
+            width: 100%;
+            padding: .55rem .7rem;
+            font: inherit;
+            color: var(--encre);
+            background: #fffaf0;
+            border: 1px solid var(--encre-douce);
+            border-radius: 4px;
+        }
+
+        input:focus, select:focus { outline: 2px solid var(--or); outline-offset: 1px; }
+
+        .ligne { display: flex; gap: .6rem; align-items: flex-end; }
+        .ligne > :first-child { flex: 1; }
+
+        .case { display: flex; gap: .5rem; align-items: center; margin-top: .8rem; font-weight: normal; }
+        .case input { width: 1.1rem; height: 1.1rem; accent-color: var(--bois); }
+
+        button {
+            padding: .6rem 1.2rem;
+            font: inherit;
+            font-weight: bold;
+            color: var(--parchemin);
+            background: linear-gradient(180deg, #8a4d22, var(--bois));
+            border: 1px solid var(--bois-sombre);
+            border-radius: 4px;
+            box-shadow: 0 3px 0 var(--bois-sombre);
+            cursor: pointer;
+        }
+
+        button:hover { background: linear-gradient(180deg, #9c5a2a, #6a3c19); }
+        button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--bois-sombre); }
+        button.principal { width: 100%; margin-top: 1rem; font-size: 1.05rem; }
+
+        #message {
+            min-height: 1.6em;
+            margin: 1rem 0 0;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--braise);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-variant: small-caps; color: var(--encre-douce); border-bottom: 1px solid var(--encre-douce); }
+        td, th { padding: .35rem .3rem; }
+        tbody tr:nth-child(even) { background: rgba(140, 90, 30, .08); }
+        td.prix, th.prix { text-align: right; white-space: nowrap; }
+        tr.categorie td {
+            padding-top: .8rem;
+            font-variant: small-caps;
+            font-weight: bold;
+            color: var(--bois);
+            background: none;
+        }
+
+        .chambres { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+        .chambres li {
+            display: flex;
+            justify-content: space-between;
+            gap: .5rem;
+            padding: .6rem .8rem;
+            border: 1px dashed var(--encre-douce);
+            border-radius: 4px;
+        }
+        .chambres .disponibles { font-weight: bold; color: var(--mousse); white-space: nowrap; }
+        .chambres li.complete { opacity: .6; }
+        .chambres li.complete .disponibles { color: var(--braise); }
+
+        #devis {
+            margin: 1rem 0 0;
+            padding: .6rem .8rem;
+            border-left: 4px solid var(--or);
+            background: rgba(200, 150, 44, .12);
+        }
+
+        #resultat:empty { display: none; }
+        #resultat {
+            margin: 1rem 0 0;
+            padding: .7rem .9rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        #resultat.succes { color: #2f4419; background: rgba(79, 107, 42, .16); border: 1px solid var(--mousse); }
+        #resultat.erreur { color: #6e1f0f; background: rgba(168, 54, 29, .12); border: 1px solid var(--braise); }
+
+        footer { text-align: center; color: var(--parchemin-sombre); padding: 0 1rem 2rem; font-style: italic; }
     </style>
 </head>
-<body>
-<h1>Bienvenue à la taverne</h1>
-<label for="nom">Votre nom</label>
-<input id="nom" type="text" placeholder="Bilbon">
-<button id="saluer" type="button">Saluer</button>
-<p id="message"></p>
+<body data-chargements="0">
+
+<header>
+    <div class="enseigne">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+            <g stroke="#e8c063" stroke-width="2" stroke-linecap="round" opacity=".8">
+                <path d="M44 4l-5 9M52 8l-5 9M58 15l-5 8"/>
+            </g>
+            <g transform="rotate(-30 32 38)">
+                <path d="M6 38c0-11 10-18 23-18 11 0 19 6 21 13l6-6c2-2 5-1 4 2l-3 8 3 8c1 3-2 4-4 2l-6-6c-3 8-12 12-22 12C14 53 6 47 6 38z"
+                      fill="#c8962c" stroke="#3a210d" stroke-width="2.2" stroke-linejoin="round"/>
+                <path d="M8 42c6 6 22 8 34 2" fill="none" stroke="#3a210d" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M12 44v4M17 46v4M22 47v4M27 47v4" stroke="#3a210d" stroke-width="1.2" stroke-linecap="round"/>
+                <circle cx="15" cy="34" r="2.2" fill="#3a210d"/>
+                <path d="M24 20c-1-5-4-7-7-8M24 20c1-5 4-7 7-8" fill="none" stroke="#fffaf0" stroke-width="2" stroke-linecap="round"/>
+            </g>
+        </svg>
+        <h1>The Falling Whale</h1>
+        <p class="devise">Taverne, auberge &amp; relais d'aventuriers depuis l'an 1024</p>
+    </div>
+</header>
+
+<main>
+    <section id="zone-accueil" class="parchemin" aria-labelledby="titre-accueil">
+        <h2 id="titre-accueil">Bienvenue, voyageur</h2>
+        <form id="accueil">
+            <div class="ligne">
+                <div>
+                    <label for="nom">Votre nom</label>
+                    <input id="nom" type="text" placeholder="Bilbon" autocomplete="off">
+                </div>
+                <button id="saluer" type="submit">Saluer</button>
+            </div>
+        </form>
+        <p id="message" aria-live="polite"></p>
+    </section>
+
+    <section id="zone-chambres" class="parchemin" aria-labelledby="titre-chambres">
+        <h2 id="titre-chambres">Les chambres</h2>
+        <ul id="chambres" class="chambres"></ul>
+    </section>
+
+    <section id="zone-carte" class="parchemin" aria-labelledby="titre-carte">
+        <h2 id="titre-carte">La carte du jour</h2>
+        <table id="carte">
+            <thead>
+            <tr><th>Plat</th><th class="prix">Prix</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <section id="zone-reservation" class="parchemin" aria-labelledby="titre-reservation">
+        <h2 id="titre-reservation">Réserver une chambre</h2>
+        <form id="reservation">
+            <label for="voyageur">Au nom de</label>
+            <input id="voyageur" type="text" placeholder="Frodon" autocomplete="off">
+
+            <label for="chambre">Chambre</label>
+            <select id="chambre"></select>
+
+            <label for="nuits">Nombre de nuits</label>
+            <input id="nuits" type="number" min="1" max="30" value="1">
+
+            <label class="case" for="membre">
+                <input id="membre" type="checkbox">
+                Membre de la guilde des aventuriers
+            </label>
+
+            <p id="devis" aria-live="polite"></p>
+            <button id="reserver" class="principal" type="submit">Réserver</button>
+        </form>
+        <p id="resultat" role="status"></p>
+    </section>
+</main>
+
+<footer>Le plafond a été refait après l'arrivée de la baleine. Les nains sont admis, mais pas plus de treize à la fois.</footer>
+
 <script>
-    document.getElementById('saluer').addEventListener('click', () => {
-        const nom = document.getElementById('nom').value.trim();
-        document.getElementById('message').textContent =
-            'Bienvenue à la taverne, ' + (nom || 'voyageur') + ' !';
+    // Compteur d'appels en cours : la fixture Selenium attend qu'il revienne
+    // à zéro avant de lire l'écran, plutôt que de dormir au hasard.
+    async function appel(url, options) {
+        const body = document.body;
+        body.dataset.chargements = String(Number(body.dataset.chargements) + 1);
+        try {
+            return await fetch(url, options);
+        } finally {
+            body.dataset.chargements = String(Number(body.dataset.chargements) - 1);
+        }
+    }
+
+    const $ = id => document.getElementById(id);
+
+    $('accueil').addEventListener('submit', async event => {
+        event.preventDefault();
+        const reponse = await appel('/taverne/accueil?nom=' + encodeURIComponent($('nom').value));
+        $('message').textContent = await reponse.text();
     });
+
+    async function chargerCarte() {
+        const plats = await (await appel('/taverne/carte')).json();
+        const corps = $('carte').querySelector('tbody');
+        corps.replaceChildren();
+        let categorie = null;
+        for (const plat of plats) {
+            if (plat.categorie !== categorie) {
+                categorie = plat.categorie;
+                const ligne = corps.insertRow();
+                ligne.className = 'categorie';
+                const cellule = ligne.insertCell();
+                cellule.colSpan = 2;
+                cellule.textContent = categorie + 's';
+            }
+            const ligne = corps.insertRow();
+            ligne.className = 'plat';
+            ligne.dataset.plat = plat.nom;
+            ligne.insertCell().textContent = plat.nom;
+            const prix = ligne.insertCell();
+            prix.className = 'prix';
+            prix.textContent = plat.prix + " pièces d'or";
+        }
+    }
+
+    async function chargerChambres() {
+        const chambres = await (await appel('/taverne/chambres')).json();
+        const liste = $('chambres');
+        const selection = $('chambre');
+        const choix = selection.value;
+        liste.replaceChildren();
+        selection.replaceChildren();
+        for (const chambre of chambres) {
+            const item = document.createElement('li');
+            item.dataset.chambre = chambre.code;
+            item.classList.toggle('complete', chambre.disponibles === 0);
+            const nom = document.createElement('span');
+            nom.textContent = chambre.libelle + ' — ' + chambre.prixParNuit + " pièces d'or la nuit";
+            const dispo = document.createElement('span');
+            dispo.className = 'disponibles';
+            dispo.textContent = chambre.disponibles === 0 ? 'complet'
+                : chambre.disponibles + (chambre.disponibles > 1 ? ' lits libres' : ' lit libre');
+            item.append(nom, dispo);
+            liste.append(item);
+
+            selection.add(new Option(chambre.libelle, chambre.code));
+        }
+        selection.value = choix || 'DORTOIR';
+    }
+
+    async function calculerDevis() {
+        const parametres = new URLSearchParams({
+            chambre: $('chambre').value,
+            nuits: $('nuits').value || '1',
+            membre: $('membre').checked
+        });
+        const reponse = await appel('/taverne/tarif?' + parametres);
+        if (!reponse.ok) {
+            $('devis').textContent = await reponse.text();
+            return;
+        }
+        const devis = await reponse.json();
+        $('devis').textContent = 'Total : ' + devis.total + " pièces d'or"
+            + (devis.remises === 'aucune' ? '' : ' (au lieu de ' + devis.prixDeBase + ', remise ' + devis.remises + ')');
+    }
+
+    for (const champ of ['chambre', 'nuits', 'membre']) {
+        $(champ).addEventListener('input', calculerDevis);
+        $(champ).addEventListener('change', calculerDevis);
+    }
+
+    $('reservation').addEventListener('submit', async event => {
+        event.preventDefault();
+        const reponse = await appel('/taverne/reservations', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                nom: $('voyageur').value,
+                chambre: $('chambre').value,
+                nuits: Number($('nuits').value || 1),
+                membre: $('membre').checked
+            })
+        });
+        const resultat = $('resultat');
+        if (reponse.ok) {
+            resultat.className = 'succes';
+            resultat.textContent = (await reponse.json()).message;
+            await chargerChambres();
+        } else {
+            resultat.className = 'erreur';
+            resultat.textContent = await reponse.text();
+        }
+    });
+
+    (async () => {
+        await Promise.all([chargerCarte(), chargerChambres()]);
+        await calculerDevis();
+    })();
 </script>
 </body>
 </html>

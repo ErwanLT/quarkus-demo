@@ -1,0 +1,9 @@
+!3 Avant d'ouvrir la suite : la taverne doit être ouverte
+
+Exécutée '''une seule fois''' au début de la suite (et avant une page lancée seule). Si l'application ne répond pas, inutile d'aller plus loin : la ligne passe en rouge (ou en jaune si la taverne est injoignable) et le message dit pourquoi.
+
+!| import |
+| fr.eletutour.fitnesse |
+
+| script | tavernier |
+| ensure | la taverne est ouverte |

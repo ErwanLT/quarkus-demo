@@ -1,0 +1,11 @@
+!3 Avant chaque page : on efface l'ardoise
+
+Exécutée avant '''chaque''' page de la suite. Le registre des réservations est vidé, ainsi chaque page raconte son histoire depuis le début, quel que soit l'ordre d'exécution.
+
+La table '''import''' évite de répéter le paquetage Java : on écrit ensuite !style_code[!-grille tarifaire-!] au lieu de !style_code[!-fr.eletutour.fitnesse.GrilleTarifaire-!].
+
+!| import |
+| fr.eletutour.fitnesse |
+
+| script | tavernier |
+| ensure | remettre le registre a zero |

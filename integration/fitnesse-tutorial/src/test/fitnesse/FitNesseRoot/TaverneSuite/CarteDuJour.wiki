@@ -1,0 +1,43 @@
+---
+Test
+Help: Ce qu'on sert ce soir — tables de requête complète, partielle et ordonnée
+---
+!1 La carte du jour
+
+!3 Ce que l'on veut garantir
+La carte affichée au comptoir doit correspondre à ce que la cuisine sait préparer : '''ni plat fantôme, ni plat oublié'''. Elle est rangée par catégorie (entrées, plats, desserts, boissons), et dans chaque catégorie du moins cher au plus cher.
+
+!2 La carte complète
+Une '''table de requête''' compare deux listes. Chaque ligne attendue doit être trouvée ; une ligne en trop côté application apparaît en rouge avec la mention ''surplus'', une ligne absente avec la mention ''missing''. L'ordre n'a pas d'importance ici.
+
+| query: carte du jour |
+| plat | categorie | prix |
+| Soupe à l'oignon du chaudron | entrée | 5 |
+| Tourte aux champignons | plat | 11 |
+| Ragoût de sanglier | plat | 14 |
+| Cuissot de griffon rôti | plat | 25 |
+| Tarte aux mûres sauvages | dessert | 6 |
+| Hydromel du nain | boisson | 4 |
+| Bière ambrée de la Comté | boisson | 3 |
+| Potion de vigueur | boisson | 12 |
+
+!2 Au moins ces boissons-là
+Une '''requête partielle''' (''subset query'') vérifie seulement que les lignes citées existent : le brasseur peut ajouter une bière demain sans casser cette page. Le paramètre après le nom de la table (!style_code[!-boisson-!]) est passé au constructeur de la fixture pour filtrer la carte.
+
+| subset query: carte du jour | boisson |
+| plat | prix |
+| Hydromel du nain | 4 |
+| Bière ambrée de la Comté | 3 |
+
+!2 Du moins cher au plus cher
+Une '''requête ordonnée''' (''ordered query'') vérifie en plus l'ordre des lignes. On ne cite que la colonne qui compte ; une colonne commençant par !style_code[!-#-!] sert de commentaire.
+
+| ordered query: carte du jour | plat |
+| plat | # pourquoi cet ordre |
+| Tourte aux champignons | 11 pièces |
+| Ragoût de sanglier | 14 pièces |
+| Cuissot de griffon rôti | 25 pièces, le plat du seigneur |
+
+!*** Pour les développeurs
+La fixture !style_code[!-CarteDuJour-!] interroge !-GET /taverne/carte?categorie=...-! et renvoie toutes les lignes sous la forme attendue par Slim : une liste de lignes, chaque ligne étant une liste de couples !-[colonne, valeur]-!. C'est FitNesse qui fait le rapprochement, les surplus et les manques.
+***!

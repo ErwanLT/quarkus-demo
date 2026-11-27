@@ -1,0 +1,78 @@
+---
+Test
+Help: Le contrat de l'API de réservation — table de script en phrases métier
+---
+!1 Réserver une chambre au comptoir
+
+Cette page décrit le '''contrat de l'API''' de réservation, celle qu'utilisent le site de la taverne et les messagers des autres auberges. Elle se lit comme une petite histoire : chaque ligne est une phrase, les mots en ''italique'' de la colonne de gauche sont les mots-clés, les valeurs sont dans les cellules intercalées.
+
+!2 Une soirée ordinaire
+!note Le registre est vide au début de la page : la page SetUp l'a remis à zéro.
+
+| script | comptoir des reservations |
+| le voyageur | Bilbon | reserve la chambre | DORTOIR | pour | 2 | nuits |
+| ensure | la reservation est acceptee |
+| check | statut | 201 |
+| check | message | Réservation n°1 confirmée pour Bilbon : le dortoir des compagnons, 2 nuits, 40 pièces d'or |
+| $premiere= | numero |
+| check | adresse | =~/\/taverne\/reservations\/1$/ |
+| check | lits libres en | DORTOIR | 5 |
+
+On garde le numéro de réservation dans le symbole '''$premiere''' pour le réutiliser plus loin, comme on noterait un numéro sur un bout de parchemin.
+
+| script |
+| le membre de la guilde | Gandalf | reserve la chambre | SUITE | pour | 3 | nuits |
+| ensure | la reservation est acceptee |
+| check | prix | 194 |
+| check not | prix | 270 |
+| $seconde= | numero |
+| show | reponse brute |
+
+!2 Retrouver une réservation
+| script |
+| consulter la reservation | $premiere |
+| check | statut | 200 |
+| check | voyageur | Bilbon |
+| consulter la reservation | $seconde |
+| check | voyageur | Gandalf |
+| consulter la reservation | 999 |
+| check | statut | 404 |
+| check | message | Aucune réservation n°999 dans le registre |
+
+!2 Les refus
+Une réservation refusée n'est pas une erreur du système : c'est une '''règle métier'''. On vérifie donc que le refus est clair, avec le bon statut HTTP et un message compréhensible par le client.
+
+| script |
+| note | La suite du seigneur n'a qu'un seul lit, et Gandalf l'occupe déjà. |
+| le voyageur | Saroumane | reserve la chambre | SUITE | pour | 1 | nuits |
+| reject | la reservation est acceptee |
+| check | statut | 409 |
+| check | message | La suite du seigneur est complète |
+| check | lits libres en | SUITE | 0 |
+| le voyageur | | reserve la chambre | DORTOIR | pour | 1 | nuits |
+| check | statut | 400 |
+| check | message | Le nom est obligatoire |
+| le voyageur | Grand-Pas | reserve la chambre | ECURIE | pour | 1 | nuits |
+| check | statut | 400 |
+| check | message | Chambre inconnue : ECURIE |
+| le voyageur | Pippin | reserve la chambre | PLACARD | pour | 0 | nuits |
+| check | statut | 400 |
+| check | message | Il faut réserver au moins une nuit |
+
+!2 Au plus près du contrat : le JSON brut
+Pour un partenaire qui intègre l'API, on peut aussi écrire la demande telle qu'elle part sur le réseau. Les cellules sont entourées de marques de texte littéral (bouton '''Edit''' pour les voir) : FitNesse transmet alors les accolades et les guillemets tels quels.
+
+| script |
+| envoyer la demande | !-{"nom": "Merry", "chambre": "placard", "nuits": 2}-! |
+| check | statut | 201 |
+| check | prix | 30 |
+| note | Sans le champ nuits, une seule nuit est réservée par défaut. |
+| envoyer la demande | !-{"nom": "Sam", "chambre": "DORTOIR"}-! |
+| check | message | =~/Sam : le dortoir des compagnons, 1 nuit, 20 pièces d'or$/ |
+
+!*** Pour les développeurs
+ * Dans une table de '''script''', Slim concatène les cellules impaires pour former le nom de la méthode : « le voyageur … reserve la chambre … pour … nuits » appelle !style_code[!-leVoyageurReserveLaChambrePourNuits(nom, chambre, nuits)-!].
+ * !style_code[!-ensure-!] / !style_code[!-reject-!] attendent un booléen vrai / faux ; !style_code[!-check-!] / !style_code[!-check not-!] comparent une valeur ; !style_code[!-show-!] affiche le résultat sans le juger ; !style_code[!-note-!] est un commentaire.
+ * !style_code[!-$premiere=-!] range la valeur renvoyée dans un '''symbole''' réutilisable dans toutes les tables suivantes de la page.
+ * Une table !style_code[!-| script |-!] sans nom de fixture continue avec le même acteur que la table précédente : l'état (la dernière réponse HTTP) est conservé.
+***!

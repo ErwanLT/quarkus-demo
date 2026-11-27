@@ -1,4 +1,0 @@
-!define TEST_SYSTEM {slim}
-!path target/test-classes
-!path target/classes
-!path target/fitnesse/lib/*

@@ -1,0 +1,32 @@
+---
+Suite
+Help: Toutes les spécifications exécutables de la taverne The Falling Whale
+---
+!1 La suite de la taverne
+
+Cette page est une '''suite''' : le bouton '''Suite''' exécute toutes les pages filles, dans l'ordre alphabétique, et affiche un tableau de bord. Chaque page peut aussi être lancée seule avec son propre bouton '''Test'''.
+
+!note Les couleurs : vert = conforme, rouge = valeur différente de l'attendu, jaune = exception (la règle n'a même pas pu être vérifiée), gris = cellule ignorée.
+
+!2 Sommaire
+
+!contents -R2 -g -h -f
+
+!2 Lancer seulement une partie de la suite
+
+Les pages peuvent porter des étiquettes (''tags'', champ '''Suites''' des propriétés). La page d'échec volontaire porte l'étiquette '''demo-echec''' : on peut l'exclure ou la cibler depuis l'URL.
+
+ * toute la suite sans la démonstration d'échec : [[TaverneSuite?suite&excludeSuiteFilter=demo-echec][.TaverneSuite?suite&excludeSuiteFilter=demo-echec]]
+ * uniquement la démonstration : [[TaverneSuite?suite&suiteFilter=demo-echec][.TaverneSuite?suite&suiteFilter=demo-echec]]
+
+!*** Pour les développeurs : configuration héritée par toutes les pages filles
+Les variables définies ici avec !-!define-! sont visibles dans toutes les pages en dessous, et les !-!path-! forment le classpath du serveur Slim (lancé dans sa propre JVM).
+
+!define URL_TAVERNE {http://localhost:8126/taverne.html}
+!define COLLAPSE_SETUP {true}
+!define COLLAPSE_TEARDOWN {true}
+
+!path target/test-classes
+!path target/classes
+!path target/fitnesse/lib/*
+***!

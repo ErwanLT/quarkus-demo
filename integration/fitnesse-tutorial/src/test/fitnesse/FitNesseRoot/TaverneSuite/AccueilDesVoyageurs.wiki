@@ -1,0 +1,36 @@
+---
+Test
+Help: Saluer chaque voyageur par son nom — table de décision sur l'API REST
+---
+!1 Accueillir les voyageurs par leur nom
+
+!3 La règle
+Le tavernier salue chaque voyageur qui passe la porte '''par son nom'''. S'il ne se présente pas, il est accueilli comme un ''voyageur'', sans plus de façons. Les espaces superflus tapés par mégarde sont ignorés.
+
+!3 Les exemples
+Une '''table de décision''' se lit ligne par ligne : à gauche ce que l'on donne, à droite (colonne terminée par !style_code[!-?-!]) ce que l'on attend en retour. La colonne !style_code[!-# pourquoi-!] n'est qu'un commentaire pour le lecteur : FitNesse l'ignore.
+
+!define HOBBIT {Bilbon}
+!define MAGE {Gandalf le Gris}
+
+| accueil des voyageurs |
+| # pourquoi | nom | message d'accueil? |
+| un nom simple | ${HOBBIT} | Bienvenue à la taverne, Bilbon ! |
+| un nom composé, avec des espaces | ${MAGE} | Bienvenue à la taverne, Gandalf le Gris ! |
+| les accents passent sans encombre | Éowyn | Bienvenue à la taverne, Éowyn ! |
+| les espaces autour du nom sont retirés | !-   Sam   -! | Bienvenue à la taverne, Sam ! |
+| personne ne se présente | | Bienvenue à la taverne, voyageur ! |
+
+!3 Quand l'exactitude n'importe pas
+Parfois seule une partie du message compte. Une '''expression régulière''' (!style_code[!-=~/.../-!]) vérifie la forme plutôt que le texte exact :
+
+| accueil des voyageurs |
+| # pourquoi | nom | message d'accueil? |
+| le nom apparaît toujours dans le message | Frodon | =~/Frodon/ |
+| le message est toujours chaleureux | Pippin | =~/^Bienvenue à la taverne, .+ !$/ |
+
+!*** Pour les développeurs
+ * Les variables !-${HOBBIT}-! et !-${MAGE}-! sont déclarées avec !-!define-! juste au-dessus des tables : un seul endroit à modifier pour changer de personnage.
+ * La cellule de Sam est entourée de marques de texte littéral (bouton '''Edit''' pour les voir) : sans elles, FitNesse retirerait les espaces avant même de les envoyer.
+ * La fixture !style_code[!-AccueilDesVoyageurs-!] reçoit !style_code[!-setNom(...)-!] puis répond à !style_code[!-messageDAccueil()-!] par un GET sur !-/taverne/accueil-!.
+***!

@@ -1,0 +1,42 @@
+!1 Le vocabulaire de la salle
+
+Une page nommée '''!-ScenarioLibrary-!''' est incluse automatiquement dans toutes les pages de test situées en dessous. On y traduit des '''phrases métier''' (« le voyageur Bilbon se présente ») en actions techniques sur le navigateur (« saisir Bilbon dans le champ #nom, cliquer sur #saluer »).
+
+Résultat : les pages de test ne parlent jamais de sélecteurs CSS, et si l'écran change, on ne corrige qu'ici.
+
+!2 Les scénarios avec paramètres dans la phrase
+
+Le caractère !style_code[!-_-!] marque l'emplacement d'un paramètre : la ligne !style_code[!-| le voyageur Bilbon se présente |-!] appelle le scénario avec !style_code[!-nom = Bilbon-!].
+
+!| scenario | ouvrir la taverne |
+| ouvrir | ${URL_TAVERNE} |
+| check | titre de la page | The Falling Whale — Taverne |
+
+!| scenario | le voyageur _ se présente | nom |
+| saisir | @nom | dans | #nom |
+| cliquer sur | #saluer |
+
+!| scenario | la taverne doit répondre _ | message |
+| verifier que | #message | affiche | @message |
+
+!| scenario | la carte doit proposer _ plats | nombre |
+| check | nombre de | #carte tr.plat | @nombre |
+
+!| scenario | le prix affiché pour _ doit être _ | plat, prix |
+| check | texte de | #carte tr[data-plat="@plat"] td.prix | @prix |
+
+!| scenario | il doit rester _ en _ | disponibilite, chambre |
+| check | texte de | #chambres li[data-chambre="@chambre"] .disponibles | @disponibilite |
+
+!2 Un scénario avec entrées et sorties
+
+Les paramètres terminés par !style_code[!-?-!] sont des '''sorties''' : le scénario les remplit avec !style_code[!-$devis=-!], et une table de décision peut les comparer à une valeur attendue (voir [[Parcours en salle][<TaverneSuite.ParcoursEnSalle]]).
+
+!| scenario | réservation en ligne | nom || chambre || nuits || membre || devis? || confirmation? |
+| choisir | @chambre | dans | #chambre |
+| saisir | @nuits | dans | #nuits |
+| cocher | #membre | si | @membre |
+| saisir | @nom | dans | #voyageur |
+| $devis= | texte de | #devis |
+| cliquer sur | #reserver |
+| $confirmation= | texte de | #resultat |

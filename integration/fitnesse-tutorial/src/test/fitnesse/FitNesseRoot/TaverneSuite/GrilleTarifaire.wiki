@@ -1,0 +1,36 @@
+---
+Test
+Help: Le prix d'une nuitée et ses remises — table de décision branchée directement sur le code métier
+---
+!1 La grille tarifaire
+
+!3 Les règles de la maison
+ 1 Chaque chambre a son prix par nuit : '''placard''' 15 pièces d'or, '''dortoir''' 20, '''suite''' 90.
+ 1 Les '''membres de la guilde des aventuriers''' ont 20 % de remise.
+ 1 À partir de '''3 nuits''', le long séjour donne 10 % de remise supplémentaire, calculée ''après'' la remise membre.
+ 1 Le total est arrondi à la pièce la plus proche — le tavernier ne rend pas la monnaie en piécettes.
+
+!3 Les exemples qui font foi
+Chaque ligne est un client imaginaire. Le tavernier, l'aubergiste et le développeur peuvent tous la lire et dire « oui, c'est bien ça ».
+
+| grille tarifaire |
+| # le client | chambre | nuits | membre de la guilde | prix de base? | remises? | a payer? |
+| un voyageur de passage | DORTOIR | 1 | non | 20 | aucune | 20 |
+| un membre, deux nuits | DORTOIR | 2 | oui | 40 | membre -20 % | 32 |
+| un long séjour sans carte | PLACARD | 3 | non | 45 | long séjour -10 % | 41 |
+| les deux remises se cumulent | SUITE | 3 | oui | 270 | membre -20 % puis long séjour -10 % | 194 |
+| un seigneur pressé | SUITE | 2 | oui | 180 | membre -20 % | 144 |
+| une semaine de compagnie | DORTOIR | 7 | non | 140 | long séjour -10 % | 126 |
+
+!3 Les ordres de grandeur
+On n'a pas toujours un prix exact en tête, mais on sait ce qui serait absurde. FitNesse accepte des '''comparaisons''' : !style_code[!-<50-!], !style_code[!->=100-!], ou un intervalle !style_code[!-10<_<30-!] où !style_code[!-_-!] représente la valeur calculée.
+
+| grille tarifaire |
+| # ce que l'on garantit | chambre | nuits | membre de la guilde | a payer? |
+| le placard reste abordable | PLACARD | 1 | non | <20 |
+| une nuit au dortoir coûte entre 10 et 30 pièces | DORTOIR | 1 | oui | 10<_<30 |
+| un mois en suite reste une folie | SUITE | 30 | oui | >=1500 |
+
+!*** Pour les développeurs
+Cette fixture n'appelle '''pas''' l'API : elle instancie directement la classe métier !style_code[!-Tarif-!] (paquet !-fr.eletutour.fitnesse.domain-!). C'est le câblage le plus rapide et le plus robuste pour des règles de calcul. Slim appelle les « setters » des colonnes d'entrée, puis !style_code[!-execute()-!], puis les méthodes des colonnes terminées par !style_code[!-?-!] (!style_code[!-a payer?-!] devient !style_code[!-aPayer()-!]).
+***!

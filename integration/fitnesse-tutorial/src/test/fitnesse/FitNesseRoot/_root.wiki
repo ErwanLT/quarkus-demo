@@ -1,8 +1,1 @@
 !define TEST_SYSTEM {slim}
-
-- [[FrontPage][FrontPage]]
-- [[TaverneTests][TaverneTests]]
-- [[TaverneUiTests][TaverneUiTests]]
-- [[ReglesTarifTests][ReglesTarifTests]]
-- [[ScenarioTests][ScenarioTests]]
-- [[ApiContratTests][ApiContratTests]]
