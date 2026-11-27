@@ -11,7 +11,7 @@ Bienvenue dans le wiki de la taverne. Ici, les règles de la maison ne sont pas 
 
 |'''Page'''|'''Sujet métier'''|'''Ce que FitNesse y démontre'''|
 |[[Accueil des voyageurs][.TaverneSuite.AccueilDesVoyageurs]]|Saluer chaque voyageur par son nom|table de décision, variables !-!define-!, expressions régulières, colonne commentaire|
-|[[Grille tarifaire][.TaverneSuite.GrilleTarifaire]]|Le prix d'une nuitée et ses remises|table de décision branchée sur le code métier sans HTTP, intervalles !-<_<-!|
+|[[Grille tarifaire][.TaverneSuite.GrilleTarifaire]]|Le prix d'une nuitée et ses remises|table de décision branchée sur le code métier sans HTTP, intervalles !-<_<-!, table '''baseline''' (seules les différences)|
 |[[Carte du jour][.TaverneSuite.CarteDuJour]]|Ce qu'on sert ce soir|tables de requête : complète, partielle (subset) et ordonnée|
 |[[Réservation au comptoir][.TaverneSuite.ReservationAuComptoir]]|Le contrat de l'API de réservation|table de script : phrases métier, symboles !-$numero-!, ensure / reject, check not, show, note|
 |[[Parcours en salle][.TaverneSuite.ParcoursEnSalle]]|Un client réel dans le navigateur|scénarios réutilisables, table de décision pilotant un scénario, Selenium, capture à la demande|

@@ -44,7 +44,7 @@ class FitNesseAcceptanceTest {
         PAGES_VERTES.put("SuiteSetUp", 1);
         PAGES_VERTES.put("AccueilDesVoyageurs", 8);
         PAGES_VERTES.put("CarteDuJour", 32);
-        PAGES_VERTES.put("GrilleTarifaire", 22);
+        PAGES_VERTES.put("GrilleTarifaire", 43);
         PAGES_VERTES.put("ParcoursEnSalle", 17);
         PAGES_VERTES.put("ReservationAuComptoir", 27);
     }

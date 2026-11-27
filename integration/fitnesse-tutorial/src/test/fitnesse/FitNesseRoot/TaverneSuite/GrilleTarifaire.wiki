@@ -22,6 +22,19 @@ Chaque ligne est un client imaginaire. Le tavernier, l'aubergiste et le dévelop
 | un seigneur pressé | SUITE | 2 | oui | 180 | membre -20 % | 144 |
 | une semaine de compagnie | DORTOIR | 7 | non | 140 | long séjour -10 % | 126 |
 
+!3 Un seul paramètre à la fois
+Pour voir l'effet de chaque règle, le tavernier part d'un client de référence et ne change qu'une chose à la fois. Avec une table '''baseline''', la première ligne est écrite en entier ; les suivantes ne mentionnent '''que ce qui change'''. Une case vide reprend la valeur de la ligne de référence, en entrée comme en résultat attendu.
+
+| baseline: grille tarifaire |
+| # ce qui change | chambre | nuits | membre de la guilde | prix de base? | remises? | a payer? |
+| le client de référence : une nuit au dortoir, sans carte | DORTOIR | 1 | non | 20 | aucune | 20 |
+| seulement la chambre : le placard | PLACARD | | | 15 | | 15 |
+| seulement la chambre : la suite | SUITE | | | 90 | | 90 |
+| seulement la carte de guilde | | | oui | | membre -20 % | 16 |
+| deux nuits : pas encore un long séjour | | 2 | | 40 | | 40 |
+| trois nuits : le long séjour commence | | 3 | | 60 | long séjour -10 % | 54 |
+| trois nuits et la carte | | 3 | oui | 60 | membre -20 % puis long séjour -10 % | 43 |
+
 !3 Les ordres de grandeur
 On n'a pas toujours un prix exact en tête, mais on sait ce qui serait absurde. FitNesse accepte des '''comparaisons''' : !style_code[!-<50-!], !style_code[!->=100-!], ou un intervalle !style_code[!-10<_<30-!] où !style_code[!-_-!] représente la valeur calculée.
 

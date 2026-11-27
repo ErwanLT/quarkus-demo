@@ -43,7 +43,7 @@ Chaque page de test commence par **la règle en français**, puis les exemples q
 | Page | Sujet métier | Ce que FitNesse y démontre | Fixture |
 |---|---|---|---|
 | `AccueilDesVoyageurs` | saluer chaque voyageur par son nom | table de décision sur l'API REST, variables `!define`, colonne commentaire `#`, expressions régulières `=~/.../`, cellule littérale `!-...-!` | `AccueilDesVoyageurs` |
-| `GrilleTarifaire` | prix d'une nuitée et remises cumulées | table de décision **sans HTTP**, branchée sur la classe métier `Tarif` ; `execute()`/`reset()` ; comparaisons `<20`, `>=1500`, intervalle `10<_<30` | `GrilleTarifaire` |
+| `GrilleTarifaire` | prix d'une nuitée et remises cumulées | table de décision **sans HTTP**, branchée sur la classe métier `Tarif` ; `execute()`/`reset()` ; comparaisons `<20`, `>=1500`, intervalle `10<_<30` ; table `baseline:` où chaque ligne ne donne que ce qui change par rapport à la ligne de référence | `GrilleTarifaire` |
 | `CarteDuJour` | ce qu'on sert ce soir | `query` (surplus / manquants), `subset query` avec argument de constructeur, `ordered query` | `CarteDuJour` |
 | `ReservationAuComptoir` | contrat de l'API de réservation | table de script en phrases (« le voyageur … reserve la chambre … pour … nuits »), `ensure`/`reject`, `check`/`check not`, symboles `$premiere=`, `show`, `note`, JSON brut, statuts `201`/`200`/`404`/`400`/`409` | `ComptoirDesReservations` |
 | `ParcoursEnSalle` | un client réel dans Chrome | scénarios à paramètres dans la phrase (`le voyageur _ se présente`), **table de décision qui pilote un scénario** avec sorties `devis?`/`confirmation?`, `show` d'une capture d'écran même au vert | `NavigateurDeLaTaverne` |
